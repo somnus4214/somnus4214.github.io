@@ -2,6 +2,7 @@
 title = 'Tmux使用教程'
 date = 2026-03-24T19:13:32+08:00
 draft = false
+tags = ["Tool","Blog"]
 +++
 ![](https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260324191423298.png)
 >为什么用tmux：首先，因为我最近换了一个终端模拟器alacritty，这个模拟器不支持原生的分屏，需要通过tmux辅助。别问为什么非要用alacritty而不是自带分屏的ghostty，因为一个是rust一个是zig。
