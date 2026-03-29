@@ -3,6 +3,7 @@ title: "Raft训练日志1"
 date: 2026-03-22T10:57:32+08:00
 draft: false
 tags: ["Blog", "CV", "DL", "AI"]
+categories: "实验日志"
 ---
 
 ## 一、前情提要

@@ -8,6 +8,7 @@ license:
 tag: ["Blog", "CV", "DL", "AI"]
 comments: true
 draft: false
+categories: "实验日志"
 build:
   list: always # Change to "never" to hide the page from the list
 ---

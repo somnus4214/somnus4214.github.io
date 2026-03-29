@@ -5,6 +5,8 @@ draft = false
 tag = ["tool","life"]
 summary = "本文简单介绍了一下如何在linux（ubuntu24.04）上面安装zsh"
 tags = ["Blog","Tool"]
+categories = ["使用教程"]
+image = ""
 +++
 
 > why zsh: 本人长期使用bash，其实早有耳闻zsh的方便快捷，之前黄学长给我的使用的服务器里面就配置了zsh，当时感觉自动补齐功能很惊艳，但是受限于我原本在机器人队打工，很多网上开源雷达点云算法（pointlio，fastlio）都需要通过source setup.bash来配置环境，如果用zsh可能会有些问题，但最近很高兴去尝试一些新的东西，于是就有了这篇博客

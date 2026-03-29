@@ -3,9 +3,9 @@ title = 'Tmux使用教程'
 date = 2026-03-24T19:13:32+08:00
 draft = false
 tags = ["Tool","Blog"]
+image = ""
+categories = ["使用教程"]
 +++
-
-![](https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260324191423298.png)
 
 > 为什么用tmux：首先，因为我最近换了一个终端模拟器alacritty，这个模拟器不支持原生的分屏，需要通过tmux辅助。别问为什么非要用alacritty而不是自带分屏的ghostty，因为一个是rust一个是zig。
 > 另外，我在使用服务器训练raft视觉模型的时候，偶尔因为网络断开连接，导致远程ssh关闭，自动的结束了训练，虽然我知道了可以使用nohup 在>输出到log文件中，但是还是觉得如果可以用tmux这种会更方便。

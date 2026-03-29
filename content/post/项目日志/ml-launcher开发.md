@@ -7,6 +7,7 @@ math:
 license:
 comments: true
 draft: false
+categories: "项目日志"
 tags: ["Rust", "Tool", "Readme"]
 build:
   list: always # Change to "never" to hide the page from the list
