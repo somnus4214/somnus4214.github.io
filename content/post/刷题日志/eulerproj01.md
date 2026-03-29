@@ -81,3 +81,126 @@ fn solve1() -> u64 {
 
 计算时间上面呢也就减少了20ns，但是这样的降低时间复杂度的操作还是很有意义的。从中我们也可以得到启发，当程序无法进行优化时，可以从**数学的角度**入手。下面是运行时间对比图片(我把测试增加了)。
 ![](https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260329211758117.png)
+
+### p004
+
+#### 题目
+
+Problem 4: Largest Palindrome Product
+
+[题目链接](https://projecteuler.net/problem=4)
+题目描述:
+
+ <p>A palindromic number reads the same both ways. The largest palindrome made from the product of two $2$-digit numbers is $9009 = 91 \times 99$.</p>
+ 问题:
+ <p>Find the largest palindrome made from the product of two $3$-digit numbers.</p>
+
+#### 解答a
+
+同样，这题可以直接设定i和j代表两个数。直接开始循环，然后通过一个函数判断乘积是否是回文数。代码如下：
+
+```rust
+fn is_palindrome(n: u64) -> bool {
+    let s = n.to_string();
+    s.chars().eq(s.chars().rev())
+}
+fn baolisolve() -> u64 {
+    let mut max_palindrome = 0;
+    for i in 100..999 {
+        for j in 100..999 {
+            let x = i * j;
+            if is_palindrome(x) && x >= max_palindrome {
+                max_palindrome = x;
+            }
+        }
+    }
+    max_palindrome
+}
+```
+
+最后得到的计算时间也是相当可观了（计算时间很长）
+![](https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260329230307618.png)
+
+#### 解答b
+
+此时可以观察到，要求出最大的回文数，往往两个数字都需要大概900多的样子，我们可以直接从后向前循环，这样的话时间就能减少很多。
+![](https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260329230525808.png)
+
+#### 解答c
+
+首先引入一个结论，任何一个偶数位数的回文数都可以被11整除。在本题目中，要求最大的六位回文数，则该回文数必然有一个因数也可以被11整除。于是便可以减少部分循环次数，进一步降低时间消耗。
+代码如下
+
+```rust
+fn mathsolve() -> u64 {
+    let mut max_palindrome = 0;
+    for i in (100..999).rev() {
+        let start = if i % 11 == 0 { 999 } else { 990 };
+        let step = if i % 11 == 0 { 1 } else { 11 };
+        let mut j = start;
+        while j >= 100 {
+            let n = i * j;
+            if n <= max_palindrome {
+                break;
+            }
+            if is_palindrome(n) {
+                max_palindrome = n;
+            }
+            j -= step;
+        }
+    }
+    max_palindrome
+}
+```
+
+最后可以看到消耗时间被降低到了微秒级别
+![](https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260329230845620.png)
+简单证明一下上面这个结论。
+设一个 6 位回文数写成：
+
+\[
+N = \overline{abccba}
+\]
+
+其中 \(a,b,c\) 都是数字，且 \(a \neq 0\)。
+
+把它按十进制展开：
+
+\[
+N = 100000a + 10000b + 1000c + 100c + 10b + a
+\]
+
+整理同类项可得：
+
+\[
+N = 100001a + 10010b + 1100c
+\]
+
+接下来把每一项提取出 11：
+
+\[
+100001 = 11 \times 9091
+\]
+
+\[
+10010 = 11 \times 910
+\]
+
+\[
+1100 = 11 \times 100
+\]
+
+所以：
+
+\[
+N = 11(9091a + 910b + 100c)
+\]
+
+因此，\(N\) 一定能被 11 整除。
+
+任意 6 位回文数都可以写成 11 的倍数，因此：
+
+\[
+\boxed{\text{任意 6 位回文数一定能被 11 整除}}
+\]
+数学博大精深～～！
