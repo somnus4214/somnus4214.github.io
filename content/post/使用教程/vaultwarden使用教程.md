@@ -2,7 +2,7 @@
 title = 'Vaultwarden使用教程'
 date = 2026-03-31T16:13:42+08:00
 draft = false
-categories = [""]
+categories = ["使用教程"]
 tags = ["Blog","Self-host","Docker","SSL","VPS"]
 image = ""
 math = true
@@ -21,7 +21,7 @@ math = true
 - a、云服务：除了依赖浏览器厂商，还有一些专业的密码服务厂商，比如被广泛使用的1password和以隐私保护著称的proton pass，但是这两个的服务都不是免费的，而且都不便宜，国内的连接也不够稳定。
 - b、自搭建服务：使用大名鼎鼎的bitwarden或者keepassxc，后者很安全，因为数据文件只能保存在本地，但问题也就是他没有任何的云服务，非常不方便。
 
-最终我决定使用vaultwarden，一个基于bitwarden的rust重写版（rust信徒狂喜），使用我之前的买的一个火山云的服务器2g2核，足够运行。当时这个服务器还是用来炮openclaw的，后来没弄成，就闲置下来了。
+最终我决定使用vaultwarden，一个基于bitwarden的rust重写版（rust信徒狂喜），使用我之前的买的一个火山云的服务器2g2核，足够运行。当时这个服务器还是用来跑openclaw的，后来没弄成，就闲置下来了。
 
 ## 2.部署
 
