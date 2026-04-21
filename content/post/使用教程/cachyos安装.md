@@ -116,5 +116,23 @@ cp ~/Downloads/Clash.Verge_2.4.7_amd64.deb ~/.cache/paru/clone/clash-verge-rev-b
 
 ## 3.2 从 Fish 换到 Zsh :shell:
 
-_等明天再写吧..._ :zzz:
-`todo!()` :pencil:
+fish虽然也很好用，但是存在一些支持性问题，有些指令会不兼容，而zsh在比bash更好用以外还能支持几乎所有的bash语法。所以我们要把cachyos默认的fish切换成zsh。
+首先可以通过这个命令来查看当前使用的shell。
+
+```zsh
+echo $SHELL
+```
+
+如果没有安装zsh,先安装zsh
+
+```zsh
+sudo pacman -S zsh
+```
+
+然后通过下面这个命令来切换shell
+
+```zsh
+chsh -s /usr/bin/zsh
+```
+
+然后直接关机重启，不要注销，感觉没用:lollipop:。
