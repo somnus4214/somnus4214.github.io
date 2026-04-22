@@ -9,11 +9,35 @@
             <script>
                 (function() {
                     document.documentElement.dataset.scheme = 'light';
-                    localStorage.setItem('StackColorScheme', 'light');
                 })();
             </script>
         {{- else -}}
             {{- partial "head/colorScheme" . -}}
+            <script>
+                window.addEventListener('load', function () {
+                    var toggle = document.getElementById('dark-mode-toggle');
+                    if (!toggle) return;
+
+                    toggle.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        event.stopImmediatePropagation();
+
+                        var nextScheme =
+                            document.documentElement.dataset.scheme === 'dark' ? 'light' : 'dark';
+
+                        document.documentElement.dataset.scheme = nextScheme;
+                        localStorage.setItem('StackColorScheme', nextScheme);
+
+                        requestAnimationFrame(function () {
+                            window.dispatchEvent(
+                                new CustomEvent('onColorSchemeChange', {
+                                    detail: nextScheme
+                                })
+                            );
+                        });
+                    }, true);
+                });
+            </script>
         {{- end -}}
 
         {{/* The container is wider when there's any activated widget */}}

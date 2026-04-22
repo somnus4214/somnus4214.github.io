@@ -50,7 +50,7 @@ default = "auto"
 
 ## Comments
 [comments]
-enabled = true
+enabled = false
 provider = "giscus"
 
 [comments.giscus]

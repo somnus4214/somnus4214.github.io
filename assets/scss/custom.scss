@@ -161,6 +161,18 @@ pre {
   color: #9494b4;
 }
 
+#dark-mode-toggle .scheme-label--light {
+  display: none;
+}
+
+:root[data-scheme="dark"] #dark-mode-toggle .scheme-label--dark {
+  display: none;
+}
+
+:root[data-scheme="dark"] #dark-mode-toggle .scheme-label--light {
+  display: inline;
+}
+
 :root[data-scheme="dark"] .menu-social a {
   width: 42px;
   height: 42px;
