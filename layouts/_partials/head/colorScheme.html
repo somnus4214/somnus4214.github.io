@@ -1,0 +1,41 @@
+{{- if .Params.professionalReport -}}
+<script>
+    (function() {
+        document.documentElement.dataset.scheme = 'light';
+        localStorage.setItem('StackColorScheme', 'light');
+    })();
+</script>
+{{- else -}}
+{{- $defaultColorScheme := .Site.Params.colorScheme.default -}}
+{{- if not .Site.Params.colorScheme.toggle -}}
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            localStorage.setItem(colorSchemeKey, "{{ $defaultColorScheme }}");
+        })();
+    </script>
+{{- else -}}
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "{{ $defaultColorScheme }}");
+            }
+        })();
+    </script>
+{{- end -}}
+
+<script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+{{- end -}}

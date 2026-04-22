@@ -1,0 +1,58 @@
+<article class="{{ if .Params.image }}has-image {{ end }}main-article professional-report-article">
+    {{- $image := partial "helper/image" (dict "Image" .Params.image "Resources" .Resources "Context" .) -}}
+    {{ if $image }}
+    <header class="article-header">
+        <div class="article-image">
+            {{ partial "helper/responsive-image" (dict
+                "Resource" $image.Resource
+                "Widths" (cond .Site.Params.ImageProcessing.Content.Enabled .Site.Params.ImageProcessing.Content.Widths nil)
+                "Attributes" (dict
+                    "src" $image.Permalink
+                    "width" $image.Width
+                    "height" $image.Height
+                    "alt" (printf "Featured image of report %s" .Title)
+                    "loading" "lazy"
+                    "sizes" "(max-width: 767px) calc(100vw - 30px), 900px"
+                )
+            ) }}
+        </div>
+    </header>
+    {{ end }}
+
+    <div class="article-details">
+        <div class="article-title-wrapper">
+            <h1 class="article-title">{{ .Title }}</h1>
+
+            {{ with .Params.description }}
+            <h2 class="article-subtitle">{{ . }}</h2>
+            {{ end }}
+        </div>
+
+        <footer class="article-meta">
+            <div class="inline-meta">
+                {{ if not .Date.IsZero }}
+                    {{ partial "helper/icon" "date" }}
+                    <time class="article-time--published" datetime='{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}'>
+                        {{ .Date | time.Format .Site.Params.dateFormat.published }}
+                    </time>
+                {{ end }}
+
+                {{ if .Params.readingTime | default (.Site.Params.article.readingTime) }}
+                    {{ partial "helper/icon" "clock" }}
+                    <time class="article-time--reading">
+                        {{ T "article.readingTime" .ReadingTime }}
+                    </time>
+                {{ end }}
+            </div>
+        </footer>
+    </div>
+
+    <section class="article-content">
+        {{ $wrappedTable := printf "<div class=\"table-wrapper\">${1}</div>" }}
+        {{ .Content | replaceRE "(<table>(?:.|\n)+?</table>)" $wrappedTable | safeHTML }}
+    </section>
+
+    {{ if or .Params.math .Site.Params.article.math }}
+        {{ partialCached "article/components/math.html" . }}
+    {{ end }}
+</article>

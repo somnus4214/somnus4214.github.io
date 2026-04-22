@@ -1,0 +1,64 @@
+{{ define "body-class" }}
+    article-page{{ if .Params.professionalReport }} professional-report-page{{ end }}
+    {{- if not .Params.professionalReport -}}
+        {{- $HasWidgetNotTOC := false -}}
+        {{- $TOCWidgetEnabled := false -}}
+        {{- range .Site.Params.widgets.page -}}
+            {{- if ne .type "toc" -}}
+                {{ $HasWidgetNotTOC = true -}}
+            {{- else -}}
+                {{ $TOCWidgetEnabled = true -}}
+            {{- end -}}
+        {{- end -}}
+
+        {{- $TOCManuallyDisabled := eq .Params.toc false -}}
+        {{- $TOCEnabled := and (not $TOCManuallyDisabled) $TOCWidgetEnabled -}}
+        {{- $hasTOC := ge (len .TableOfContents) 100 -}}
+        {{- .Scratch.Set "TOCEnabled" (and $TOCEnabled $hasTOC) -}}
+        {{- .Scratch.Set "hasWidget" (or $HasWidgetNotTOC (and $TOCEnabled $hasTOC)) -}}
+    {{- else -}}
+        {{- .Scratch.Set "TOCEnabled" false -}}
+        {{- .Scratch.Set "hasWidget" false -}}
+    {{- end -}}
+{{ end }}
+
+{{ define "head" }}
+    {{ if .Params.professionalReport }}
+        <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+        <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
+    {{ end }}
+{{ end }}
+
+{{ define "left-sidebar" }}
+    {{ if not .Params.professionalReport }}
+        {{ partial "sidebar/left.html" . }}
+    {{ end }}
+{{ end }}
+
+{{ define "main" }}
+    {{ if .Params.professionalReport }}
+        {{ partial "article/report" . }}
+    {{ else }}
+        {{ partial "article/article.html" . }}
+
+        {{ if .Params.links }}
+            {{ partial "article/components/links" . }}
+        {{ end }}
+
+        {{ partial "article/components/related-content" . }}
+
+        {{ if not (eq .Params.comments false) }}
+            {{ partial "comments/include" . }}
+        {{ end }}
+
+        {{ partialCached "footer/footer" . }}
+        {{ partialCached "article/components/photoswipe" . }}
+        {{ partial "article/components/mermaid" . }}
+    {{ end }}
+{{ end }}
+
+{{ define "right-sidebar" }}
+    {{ if and (not .Params.professionalReport) (.Scratch.Get "hasWidget") }}
+        {{ partial "sidebar/right.html" (dict "Context" . "Scope" "page") }}
+    {{ end }}
+{{ end }}

@@ -6,6 +6,7 @@ categories = [""]
 tags = [""]
 image = ""
 math = true
+professionalReport = false
 [build]
   list = "always"
 +++
