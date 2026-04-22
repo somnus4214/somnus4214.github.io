@@ -5,7 +5,7 @@ draft: false
 categories: "实验日志"
 ---
 
-## 1.工作流介绍。
+## 工作流介绍。
 
 ![](<https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/%E6%94%BF%E5%8A%A1%E5%88%86%E6%9E%90-whole-workflow%20(1).png>)
 工作流整体如图所示。
@@ -95,7 +95,7 @@ def main(year: int, region: str, keywords: str):
 **4. 最终估算**：给出一个明确的总价（或价格区间），并附上一句简短的专业风险提示或建议。
 ```
 
-## 2.运行测试
+## 运行测试
 
 ### 输入问题
 
