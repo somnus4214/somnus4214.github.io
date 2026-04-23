@@ -133,6 +133,15 @@ pre {
   backdrop-filter: blur(8px);
 }
 
+:root[data-scheme="dark"] .article-list article,
+:root[data-scheme="dark"] .template-archives .article-list article,
+:root[data-scheme="dark"] .article-list--compact,
+:root[data-scheme="dark"] .search-result,
+:root[data-scheme="dark"] .archives-group {
+  backdrop-filter: none;
+  background: rgba(15, 15, 30, 0.96);
+}
+
 :root[data-scheme="dark"] .left-sidebar header {
   background: transparent;
   border: 0;
