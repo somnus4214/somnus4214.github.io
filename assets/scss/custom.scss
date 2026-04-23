@@ -223,6 +223,37 @@ pre {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
 }
 
+:root[data-scheme="dark"] .search-form input {
+  color: #efeaff;
+  caret-color: #c8aeff;
+}
+
+:root[data-scheme="dark"] .search-form input::placeholder {
+  color: rgba(228, 228, 240, 0.45);
+}
+
+:root[data-scheme="dark"] .search-form input:hover,
+:root[data-scheme="dark"] .search-form input:focus,
+:root[data-scheme="dark"] .search-form input:active {
+  background: rgba(20, 20, 40, 0.96);
+  color: #f3efff;
+  border-color: rgba(200, 174, 255, 0.28);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 0 0 1px rgba(160, 127, 255, 0.16);
+}
+
+:root[data-scheme="dark"] .search-form input:-webkit-autofill,
+:root[data-scheme="dark"] .search-form input:-webkit-autofill:hover,
+:root[data-scheme="dark"] .search-form input:-webkit-autofill:focus,
+:root[data-scheme="dark"] .search-form input:-webkit-autofill:active {
+  -webkit-text-fill-color: #f3efff;
+  -webkit-box-shadow:
+    0 0 0 1000px rgba(20, 20, 40, 0.96) inset,
+    0 0 0 1px rgba(160, 127, 255, 0.16);
+  transition: background-color 9999s ease-out 0s;
+}
+
 :root[data-scheme="dark"] .right-sidebar .tagCloud-tags a {
   border: 1px solid rgba(160, 130, 255, 0.13);
   background: rgba(160, 127, 255, 0.08);
