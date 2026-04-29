@@ -1,12 +1,12 @@
-+++
-title = 'Eulerproj01'
-date = 2026-03-29T20:25:05+08:00
-draft = false
-categories = ["刷题日志"]
-tags = ["Learning","Code"]
-image = ""
-math = true
-+++
+---
+title: 'Eulerproj01'
+date: 2026-03-29T20:25:05+08:00
+draft: false
+categories: ["刷题日志"]
+tags: ["Learning","Code"]
+image: ""
+math: true
+---
 
 ### p002
 

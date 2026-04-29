@@ -1,12 +1,12 @@
-+++
-title = 'Fastgpt初体验1'
-date = 2026-04-14T17:18:43+08:00
-draft = false
-categories = ["实验日志"]
-tags = ["ai","agent"]
-image = ""
-math = true
-+++
+---
+title: 'Fastgpt初体验1'
+date: 2026-04-14T17:18:43+08:00
+draft: false
+categories: ["实验日志"]
+tags: ["ai","agent"]
+image: ""
+math: true
+---
 
 > 最近刚刚入职了某小厂，作为ai实习生，也是开启了自己的牛马生涯。
 > 公司的第一个任务就是做一个电商客服，我在网络上搜罗了一下可能比较成形的方案，最终决定选择使用fastgpt框架调用qwen api+千牛后台。

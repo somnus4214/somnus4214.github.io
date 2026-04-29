@@ -13,8 +13,6 @@ tag:
 comments: true
 draft: false
 categories: 实验日志
-build:
-  list: always
 ---
 
 ## 前情提要

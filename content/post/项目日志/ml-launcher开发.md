@@ -9,8 +9,6 @@ comments: true
 draft: false
 categories: "项目日志"
 tags: ["Rust", "Tool", "Readme"]
-build:
-  list: always # Change to "never" to hide the page from the list
 ---
 
 > 最近做一些模型训练的项目，每次在训练的时候，长长的后续参数都让人很头大（每次都要问a：怎么让这个项目跑起来），于是我想是否可以弄一个项目，方便的设置参数，便有了这个项目。

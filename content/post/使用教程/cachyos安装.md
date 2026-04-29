@@ -1,12 +1,12 @@
-+++
-title = 'Cachyos安装'
-date = 2026-04-20T16:47:51+08:00
-draft = false
-categories = ["使用教程"]
-tags = ["linux","cachyos","grub"]
-image = ""
-math = true
-+++
+---
+title: 'Cachyos安装'
+date: 2026-04-20T16:47:51+08:00
+draft: false
+categories: ["使用教程"]
+tags: ["linux","cachyos","grub"]
+image: ""
+math: true
+---
 
 > 前言：
 > 刚刚入职一周左右，我现在也算在玄武**安定下来**了，于是我便让我家里人把我寒假组装的台式机从老家寄过来，然后我还买了一块 **1TB 的固态硬盘** :floppy_disk:，专门用于台式机的 Linux 系统。
