@@ -1,16 +1,20 @@
 ---
-title: "Raft训练日志2"
+title: Raft训练日志2
 description:
 date: 2026-03-28T17:25:09+08:00
 image:
 math:
 license:
-tag: ["Blog", "CV", "DL", "AI"]
+tag:
+  - Blog
+  - CV
+  - DL
+  - AI
 comments: true
 draft: false
-categories: "实验日志"
+categories: 实验日志
 build:
-  list: always # Change to "never" to hide the page from the list
+  list: always
 ---
 
 ## 前情提要
