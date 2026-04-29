@@ -15,7 +15,7 @@
         {{ end }}
     </header>
 
-    {{ $pages := partial "helper/pages.html" .Site.Home }}
+    {{ $pages := partial "helper/archive-pages.html" . }}
 
     {{ range $pages.GroupByDate "2006" }}
     {{ $id := lower (replace .Key " " "-") }}

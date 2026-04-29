@@ -6,8 +6,6 @@ categories = ["学习日志"]
 tags = ["Rust"]
 image = ""
 math = true
-[build]
-  list = "always"
 +++
 
 这里写正文...

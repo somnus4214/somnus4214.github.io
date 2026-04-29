@@ -6,8 +6,6 @@ categories = ["项目日志"]
 tags = ["typst","markdown","template"]
 image = ""
 math = true
-[build]
-  list = "always"
 +++
 
 > 最近正在准备写本科毕业设计论文，不想用微软的word写，因为感觉不够极客 :anguished: ，也不想使用LaTex，因为LaTex太笨重了，编译速度太慢了，在线服务overleaf又是收费的（帮黄学长报销这个来着，好像一个月要三百多 🙀）

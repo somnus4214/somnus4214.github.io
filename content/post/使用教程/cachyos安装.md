@@ -6,8 +6,6 @@ categories = ["使用教程"]
 tags = ["linux","cachyos","grub"]
 image = ""
 math = true
-[build]
-  list = "always"
 +++
 
 > 前言：

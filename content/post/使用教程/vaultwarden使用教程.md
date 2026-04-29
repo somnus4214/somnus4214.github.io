@@ -6,8 +6,6 @@ categories = ["使用教程"]
 tags = ["Blog","Self-host","Docker","SSL","VPS"]
 image = ""
 math = true
-[build]
-  list = "always"
 +++
 
 > 最近正在因为换了浏览器，进行过一次密码迁移，在迁移的过程中总感觉有种隐忧，就是密码泄露或者丢失的风险

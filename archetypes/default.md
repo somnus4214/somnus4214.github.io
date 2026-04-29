@@ -8,8 +8,7 @@ image = ""
 math = true
 heroAccent = ""
 professionalReport = false
-[build]
-  list = "always"
+hideFromHome = false
 +++
 
 这里写正文...

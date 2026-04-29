@@ -6,8 +6,6 @@ categories = ["实验日志"]
 tags = ["ai","agent"]
 image = ""
 math = true
-[build]
-  list = "always"
 +++
 
 > 最近刚刚入职了某小厂，作为ai实习生，也是开启了自己的牛马生涯。
