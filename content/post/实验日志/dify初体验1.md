@@ -1,8 +1,8 @@
 ---
-title: "Dify初体验1"
+title: Dify初体验1
 date: 2026-03-23T18:38:32+08:00
 draft: false
-categories: "实验日志"
+categories: 实验日志
 ---
 
 ## 工作流介绍。
