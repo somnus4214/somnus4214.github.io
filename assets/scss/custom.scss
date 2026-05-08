@@ -599,6 +599,7 @@ pre {
   display: none;
 }
 
+.article-content img.article-inline-image,
 .article-content img.llm01-inline-image {
   display: block;
   width: unquote("min(72%, 640px)");
@@ -607,6 +608,7 @@ pre {
 }
 
 @media (max-width: 768px) {
+  .article-content img.article-inline-image,
   .article-content img.llm01-inline-image {
     width: 100%;
   }
