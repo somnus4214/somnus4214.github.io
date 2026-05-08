@@ -99,7 +99,7 @@ self-attention虽然考虑了所有的输入变量，但是并没有考虑每个
 
 于是便有了添加位置编码来明确每个输入变量（token）的位置。图片中的e就是位置编码。
 
-![319](https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260507160408773.png)
+<img class="llm01-inline-image" src="https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260507160408773.png" alt="位置编码示意图">
 
 - 注意：位置编码的计算不是直接根据token的位置1，2，3，4得到的，主要有两种逻辑，一种是根据公式计算，&#x50CF;_[attention is all you need](https://arxiv.org/abs/1706.03762)_&#x4E2D;的sin/cos位置编码就是通过公式计算到的；另一种是可学习的位置编码，比如：$P_{position} ∈ R^{(max_{len} × d_{model})}$，训练不光得到Wq、Wk、Wv，还会得到这个位置编码的计算方式。
 
@@ -153,7 +153,7 @@ head 4：关注主谓宾结构
 
 下图中的h就是head的数量。
 
-![351](https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260507164008940.png)
+<img class="llm01-inline-image" src="https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260507164008940.png" alt="多头注意力示意图">
 
 对于多头注意力机制，训练得到的参数在前面的基础上，又增加了$W_o$，它负责把各个 head 看到的东西怎么合并。
 

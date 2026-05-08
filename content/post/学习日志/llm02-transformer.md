@@ -15,7 +15,7 @@ hideFromHome: false
 
 transformer是在这篇[attention is all you need](https://arxiv.org/abs/1706.03762)中提出来的。
 
-![263](https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260508113056125.png)
+<img class="article-inline-image" src="https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260508113056125.png" alt="Transformer 模型架构图">
 
 上图就是该论文最核心的模型架构图，本文也是围绕着这个架构图来展开的。
 
@@ -26,13 +26,13 @@ transformer是在这篇[attention is all you need](https://arxiv.org/abs/1706.03
 - input embedding可以通过**word2Vec，bert，OpenAI Embedding API**等方式获取，目的是将文本映射到连续的向量空间（把文本变成模型能处理的向量）。
 - 位置编码是为了捕捉输入中token的顺序信息，常用的有rope，绝对位置编码等
 
-![403](https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/%E6%88%AA%E5%B1%8F2026-05-08%2011.24.59.png)
+<img class="article-inline-image" src="https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/%E6%88%AA%E5%B1%8F2026-05-08%2011.24.59.png" alt="Embedding 示意图">
 
 ### encoder（编码器）
 
 图片中的红色框内，就是encoder。
 
-![291](https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/%E6%88%AA%E5%B1%8F2026-05-08%2011.32.35.png)
+<img class="article-inline-image" src="https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/%E6%88%AA%E5%B1%8F2026-05-08%2011.32.35.png" alt="Encoder 示意图">
 可以看到encoder是有N个`multi-head attention`+`add&norm`+`feed forward`+`add&norm` 组成的。`multi-head attention`是多头注意力机制，在这个文章中有详细介绍。[self-attention](https://affine.somnus.top/workspace/09e2838e-0333-4d5c-80d5-bcae278e8e50/qQsakBqRrL2JR41Rk7p2h)，`add&norm`是两个步骤，add是指把源数据和经过运算输出的数据叠加起来，norm则是对其进行归一化操作。公式如下：
 
 $$
@@ -51,7 +51,7 @@ $$
 
 ### decoder（解码器）
 
-![205](https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/%E6%88%AA%E5%B1%8F2026-05-08%2013.45.57.png)
+<img class="article-inline-image" src="https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/%E6%88%AA%E5%B1%8F2026-05-08%2013.45.57.png" alt="Decoder 示意图">
 
 可以看出来decoder相对于encoder是要复杂一点的，除了一个N次处理循环block以外，最后还有线形变换和softmax处理。
 
@@ -105,7 +105,7 @@ Decoder-only 模型通过预测下一个 token 学到了上下文表示；在回
 
 为什么不能直接用贪心解码，想象我们智能手机的输入法推荐下一个字，他就是贪心解码策略，直接给你按照从高到低概率排列，但是如果我们一直按第一个，会发现句子逐渐越来越重复。而top-k就是从概率最高的k个单词中，采用随机采样来选一个单词。
 
-![553](https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260508145129764.png)
+<img class="article-inline-image" src="https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260508145129764.png" alt="Top-k 采样示意图">
 
 上图中，紫色部分便是被选中的，可能被选择的词。
 
@@ -115,7 +115,7 @@ Top-k 的优势是简单、稳定、能过滤低概率噪声，相对更多样�
 
 top-k有个很明显的问题，就是这个k如何确定，如何选择才更合理，于是出现了动态设置 token 候选列表大小策略——即核采样（Nucleus Sampling）。
 
-![457](https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260508145844565.png)
+<img class="article-inline-image" src="https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260508145844565.png" alt="Top-p 采样示意图">
 
 由上图中可以看出来，top-p的策略是设定一个p，只保留从高到低累计概率小于p的token，这样就可以避免上面top-k的一些问题。
 
@@ -135,9 +135,9 @@ $$
 
 $z_i$ = 第 i 个 token 的 logit，T = temperature，$p_i$ = 第 i 个 token 的采样概率
 
-![555](https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260508160013393.png)
+<img class="article-inline-image" src="https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260508160013393.png" alt="Temperature 采样示意图一">
 
-![585](https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260508160049711.png)
+<img class="article-inline-image" src="https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260508160049711.png" alt="Temperature 采样示意图二">
 
 结论就是，温度越高随机性越大，分布越均匀，越发散；温度越低，随机性越低，分布更尖锐，越保守。
 
