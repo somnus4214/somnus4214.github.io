@@ -14,28 +14,151 @@
         {{- else -}}
             {{- partial "head/colorScheme" . -}}
             <script>
+                (function () {
+                    var terminalStyleKey = 'SomnusTerminalStyle';
+
+                    if (localStorage.getItem(terminalStyleKey) === 'on') {
+                        document.documentElement.dataset.terminalStyle = 'on';
+                    }
+                })();
+            </script>
+            <script>
                 window.addEventListener('load', function () {
                     var toggle = document.getElementById('dark-mode-toggle');
-                    if (!toggle) return;
 
-                    toggle.addEventListener('click', function (event) {
-                        event.preventDefault();
-                        event.stopImmediatePropagation();
+                    if (toggle) {
+                        toggle.addEventListener('click', function (event) {
+                            event.preventDefault();
+                            event.stopImmediatePropagation();
 
-                        var nextScheme =
-                            document.documentElement.dataset.scheme === 'dark' ? 'light' : 'dark';
+                            var nextScheme =
+                                document.documentElement.dataset.scheme === 'dark' ? 'light' : 'dark';
 
-                        document.documentElement.dataset.scheme = nextScheme;
-                        localStorage.setItem('StackColorScheme', nextScheme);
+                            document.documentElement.dataset.scheme = nextScheme;
+                            localStorage.setItem('StackColorScheme', nextScheme);
 
-                        requestAnimationFrame(function () {
-                            window.dispatchEvent(
-                                new CustomEvent('onColorSchemeChange', {
-                                    detail: nextScheme
-                                })
-                            );
-                        });
-                    }, true);
+                            requestAnimationFrame(function () {
+                                window.dispatchEvent(
+                                    new CustomEvent('onColorSchemeChange', {
+                                        detail: nextScheme
+                                    })
+                                );
+                            });
+                        }, true);
+                    }
+
+                    var terminalStyleToggle = document.getElementById('terminal-style-toggle');
+                    if (!terminalStyleToggle) return;
+
+                    var terminalStyleKey = 'SomnusTerminalStyle';
+                    var terminalBootTimer = null;
+                    var terminalBootLines = [
+                        'tty1 - /var/log/somnus',
+                        '> probing content/post ... [OK]',
+                        '> mounting archives, search, links ... [OK]',
+                        '> loading sidebar profile ... [OK]',
+                        '> applying crt shader ... [OK]',
+                        '> system ready. welcome back.'
+                    ];
+
+                    function getTerminalBoot() {
+                        var main = document.querySelector('main.main');
+                        if (!main) return null;
+
+                        var boot = main.querySelector(':scope > .terminal-boot');
+                        if (!boot) {
+                            boot = document.createElement('div');
+                            boot.className = 'terminal-boot';
+                            boot.setAttribute('aria-live', 'polite');
+                            main.insertBefore(boot, main.firstChild);
+                        }
+
+                        return boot;
+                    }
+
+                    function removeTerminalBoot() {
+                        if (terminalBootTimer) {
+                            clearTimeout(terminalBootTimer);
+                            terminalBootTimer = null;
+                        }
+
+                        var boot = document.querySelector('main.main > .terminal-boot');
+                        if (boot) boot.remove();
+                    }
+
+                    function playTerminalBoot() {
+                        var boot = getTerminalBoot();
+                        if (!boot) return;
+
+                        if (terminalBootTimer) {
+                            clearTimeout(terminalBootTimer);
+                            terminalBootTimer = null;
+                        }
+
+                        var text = terminalBootLines.join('\n');
+                        var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+                        boot.textContent = '';
+                        boot.classList.add('is-typing');
+
+                        if (reducedMotion) {
+                            boot.textContent = text;
+                            return;
+                        }
+
+                        var index = 0;
+
+                        function typeNextCharacter() {
+                            boot.textContent = text.slice(0, index);
+
+                            if (index <= text.length) {
+                                index++;
+                                terminalBootTimer = setTimeout(typeNextCharacter, 14 + Math.random() * 20);
+                            } else {
+                                terminalBootTimer = null;
+                            }
+                        }
+
+                        terminalBootTimer = setTimeout(typeNextCharacter, 180);
+                    }
+
+                    function syncTerminalToggle() {
+                        var enabled = document.documentElement.dataset.terminalStyle === 'on';
+                        terminalStyleToggle.setAttribute('aria-pressed', enabled ? 'true' : 'false');
+
+                        if (enabled) {
+                            playTerminalBoot();
+                        } else {
+                            removeTerminalBoot();
+                        }
+                    }
+
+                    function toggleTerminalStyle(event) {
+                        if (event) {
+                            event.preventDefault();
+                            event.stopImmediatePropagation();
+                        }
+
+                        var enabled = document.documentElement.dataset.terminalStyle === 'on';
+
+                        if (enabled) {
+                            delete document.documentElement.dataset.terminalStyle;
+                            localStorage.setItem(terminalStyleKey, 'off');
+                        } else {
+                            document.documentElement.dataset.terminalStyle = 'on';
+                            localStorage.setItem(terminalStyleKey, 'on');
+                        }
+
+                        syncTerminalToggle();
+                    }
+
+                    terminalStyleToggle.addEventListener('click', toggleTerminalStyle, true);
+                    terminalStyleToggle.addEventListener('keydown', function (event) {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                            toggleTerminalStyle(event);
+                        }
+                    });
+                    syncTerminalToggle();
                 });
             </script>
         {{- end -}}
