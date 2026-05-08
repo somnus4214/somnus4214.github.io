@@ -16,8 +16,14 @@
             <script>
                 (function () {
                     var terminalStyleKey = 'SomnusTerminalStyle';
+                    var terminalStyleValue = localStorage.getItem(terminalStyleKey);
 
-                    if (localStorage.getItem(terminalStyleKey) === 'on') {
+                    if (terminalStyleValue === null) {
+                        localStorage.setItem(terminalStyleKey, 'on');
+                        terminalStyleValue = 'on';
+                    }
+
+                    if (terminalStyleValue === 'on') {
                         document.documentElement.dataset.terminalStyle = 'on';
                     }
                 })();
