@@ -599,6 +599,19 @@ pre {
   display: none;
 }
 
+.article-content img.llm01-inline-image {
+  display: block;
+  width: unquote("min(72%, 640px)");
+  height: auto;
+  margin: 1.5rem auto;
+}
+
+@media (max-width: 768px) {
+  .article-content img.llm01-inline-image {
+    width: 100%;
+  }
+}
+
 @media (min-width: 1024px) {
   .article-page .main-article .article-header .article-details {
     display: grid;
