@@ -1286,6 +1286,10 @@ pre {
   font-family: "Maple Mono", "LXGW WenKai", monospace;
 }
 
+:root[data-terminal-style="on"] .left-sidebar #dark-mode-toggle {
+  display: none;
+}
+
 :root[data-terminal-style="on"] .left-sidebar #main-menu {
   overflow: visible;
 }
