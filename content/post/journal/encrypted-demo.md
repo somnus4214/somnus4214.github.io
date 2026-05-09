@@ -1,0 +1,19 @@
+---
+title: 加密内容试点
+date: 2026-05-09T17:00:00+08:00
+draft: false
+categories:
+  - 日记
+tags:
+  - encryption
+  - privacy
+hideFromHome: false
+comments: false
+toc: false
+---
+
+这是一篇用于验证加密工作流的试点文章。文章可以正常打开，但正文需要解锁后查看。
+
+演示密码：`somnus-demo`
+
+{{< encrypted src="/encrypted/journal-demo.json" title="试点密文正文" hint="输入这篇试点文档的密码。" >}}

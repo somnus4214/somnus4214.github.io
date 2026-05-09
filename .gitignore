@@ -7,3 +7,7 @@ assets/jsconfig.json
 .codex
 .claude
 .obsidian
+.env
+.env.*
+!.env.example
+/.private/

@@ -1,0 +1,26 @@
+{{- $src := .Get "src" -}}
+{{- $title := .Get "title" | default "加密内容" -}}
+{{- $hint := .Get "hint" | default "输入密码后，内容只会在当前浏览器中解密。" -}}
+
+<section class="encrypted-content" data-encrypted-content data-source="{{ $src }}">
+  <div class="encrypted-content__header">
+    <div>
+      <p class="encrypted-content__eyebrow">End-to-end encrypted</p>
+      <h2>{{ $title }}</h2>
+    </div>
+  </div>
+  <form class="encrypted-content__form" data-encrypted-form>
+    <label>
+      <span>{{ $hint }}</span>
+      <input data-encrypted-password type="password" autocomplete="current-password" placeholder="Password" required>
+    </label>
+    <button type="submit">解密</button>
+  </form>
+  <p class="encrypted-content__status" data-encrypted-status aria-live="polite"></p>
+  <div class="encrypted-content__output" data-encrypted-output hidden></div>
+</section>
+
+{{- if not (.Page.Scratch.Get "encryptedContentScript") -}}
+  {{- .Page.Scratch.Set "encryptedContentScript" true -}}
+  <script defer src="/js/encrypted-content.js"></script>
+{{- end -}}

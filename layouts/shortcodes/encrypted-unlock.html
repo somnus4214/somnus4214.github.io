@@ -1,0 +1,25 @@
+{{- $title := .Get "title" | default "解锁加密文章" -}}
+{{- $hint := .Get "hint" | default "输入一次密码后，当前浏览器会话中的加密文章会自动解锁。" -}}
+
+<section class="encrypted-content encrypted-unlock" data-encrypted-unlock>
+  <div class="encrypted-content__header">
+    <div>
+      <p class="encrypted-content__eyebrow">Global unlock</p>
+      <h2>{{ $title }}</h2>
+    </div>
+  </div>
+  <form class="encrypted-content__form" data-encrypted-unlock-form>
+    <label>
+      <span>{{ $hint }}</span>
+      <input data-encrypted-unlock-password type="password" autocomplete="current-password" placeholder="Password" required>
+    </label>
+    <button type="submit">解锁</button>
+  </form>
+  <button class="encrypted-unlock__clear" type="button" data-encrypted-unlock-clear>清除解锁状态</button>
+  <p class="encrypted-content__status" data-encrypted-unlock-status aria-live="polite"></p>
+</section>
+
+{{- if not (.Page.Scratch.Get "encryptedContentScript") -}}
+  {{- .Page.Scratch.Set "encryptedContentScript" true -}}
+  <script defer src="/js/encrypted-content.js"></script>
+{{- end -}}

@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "title": "加密内容试点",
+  "algorithm": "AES-GCM",
+  "kdf": "PBKDF2-SHA-256",
+  "iterations": 310000,
+  "salt": "TzD1RTYbVV5Oj8Xv40tLSg==",
+  "iv": "ew4klE+zESRhx7CK",
+  "ciphertext": "GydbtCepakqP52i/fzlOsPZPj8R9Ifh4svUQaf24/ljRJ7xwMeXAIP6dASq9VG4gbQPl+npq9Tic4rzAm1PC5GJ8LmeZV7CRaT6dFZTgi/K2gtx2Ae0H5tqmRrzJWpB4DeoVpIQtkj6ZDXceQ4N/yihXdyLJH2dJdb89ti6XSor/SrF+nTQbHcnxwi9UuLZyy60LuiXZAVdn6yASU/JXEr80+8hBHEIoFKhEXVJr4GGlQTQpUbQOfn6vjWeL9hv2bBWgYOmKeWm7poFISIf4NQNX8tOqrTs9vs/qJUTzaZ/jNjkfG3wMBGbmPvH06GAMDqH2wrYKwQ=="
+}

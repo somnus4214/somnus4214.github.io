@@ -1,0 +1,7 @@
+[
+  {
+    "plain": ".private/journal-demo.md",
+    "cipher": "static/encrypted/journal-demo.json",
+    "title": "加密内容试点"
+  }
+]
