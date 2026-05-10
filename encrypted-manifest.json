@@ -3,5 +3,10 @@
     "plain": ".private/journal-demo.md",
     "cipher": "static/encrypted/journal-demo.json",
     "title": "加密内容试点"
+  },
+  {
+    "plain": ".private/journal/2026-05-10.md",
+    "cipher": "static/encrypted/journal/2026-05-10.json",
+    "title": "2026-05-10 私密日记"
   }
 ]
