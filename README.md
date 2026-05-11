@@ -1,57 +1,77 @@
 # Somnus Blog
 
-这是 Somnus 的个人博客源码仓库，基于 [Hugo](https://gohugo.io/) 和 [Hugo Theme Stack](https://github.com/CaiJimmy/hugo-theme-stack) 构建，并在主题基础上加入了自定义暗色/终端风格、中文字体、私密文章加密工作流等功能。
+Somnus 的个人博客源码仓库，基于 [Hugo](https://gohugo.io/) 和 [Hugo Blox](https://hugoblox.com/) 构建。当前站点保留了私密文章端到端加密工作流，并额外定制了首页、归档、分类、中文字体、搜索索引和页脚等体验。
 
 ## 环境要求
 
 - Git
 - Go
 - Hugo Extended
-- Node.js，用于运行私密文章加密脚本
+- Node.js
+- pnpm
 
-可以用下面的命令检查本地环境：
+检查本地环境：
 
 ```bash
 go version
 hugo version
 node --version
+pnpm --version
+```
+
+首次拉取后安装前端依赖：
+
+```bash
+pnpm install
 ```
 
 ## 本地预览
 
-启动开发服务器：
+Hugo 开发服务器适合快速看页面结构：
 
 ```bash
-hugo server -D
+pnpm run dev
 ```
 
-默认访问地址：
-
-```text
-http://localhost:1313/
-```
-
-如果需要清理旧构建产物并生成生产版本：
+如果要测试搜索功能，请使用静态预览。它会先构建 Hugo，再生成 Pagefind 搜索索引：
 
 ```bash
-hugo --cleanDestinationDir --minify
+pnpm run preview
+```
+
+生产构建：
+
+```bash
+pnpm run build
+```
+
+`pnpm run build` 会执行：
+
+```bash
+hugo --gc --minify
+rm -rf public/pagefind && pagefind --site public
 ```
 
 ## 常用目录
 
 - `content/post/`：公开文章
 - `content/page/`：独立页面，比如归档、搜索、友链、私密入口
+- `content/categories/`、`content/tags/`：分类和标签的索引页
 - `.private/`：私密文章明文源文件，不提交到仓库
 - `static/encrypted/`：私密文章加密后的 JSON，会发布到站点
 - `static/fonts/`：自定义字体
-- `static/js/`：前端脚本
-- `assets/scss/custom.scss`：主要自定义样式
+- `static/js/encrypted-content.js`：浏览器端解密脚本
+- `assets/css/somnus.css`：站点自定义样式
+- `layouts/shortcodes/`：加密短代码
+- `layouts/categories/`：分类总览和分类详情模板
+- `layouts/page/archives.html`：归档页模板
+- `layouts/_partials/hbx/blocks/somnus-recent-posts/`：首页最新文章 block，会排除日记分类
 - `scripts/`：加密、解密、同步脚本
 - `config/_default/`：Hugo 和主题配置
 
 ## 写公开文章
 
-新建普通文章可以放在 `content/post/` 下，例如：
+新建普通文章可以放在 `content/post/` 下：
 
 ```markdown
 ---
@@ -59,9 +79,9 @@ title: 文章标题
 date: 2026-05-11T20:00:00+08:00
 draft: false
 categories:
-  - 日记
+  - 学习日志
 tags:
-  - blog
+  - llm
 ---
 
 这里是正文。
@@ -69,9 +89,37 @@ tags:
 
 构建时，`post` 分区会按照 `config/_default/permalinks.toml` 生成 `/p/:slug/` 形式的链接。
 
+## 分类与归档
+
+分类来自文章 front matter 的 `categories` 字段。站点会自动生成：
+
+- `/categories/`：分类总览
+- `/categories/<分类名>/`：某个分类下的文章列表
+- `/archives/`：按年份归档的全部文章列表
+
+首页的“最新文章”使用自定义 Hugo Blox block，会排除 `categories: 日记` 的文章。日记仍会出现在 `/post/`、`/archives/` 和 `/categories/日记/` 中。
+
+## 搜索
+
+搜索由 Hugo Blox 的搜索 UI 和 [Pagefind](https://pagefind.app/) 索引共同实现。
+
+注意：只运行 `hugo server` 时不会生成 Pagefind 索引，因此搜索可能没有结果。请使用：
+
+```bash
+pnpm run build
+```
+
+或：
+
+```bash
+pnpm run preview
+```
+
+部署到 GitHub Pages 时，`.github/workflows/deploy.yml` 会在 Hugo 构建后运行 `pnpm run pagefind`，确保 `public/pagefind/` 被一起发布。
+
 ## 私密加密文章
 
-私密文章采用 `.private` 作为唯一源头。也就是说，标题、日期、分类、公开摘要和私密正文都只写在 `.private` 里的 Markdown 文件中。
+私密文章采用 `.private` 作为明文源头。标题、日期、分类、公开摘要和私密正文都写在 `.private` 里的 Markdown 文件中。
 
 示例：
 
@@ -121,7 +169,7 @@ privateIndex: true
 node scripts/sync-private.mjs --encrypt
 ```
 
-脚本会自动生成三类文件：
+脚本会自动生成：
 
 - `static/encrypted/...json`：加密后的密文
 - `content/post/...md`：公开文章壳
@@ -152,14 +200,18 @@ ENCRYPTION_PASSWORD=replace-this-with-a-long-random-password
 
 浏览器端通过 WebCrypto 在本地解密，密码会保存在当前浏览器会话的 `sessionStorage` 中，关闭会话后失效。
 
-## 更新主题
+## 主题与依赖
 
-主题通过 Hugo Modules 引入。更新主题可以运行：
+主题通过 Hugo Modules 引入，配置在 `config/_default/module.toml`，Go 依赖锁定在 `go.mod` / `go.sum`。
+
+更新 Hugo Blox 模块可以运行：
 
 ```bash
-hugo mod get -u github.com/CaiJimmy/hugo-theme-stack/v4
+hugo mod get -u
 hugo mod tidy
 ```
+
+Hugo Blox 需要 Tailwind CLI，依赖由 `package.json` 和 `pnpm-lock.yaml` 管理。
 
 ## 发布前检查
 
@@ -167,7 +219,7 @@ hugo mod tidy
 
 ```bash
 node scripts/sync-private.mjs --encrypt
-hugo --cleanDestinationDir --minify
+pnpm run build
 ```
 
-这样可以确保密文、公开壳文章、私密目录页都是最新的，同时清理 `public/` 中的旧构建残留。
+这样可以确保密文、公开壳文章、私密目录页和搜索索引都是最新的。
