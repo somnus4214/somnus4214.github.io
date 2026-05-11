@@ -17,6 +17,14 @@
     <button type="submit">解密</button>
   </form>
   <p class="encrypted-content__status" data-encrypted-status aria-live="polite"></p>
+  <div class="encrypted-content__locked-preview" data-encrypted-locked-preview aria-hidden="true">
+    <div class="encrypted-content__lock-mark" data-encrypted-lock-mark>LOCKED</div>
+    <div class="encrypted-content__cipher-lines">
+      <span>7f 3a e1 90 2c b8 11 a4</span>
+      <span>d9 44 6b 0f c2 70 ae 19</span>
+      <span>03 af 8d 51 ee 6c 92 7b</span>
+    </div>
+  </div>
   <div class="encrypted-content__output" data-encrypted-output hidden></div>
 </section>
 

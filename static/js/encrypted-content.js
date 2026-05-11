@@ -139,6 +139,8 @@
     var form = block.querySelector("[data-encrypted-form]");
     var input = block.querySelector("[data-encrypted-password]");
     var status = block.querySelector("[data-encrypted-status]");
+    var lockedPreview = block.querySelector("[data-encrypted-locked-preview]");
+    var lockMark = block.querySelector("[data-encrypted-lock-mark]");
     var output = block.querySelector("[data-encrypted-output]");
     var source = block.getAttribute("data-source");
 
@@ -159,11 +161,26 @@
         var plaintext = await decryptPayload(payload, password);
 
         output.innerHTML = renderMarkdownish(plaintext);
-        output.hidden = false;
+        block.classList.add("is-unlocked");
+        if (lockedPreview) {
+          lockedPreview.setAttribute("aria-hidden", "false");
+        }
+
+        if (lockMark) {
+          lockMark.textContent = "UNLOCKED";
+        }
+
         form.hidden = true;
+        output.hidden = false;
         status.textContent = "已解锁。";
         return true;
       } catch (error) {
+        if (silent) {
+          clearPassword();
+          form.hidden = false;
+          status.textContent = "已保存的解锁密码失效，请重新输入密码。";
+        }
+
         if (!silent) {
           status.textContent = "解密失败，请检查密码或密文文件。";
         }
