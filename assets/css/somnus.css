@@ -1,0 +1,247 @@
+@font-face {
+  font-family: "LXGW WenKai";
+  src: url("/fonts/LXGWWenKai-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Maple Mono";
+  src: url("/fonts/MapleMono-NF-CN-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --somnus-font-sans: "LXGW WenKai", ui-sans-serif, system-ui, sans-serif;
+  --somnus-font-mono: "Maple Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --hb-font-heading: var(--somnus-font-sans);
+  --hb-font-body: var(--somnus-font-sans);
+  --hb-font-nav: var(--somnus-font-sans);
+  --hb-font-family-sans: var(--somnus-font-sans);
+}
+
+body {
+  font-family: var(--somnus-font-sans);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.navbar-brand,
+[id^="card-title-"] {
+  font-family: var(--somnus-font-sans);
+  font-weight: 600;
+}
+
+code,
+pre,
+kbd,
+samp {
+  font-family: var(--somnus-font-mono);
+  font-variant-ligatures: contextual;
+}
+
+.encrypted-content {
+  position: relative;
+  overflow: hidden;
+  margin: 2rem 0;
+  padding: 1.25rem;
+  border: 1px solid rgb(148 163 184 / 0.28);
+  border-radius: 0.75rem;
+  background: rgb(255 255 255 / 0.86);
+  box-shadow: 0 18px 50px rgb(15 23 42 / 0.08);
+}
+
+.dark .encrypted-content {
+  border-color: rgb(148 163 184 / 0.22);
+  background: rgb(15 23 42 / 0.82);
+  box-shadow: 0 18px 50px rgb(0 0 0 / 0.22);
+}
+
+.encrypted-content:not(.encrypted-unlock):not(.is-unlocked) {
+  background:
+    linear-gradient(135deg, rgb(79 70 229 / 0.08), transparent 46%),
+    rgb(255 255 255 / 0.9);
+}
+
+.dark .encrypted-content:not(.encrypted-unlock):not(.is-unlocked) {
+  background:
+    linear-gradient(135deg, rgb(129 140 248 / 0.16), transparent 46%),
+    rgb(15 23 42 / 0.86);
+}
+
+.encrypted-content__header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.encrypted-content__eyebrow {
+  margin: 0 0 0.25rem;
+  color: rgb(100 116 139);
+  font-size: 0.8rem;
+}
+
+.dark .encrypted-content__eyebrow {
+  color: rgb(148 163 184);
+}
+
+.encrypted-content h2 {
+  margin: 0;
+}
+
+.encrypted-content [hidden] {
+  display: none !important;
+}
+
+.encrypted-content__form {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: end;
+}
+
+.encrypted-content__form label {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  color: rgb(71 85 105);
+}
+
+.dark .encrypted-content__form label {
+  color: rgb(203 213 225);
+}
+
+.encrypted-content__form input {
+  width: 100%;
+  min-height: 42px;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid rgb(148 163 184 / 0.45);
+  border-radius: 0.5rem;
+  color: rgb(15 23 42);
+  background: rgb(255 255 255);
+}
+
+.dark .encrypted-content__form input {
+  color: rgb(248 250 252);
+  background: rgb(2 6 23);
+}
+
+.encrypted-content__form button {
+  min-height: 42px;
+  padding: 0 1rem;
+  border: 0;
+  border-radius: 0.5rem;
+  color: white;
+  background: rgb(79 70 229);
+  cursor: pointer;
+}
+
+.encrypted-content__locked-preview {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1rem;
+  align-items: center;
+  margin-top: 1.25rem;
+  padding: 0.9rem 1rem;
+  border: 1px dashed rgb(99 102 241 / 0.38);
+  border-radius: 0.625rem;
+  color: rgb(100 116 139);
+  background: rgb(248 250 252 / 0.76);
+}
+
+.dark .encrypted-content__locked-preview {
+  color: rgb(148 163 184);
+  background: rgb(2 6 23 / 0.45);
+}
+
+.encrypted-unlock .encrypted-content__locked-preview {
+  display: none;
+}
+
+.encrypted-content.is-unlocked .encrypted-content__locked-preview {
+  border-style: solid;
+}
+
+.encrypted-content__lock-mark {
+  min-width: 72px;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid rgb(99 102 241 / 0.42);
+  border-radius: 0.5rem;
+  color: rgb(79 70 229);
+  font-family: var(--somnus-font-mono);
+  font-size: 0.76rem;
+  text-align: center;
+  letter-spacing: 0.08em;
+}
+
+.encrypted-content.is-unlocked .encrypted-content__lock-mark {
+  color: white;
+  background: rgb(79 70 229);
+}
+
+.encrypted-content__cipher-lines {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+  overflow: hidden;
+  font-family: var(--somnus-font-mono);
+  font-size: 0.82rem;
+  line-height: 1.35;
+  white-space: nowrap;
+  mask-image: linear-gradient(90deg, #000 72%, transparent);
+}
+
+.encrypted-unlock__clear {
+  margin-top: 0.75rem;
+  padding: 0;
+  border: 0;
+  color: rgb(100 116 139);
+  background: transparent;
+  cursor: pointer;
+}
+
+.encrypted-unlock__clear:hover {
+  color: rgb(79 70 229);
+}
+
+.encrypted-content__status {
+  position: relative;
+  z-index: 1;
+  min-height: 1.4em;
+  margin: 0.75rem 0 0;
+  color: rgb(100 116 139);
+}
+
+.encrypted-content__output {
+  position: relative;
+  z-index: 1;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgb(148 163 184 / 0.28);
+}
+
+@media (max-width: 640px) {
+  .encrypted-content__form,
+  .encrypted-content__locked-preview {
+    grid-template-columns: 1fr;
+  }
+
+  .encrypted-content__lock-mark {
+    width: fit-content;
+  }
+}

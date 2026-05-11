@@ -2,4 +2,8 @@ module github.com/CaiJimmy/hugo-theme-stack-starter
 
 go 1.17
 
-require github.com/CaiJimmy/hugo-theme-stack/v4 v4.0.2 // indirect
+require (
+	github.com/HugoBlox/kit/modules/blox v0.12.0 // indirect
+	github.com/HugoBlox/kit/modules/integrations/netlify v1.3.0 // indirect
+	github.com/HugoBlox/kit/modules/slides v1.3.0 // indirect
+)

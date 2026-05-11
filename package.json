@@ -1,0 +1,19 @@
+{
+  "name": "somnus-blog",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "pnpm@10.14.0",
+  "scripts": {
+    "dev": "hugo server --disableFastRender",
+    "build": "hugo --gc --minify && pnpm run pagefind",
+    "pagefind": "rm -rf public/pagefind && pagefind --site public",
+    "preview": "hugo --gc --minify && rm -rf public/pagefind && pagefind --site public --serve"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.12",
+    "@tailwindcss/typography": "^0.5.10",
+    "pagefind": "^1.4.0",
+    "preact": "^10.27.2",
+    "tailwindcss": "^4.1.12"
+  }
+}

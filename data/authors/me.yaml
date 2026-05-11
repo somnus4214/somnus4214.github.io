@@ -1,0 +1,46 @@
+schema: hugoblox/author/v1
+slug: me
+is_owner: true
+name:
+  display: Somnus
+  given: Somnus
+  family: ""
+  alternate: ""
+  pronunciation: ""
+  pronouns: ""
+status:
+  icon: "🍥"
+role: Student / Builder
+bio: |
+  记录学习、项目、实验和日常。偏爱把折腾过的东西写下来，也给一部分私人内容留出端到端加密的空间。
+links:
+  - icon: brands/github
+    url: https://github.com/somnus0917
+    label: GitHub
+  - icon: at-symbol
+    url: mailto:somnus0917chen@hotmail.com
+    label: Email
+interests:
+  - Computer Vision
+  - Large Language Models
+  - Rust
+  - Self-hosting
+education: []
+experience: []
+skills:
+  - name: Focus
+    items:
+      - label: Deep Learning
+        level: 4
+      - label: Systems
+        level: 3
+      - label: Writing
+        level: 4
+languages:
+  - name: Chinese
+    level: 5
+    label: Native
+  - name: English
+    level: 3
+    label: Reading
+awards: []

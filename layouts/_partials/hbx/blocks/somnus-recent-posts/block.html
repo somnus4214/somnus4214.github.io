@@ -1,0 +1,61 @@
+{{ $page := .wcPage }}
+{{ $block := .wcBlock }}
+{{ $content := $block.content | default dict }}
+{{ $design := $block.design | default dict }}
+
+{{ $items_count := partial "functions/coerce_int" (dict "value" (index $content "count") "default" 9 "min" 1) }}
+{{ $columns := partial "functions/coerce_int" (dict "value" (index $design "columns") "default" 3 "min" 1 "max" 4) }}
+{{ $view := index $design "view" | default "article-grid" }}
+
+{{ $query := where site.RegularPages "Section" "post" }}
+{{ $query = where $query "Draft" "!=" true }}
+{{ $filtered := slice }}
+{{ range $query }}
+  {{ $categories := slice }}
+  {{ with .Params.categories }}
+    {{ if reflect.IsSlice . }}
+      {{ $categories = . }}
+    {{ else }}
+      {{ $categories = slice . }}
+    {{ end }}
+  {{ end }}
+  {{ if not (in $categories "日记") }}
+    {{ $filtered = $filtered | append . }}
+  {{ end }}
+{{ end }}
+{{ $query = $filtered }}
+{{ $query = sort $query "Date" "desc" }}
+{{ $query = first $items_count $query }}
+
+{{ $title := "" }}
+{{ with index $content "title" }}{{ $title = printf "%v" . | emojify | $page.RenderString }}{{ end }}
+{{ $text := "" }}
+{{ with index $content "text" }}{{ $text = printf "%v" . | emojify | $page.RenderString }}{{ end }}
+
+{{ if $title }}
+  <div class="flex flex-col items-center max-w-prose mx-auto gap-3 justify-center px-6 md:px-0">
+    <div class="mb-6 text-3xl font-bold text-gray-900 dark:text-white">
+      {{ $title }}
+    </div>
+    {{ with $text }}<p>{{ . }}</p>{{ end }}
+  </div>
+{{ end }}
+
+<div class="flex flex-col items-center px-6">
+  {{ $config := dict
+      "columns" $columns
+      "len" (len $query)
+      "fill_image" true
+      "show_date" true
+      "show_read_time" true
+      "show_read_more" true
+    }}
+
+  {{ partial "functions/render_view" (dict "fragment" "start" "page" $block "item" . "view" $view "config" $config) }}
+
+  {{ range $index, $item := $query }}
+    {{ partial "functions/render_view" (dict "page" $block "item" . "view" $view "index" $index "config" $config) }}
+  {{ end }}
+
+  {{ partial "functions/render_view" (dict "fragment" "end" "page" $block "item" . "view" $view) }}
+</div>

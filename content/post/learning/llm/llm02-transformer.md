@@ -1,5 +1,5 @@
 ---
-title: "Llm02 Transformer"
+title: "LLM02 Transformer"
 date: 2026-05-08T18:26:47+08:00
 draft: false
 categories: ["学习日志"]

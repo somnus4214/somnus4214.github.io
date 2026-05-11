@@ -1,0 +1,8 @@
+{{- if .Params.professionalReport -}}
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
+{{- end -}}
+{{- $style := resources.Get "css/somnus.css" | minify | fingerprint -}}
+{{- with $style -}}
+  <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}">
+{{- end -}}

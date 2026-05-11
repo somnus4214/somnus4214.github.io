@@ -1,68 +1,78 @@
-# Pages placed under these sections will be shown on homepage and archive page.
 mainSections = ["post"]
-# Output page's full content in RSS.
 rssFullContent = true
 favicon = "img/SSicon.png"
 
-# Accepted values: "default", "lastmod"
-# default = see https://gohugo.io/quick-reference/glossary/#default-sort-order
-# lastmod = sort by last modified date, in descending order
-SortBy = "default"
+[hugoblox]
+schema = "2.0"
 
-[footer]
-since = 2020
-customText = ""
+[hugoblox.identity]
+name = "Somnus"
+organization = ""
+type = "person"
+tagline = "我可以告诉你当年我也和你一样郁闷吗"
+description = "Somnus 的个人博客，记录学习、项目、实验和日常。"
 
-[dateFormat]
-published = ":date_full"
-lastUpdated = ":date_full"
+[hugoblox.identity.social]
+twitter = ""
 
-[sidebar]
-emoji = "🍥"
-subtitle = "\"我可以告诉你当年我也和你一样郁闷吗\""
-avatar = "img/SaitoASUKA.png"
+[hugoblox.theme]
+mode = "system"
+pack = "default"
 
-[article]
-headingAnchor = false
-math = false
-readingTime = true
+[hugoblox.theme.colors]
+primary = "#4f46e5"
+secondary = ""
+neutral = ""
 
-[article.license]
-enabled = true
-default = "Licensed under CC BY-NC-SA 4.0"
+[hugoblox.typography]
+pack = "academic"
 
-[widgets]
-homepage = [
-    { type = "search" },
-    { type = "archives", params = { limit = 5 } },
-    { type = "categories", params = { limit = 10 } },
-    { type = "tag-cloud", params = { limit = 10 } },
-]
-page = [{ type = "toc" }]
+[hugoblox.layout]
+radius = "md"
+spacing = "comfortable"
+avatar_shape = "circle"
 
-[opengraph.twitter]
-site = ""
-card = "summary_large_image"
+[hugoblox.header]
+enable = true
+style = "navbar"
+sticky = true
+align = "center"
+search = true
+theme_toggle = true
+theme_picker = false
+language_switcher = false
 
-[colorScheme]
-toggle = true
-default = "auto"
+[hugoblox.header.cta]
+enable = false
+text = ""
+url = ""
 
-## Comments
-[comments]
-enabled = false
-provider = "giscus"
+[hugoblox.footer]
+style = "minimal"
+language_switcher = false
+text = ""
 
-[comments.giscus]
-repo = "somnus4214/somnus4214.github.io"
-repoId = "R_kgDORvmqNA"
-category = "Announcements"
-categoryId = "DIC_kwDORvmqNM4C5i9x"
-mapping = "pathname"
-strict = "0"
-reactionsEnabled = "1"
-emitMetadata = "0"
-inputPosition = "bottom"
-lightTheme = "light"
-darkTheme = "dark"
-lang = "zh-CN"
+[hugoblox.copyright]
+notice = "© {year} {name}. This work is licensed under {license}"
+
+[hugoblox.copyright.license]
+type = "cc"
+allow_derivatives = true
+share_alike = true
+allow_commercial = false
+
+[hugoblox.content.math]
+enable = false
+
+[hugoblox.content.toc]
+enable = true
+
+[hugoblox.content.reading_time]
+enable = true
+
+[hugoblox.content.citations]
+style = "apa"
+
+[hugoblox.search]
+enable = true
+suggestions = ["LLM", "Rust", "服务器基础", "日记"]

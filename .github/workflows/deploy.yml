@@ -64,7 +64,8 @@ jobs:
           echo "Node.js: $(node --version)"
       - name: Install Node.js dependencies
         run: |
-          [[ -f package-lock.json || -f npm-shrinkwrap.json ]] && npm ci || true
+          corepack enable
+          pnpm install --frozen-lockfile
       - name: Configure Git
         run: |
           git config core.quotepath false
@@ -83,6 +84,7 @@ jobs:
             --minify \
             --baseURL "${{ steps.pages.outputs.base_url }}/" \
             --cacheDir "${{ runner.temp }}/hugo_cache"
+          pnpm run pagefind
       - name: Cache save
         id: cache-save
         uses: actions/cache/save@v4

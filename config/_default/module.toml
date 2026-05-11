@@ -1,2 +1,8 @@
 [[imports]]
-    path = "github.com/CaiJimmy/hugo-theme-stack/v4"
+    path = "github.com/HugoBlox/kit/modules/integrations/netlify"
+
+[[imports]]
+    path = "github.com/HugoBlox/kit/modules/blox"
+
+[[imports]]
+    path = "github.com/HugoBlox/kit/modules/slides"

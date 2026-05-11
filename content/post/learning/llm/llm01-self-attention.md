@@ -1,5 +1,5 @@
 ---
-title: "Llm01 Self Attention"
+title: "LLM01 Self Attention"
 date: 2026-05-08T18:23:20+08:00
 draft: false
 categories: ["学习日志"]
