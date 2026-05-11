@@ -1,47 +1,173 @@
-<img align="right" width="150" alt="logo" src="https://user-images.githubusercontent.com/5889006/190859553-5b229b4f-c476-4cbd-928f-890f5265ca4c.png">
+# Somnus Blog
 
-# Hugo Theme Stack Starter Template
+这是 Somnus 的个人博客源码仓库，基于 [Hugo](https://gohugo.io/) 和 [Hugo Theme Stack](https://github.com/CaiJimmy/hugo-theme-stack) 构建，并在主题基础上加入了自定义暗色/终端风格、中文字体、私密文章加密工作流等功能。
 
-This is a quick start template for [Hugo theme Stack](https://github.com/CaiJimmy/hugo-theme-stack). It uses [Hugo modules](https://gohugo.io/hugo-modules/) feature to load the theme.
+## 环境要求
 
-It comes with a basic theme structure and configuration. GitHub action has been set up to deploy the theme to a public GitHub page automatically. Also, there's a cron job to update the theme automatically everyday.
+- Git
+- Go
+- Hugo Extended
+- Node.js，用于运行私密文章加密脚本
 
-## Video Tutorial
+可以用下面的命令检查本地环境：
 
-In case you got lost during the setup process, here's a video tutorial that setups a new Hugo site using this template, and deploys it to GitHub Pages: https://www.youtube.com/watch?v=8qDdQQ6Ifxo
+```bash
+go version
+hugo version
+node --version
+```
 
-## Get started
+## 本地预览
 
-1. Click _Use this template_, and create your repository as `<username>.github.io` on GitHub. (You can also use a different repository name, but then the resulting website will be available at `https://<username>.github.io/<repository-name>`. )
-   ![Step 1](https://user-images.githubusercontent.com/5889006/156916624-20b2a784-f3a9-4718-aa5f-ce2a436b241f.png)
+启动开发服务器：
 
-2. Once the repository is created, create a GitHub codespace associated with it.
-   ![Create codespace](https://user-images.githubusercontent.com/5889006/156916672-43b7b6e9-4ffb-4704-b4ba-d5ca40ffcae7.png)
+```bash
+hugo server -D
+```
 
-3. While waiting for the codespace to be created, go to `Settings` -> `Pages` of your newly created repository, and set `Build and deployment` -> `Source` to `GitHub Actions`.
-   ![Change build and deployment source](https://github.com/user-attachments/assets/192459bf-25d8-441e-8029-c108d789e449)
+默认访问地址：
 
-4. After the codespace is created, you can test that the site is built successfully by running `hugo server` in the terminal and see your new site in action.
+```text
+http://localhost:1313/
+```
 
-5. Check `config` folder for the configuration files. You can edit them to suit your needs. Make sure to update the `baseurl` property in `config/_default/config.toml` to your site's URL. For example, if your new repository is named `my-blog`, then the `baseurl` should be `https://<username>.github.io/my-blog/`.
+如果需要清理旧构建产物并生成生产版本：
 
-6. Once you're done editing the site, just commit it and push it. GitHub action will deploy the site automatically to GitHub page asociated with the repository.
+```bash
+hugo --cleanDestinationDir --minify
+```
 
+## 常用目录
+
+- `content/post/`：公开文章
+- `content/page/`：独立页面，比如归档、搜索、友链、私密入口
+- `.private/`：私密文章明文源文件，不提交到仓库
+- `static/encrypted/`：私密文章加密后的 JSON，会发布到站点
+- `static/fonts/`：自定义字体
+- `static/js/`：前端脚本
+- `assets/scss/custom.scss`：主要自定义样式
+- `scripts/`：加密、解密、同步脚本
+- `config/_default/`：Hugo 和主题配置
+
+## 写公开文章
+
+新建普通文章可以放在 `content/post/` 下，例如：
+
+```markdown
+---
+title: 文章标题
+date: 2026-05-11T20:00:00+08:00
+draft: false
+categories:
+  - 日记
+tags:
+  - blog
 ---
 
-In case you don't want to use GitHub codespace, you can also run this template in your local machine. **You need to install Git, Go and Hugo extended locally.** For more information, check official Hugo documentation: https://gohugo.io/installation/
+这里是正文。
+```
 
-## Update theme manually
+构建时，`post` 分区会按照 `config/_default/permalinks.toml` 生成 `/p/:slug/` 形式的链接。
 
-Run:
+## 私密加密文章
+
+私密文章采用 `.private` 作为唯一源头。也就是说，标题、日期、分类、公开摘要和私密正文都只写在 `.private` 里的 Markdown 文件中。
+
+示例：
+
+```markdown
+---
+title: 2026-05-11 私密日记
+slug: 2026-05-11-私密日记
+date: 2026-05-11T20:00:00+08:00
+draft: false
+categories:
+  - 日记
+tags:
+  - private
+comments: false
+toc: false
+encryptedTitle: 私密正文
+privateIntro: 这篇文章需要解锁后查看正文。
+privateIndex: true
+---
+
+## 私密正文
+
+这里的内容会被加密到 JSON，不会出现在公开文章里。
+```
+
+字段说明：
+
+- `title`、`slug`、`date`、`categories`、`tags`：公开文章元信息
+- `encryptedTitle`：解密框标题
+- `encryptedHint`：可选，解密输入框提示
+- `privateIntro`：公开壳文章里显示的说明文字
+- `privateIndex`：是否显示在 `/private/` 私密目录页
+
+然后在 `encrypted-manifest.json` 中添加路径映射：
+
+```json
+{
+  "plain": ".private/journal/2026-05-11.md",
+  "cipher": "static/encrypted/journal/2026-05-11.json",
+  "content": "content/post/journal/2026-05-11-secret.md"
+}
+```
+
+运行同步脚本：
+
+```bash
+node scripts/sync-private.mjs --encrypt
+```
+
+脚本会自动生成三类文件：
+
+- `static/encrypted/...json`：加密后的密文
+- `content/post/...md`：公开文章壳
+- `content/page/encrypted/index.md`：私密文章目录页
+
+解密回明文可以运行：
+
+```bash
+node scripts/sync-private.mjs --decrypt
+```
+
+## 加密密码
+
+加密脚本从 `.env` 或环境变量读取 `ENCRYPTION_PASSWORD`：
+
+```bash
+ENCRYPTION_PASSWORD=replace-this-with-a-long-random-password
+```
+
+`.env` 和 `.private/` 都已被 `.gitignore` 忽略。不要提交真实密码和私密明文。
+
+当前加密方案使用：
+
+- `PBKDF2-SHA-256`
+- `310000` 次迭代
+- `AES-GCM-256`
+- 随机 `salt` 和 `iv`
+
+浏览器端通过 WebCrypto 在本地解密，密码会保存在当前浏览器会话的 `sessionStorage` 中，关闭会话后失效。
+
+## 更新主题
+
+主题通过 Hugo Modules 引入。更新主题可以运行：
 
 ```bash
 hugo mod get -u github.com/CaiJimmy/hugo-theme-stack/v4
 hugo mod tidy
 ```
 
-> This starter template has been configured with `v4` version of theme. Due to the limitation of Go module, once the `v4` or up version of theme is released, you need to update the theme manually. (Modifying `config/module.toml` file)
+## 发布前检查
 
-## Deploy to another static page hostings
+发布前建议运行：
 
-Check official Hugo documentation: https://gohugo.io/host-and-deploy/
+```bash
+node scripts/sync-private.mjs --encrypt
+hugo --cleanDestinationDir --minify
+```
+
+这样可以确保密文、公开壳文章、私密目录页都是最新的，同时清理 `public/` 中的旧构建残留。
