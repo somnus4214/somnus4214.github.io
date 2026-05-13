@@ -1,0 +1,41 @@
+{{/* Return the featured image for HugoBlox cards/pages.
+
+  The upstream partial only supports bundled page resources or
+  `image.filename`. This override keeps that behavior and also accepts the
+  Stack-style `image: "https://..."` front matter used by existing posts.
+*/}}
+
+{{ $resource := (.Resources.ByType "image").GetMatch "*featured*" }}
+
+{{ if not (reflect.IsResource $resource) }}
+  {{ $filename := "" }}
+
+  {{ with .Params.image }}
+    {{ if reflect.IsMap . }}
+      {{ $filename = .filename | default "" }}
+    {{ else }}
+      {{ $filename = printf "%v" . }}
+    {{ end }}
+  {{ end }}
+
+  {{ with $filename }}
+    {{ $url := urls.Parse . }}
+
+    {{ if in (slice "http" "https") $url.Scheme }}
+      {{ with try (resources.GetRemote .) }}
+        {{ with .Err }}
+          {{ warnf "Failed to fetch featured image %q: %s" $filename . }}
+        {{ else with .Value }}
+          {{ $resource = . }}
+        {{ end }}
+      {{ end }}
+    {{ else }}
+      {{ $resource = ($.Resources.ByType "image").GetMatch . }}
+      {{ if not (reflect.IsResource $resource) }}
+        {{ $resource = resources.GetMatch (path.Join "media" .) }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ return $resource }}

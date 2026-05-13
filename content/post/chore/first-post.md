@@ -2,6 +2,7 @@
 title: "我的第一篇博客"
 date: 2026-03-20
 draft: false
+image: "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260320-chore-first-post-bb6b86-illustration.png"
 tags: ["Hugo", "Blog"]
 categories: "杂项"
 ---

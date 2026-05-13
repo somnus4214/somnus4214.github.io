@@ -3,7 +3,7 @@ title: 'Tmux使用教程'
 date: 2026-03-24T19:13:32+08:00
 draft: false
 tags: ["Tool","Blog"]
-image: ""
+image: "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260324-tutorial-tmux-illustration.png"
 categories: ["使用教程"]
 ---
 

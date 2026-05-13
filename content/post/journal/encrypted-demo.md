@@ -3,6 +3,7 @@ title: 加密内容试点
 slug: 加密内容试点
 date: 2026-05-09T17:00:00+08:00
 draft: false
+image: "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260509-journal-encrypted-demo-ad585f-illustration.png"
 categories:
   - 日记
 tags:

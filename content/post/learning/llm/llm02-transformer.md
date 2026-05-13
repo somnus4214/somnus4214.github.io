@@ -4,7 +4,7 @@ date: 2026-05-08T18:26:47+08:00
 draft: false
 categories: ["学习日志"]
 tags: ["llm"]
-image: ""
+image: "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260508-learning-llm-llm02-transformer-2bccb8-illustration.png"
 math: true
 heroAccent: ""
 professionalReport: false

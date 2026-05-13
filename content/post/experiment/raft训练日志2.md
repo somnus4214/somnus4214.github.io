@@ -2,7 +2,7 @@
 title: Raft训练日志2
 description:
 date: 2026-03-28T17:25:09+08:00
-image:
+image: "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260328-experiment-raft-2-871cf7-illustration.png"
 math:
 license:
 tag:

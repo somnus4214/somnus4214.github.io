@@ -2,7 +2,7 @@
 title: "Ml Launcher开发"
 description:
 date: 2026-03-26T22:58:44+08:00
-image:
+image: "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260326-proj-ml-launcher-illustration.png"
 math:
 license:
 comments: true

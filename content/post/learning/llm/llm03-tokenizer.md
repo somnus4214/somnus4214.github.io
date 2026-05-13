@@ -8,7 +8,7 @@ tags:
   - ""
   - llm
   - learning
-image: ""
+image: "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260509-learning-llm-llm03-tokenizer-7e04a0-illustration.png"
 math: true
 heroAccent: ""
 professionalReport: false

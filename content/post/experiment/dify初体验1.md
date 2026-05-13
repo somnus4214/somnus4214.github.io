@@ -2,6 +2,7 @@
 title: Dify初体验1
 date: 2026-03-23T18:38:32+08:00
 draft: false
+image: "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260323-experiment-dify-1-3c2b29-illustration.png"
 categories: 实验日志
 ---
 

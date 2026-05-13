@@ -7,7 +7,7 @@ categories:
 tags:
   - learning
   - Code
-image: ""
+image: "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260329-learning-eulerproj01-999c59-illustration.png"
 math: true
 ---
 

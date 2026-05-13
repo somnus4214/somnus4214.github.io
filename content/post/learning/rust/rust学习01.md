@@ -6,7 +6,7 @@ categories:
   - 学习日志
 tags:
   - Rust
-image: ""
+image: "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260404-learning-rust-rust-01-00dfa5-illustration.png"
 math: true
 ---
 
