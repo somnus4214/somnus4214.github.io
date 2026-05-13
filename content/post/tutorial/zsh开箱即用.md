@@ -5,7 +5,7 @@ draft: false
 tag: ["tool","life"]
 summary: "本文简单介绍了一下如何在linux（ubuntu24.04）上面安装zsh"
 tags: ["Blog","Tool"]
-categories: ["使用教程"]
+categories: ["tutorial"]
 image: "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260323-tutorial-zsh-illustration.png"
 ---
 

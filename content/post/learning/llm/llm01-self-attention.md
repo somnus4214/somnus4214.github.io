@@ -2,7 +2,7 @@
 title: "LLM01 Self Attention"
 date: 2026-05-08T18:23:20+08:00
 draft: false
-categories: ["学习日志"]
+categories: ["learning"]
 tags: ["llm"]
 image: "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260508-learning-llm-llm01-self-attention-99091a-illustration.png"
 math: true

@@ -4,7 +4,7 @@ date: 2026-03-22T10:57:32+08:00
 draft: false
 image: "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260322-experiment-raft-1-c17009-illustration.png"
 tags: ["Blog", "CV", "DL", "AI"]
-categories: "实验日志"
+categories: "experiment"
 ---
 
 ## 前情提要

@@ -2,7 +2,7 @@
 title: 'Cachyos安装'
 date: 2026-04-20T16:47:51+08:00
 draft: false
-categories: ["使用教程"]
+categories: ["tutorial"]
 tags: ["linux","cachyos","grub"]
 image: "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260420-tutorial-cachyos-illustration.png"
 math: true

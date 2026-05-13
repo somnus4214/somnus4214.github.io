@@ -2,7 +2,7 @@
 title: 'Fastgpt初体验1'
 date: 2026-04-14T17:18:43+08:00
 draft: false
-categories: ["实验日志"]
+categories: ["experiment"]
 tags: ["ai","agent"]
 image: "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260414-experiment-fastgpt-1-d6067d-illustration.png"
 math: true

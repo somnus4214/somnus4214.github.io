@@ -7,7 +7,7 @@ math:
 license:
 comments: true
 draft: false
-categories: "项目日志"
+categories: "project"
 tags: ["Rust", "Tool", "Readme"]
 ---
 

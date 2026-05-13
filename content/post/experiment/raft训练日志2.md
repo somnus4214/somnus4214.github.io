@@ -12,7 +12,7 @@ tag:
   - AI
 comments: true
 draft: false
-categories: 实验日志
+categories: experiment
 ---
 
 ## 前情提要

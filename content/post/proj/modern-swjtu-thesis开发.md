@@ -2,7 +2,7 @@
 title: 'Modern Swjtu Thesis开发'
 date: 2026-04-17T11:22:31+08:00
 draft: false
-categories: ["项目日志"]
+categories: ["project"]
 tags: ["typst","markdown","template"]
 image: "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260417-proj-modern-swjtu-thesis-illustration.png"
 math: true

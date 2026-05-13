@@ -3,7 +3,7 @@ title: Rust学习01-所有权
 date: 2026-04-04T22:39:47+08:00
 draft: false
 categories:
-  - 学习日志
+  - learning
 tags:
   - Rust
 image: "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260404-learning-rust-rust-01-00dfa5-illustration.png"
