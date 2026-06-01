@@ -140,8 +140,9 @@ $$
 - 前提：假设每个词的出现都是独立的。
 unigram loss计算公式
 $$
+\displaystyle
 \mathcal{L}_{\text{unigram}}
-= \sum_{w \in V} \mathrm{freq}(w)\bigl(-\log P(w)\bigr)
+= \sum\limits_{w \in V} \mathrm{freq}(w)\bigl(-\log P(w)\bigr)
 $$
 其中的frec是这个词出现的频率，P(word)是这个词出现的概率。
 - unigram是通过不断的迭代知道词表缩小到预设值。
