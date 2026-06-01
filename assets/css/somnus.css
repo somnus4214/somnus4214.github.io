@@ -124,8 +124,6 @@ mjx-container[display="true"] > mjx-math {
   display: inline-block;
   min-width: max-content;
   max-width: none;
-  font-size: 1.24em;
-  line-height: 1.38;
 }
 
 mjx-container[display="true"]::-webkit-scrollbar {
@@ -153,9 +151,6 @@ mjx-container[display="true"]::-webkit-scrollbar-thumb {
     padding: 0.8rem 0.75rem;
   }
 
-  mjx-container[display="true"] > mjx-math {
-    font-size: 1.16em;
-  }
 }
 
 .encrypted-content {
