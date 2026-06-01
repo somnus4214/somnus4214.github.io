@@ -1,8 +1,3 @@
 [[imports]]
-    path = "github.com/HugoBlox/kit/modules/integrations/netlify"
-
-[[imports]]
-    path = "github.com/HugoBlox/kit/modules/blox"
-
-[[imports]]
-    path = "github.com/HugoBlox/kit/modules/slides"
+disable = false
+path = "github.com/nunocoracao/blowfish/v2"

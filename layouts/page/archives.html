@@ -1,5 +1,5 @@
 {{ define "main" }}
-{{ $pages := where site.RegularPages "Section" "post" }}
+{{ $pages := where site.RegularPages "Section" "in" (slice "posts" "notes" "diary") }}
 {{ $pages = where $pages "Draft" "!=" true }}
 {{ $pages = sort $pages "Date" "desc" }}
 

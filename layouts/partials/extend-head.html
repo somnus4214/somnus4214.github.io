@@ -1,0 +1,4 @@
+{{- $style := resources.Get "css/somnus.css" | minify | fingerprint -}}
+{{- with $style -}}
+  <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}">
+{{- end -}}

@@ -1,34 +1,55 @@
 # Configure main menu and social menu
 [[main]]
-    identifier = "home"
-    name = "首页"
-    url = "/"
-    weight = 1
+identifier = "home"
+name = "首页"
+pageRef = "/"
+weight = 1
 
 [[main]]
-    identifier = "post"
-    name = "文章"
-    url = "/post/"
-    weight = 2
+identifier = "content"
+name = "内容"
+pageRef = "posts"
+weight = 2
 
 [[main]]
-    identifier = "categories"
-    name = "分类"
-    url = "/categories/"
-    weight = 3
+identifier = "posts"
+name = "技术博客"
+pageRef = "posts"
+parent = "content"
+weight = 10
+
+[[main]]
+identifier = "notes"
+name = "知识笔记"
+pageRef = "notes"
+parent = "content"
+weight = 20
+
+[[main]]
+identifier = "diary"
+name = "日记"
+pageRef = "diary"
+parent = "content"
+weight = 30
+
+[[main]]
+identifier = "categories"
+name = "分类"
+pageRef = "categories"
+weight = 3
 
 [[social]]
-    identifier = "github"
-    name       = "GitHub"
-    url        = "https://github.com/somnus0917"
+identifier = "github"
+name = "GitHub"
+url = "https://github.com/somnus0917"
 
-    [social.params]
-        icon = "brand-github"
+[social.params]
+icon = "github"
 
 [[social]]
-    identifier = "email"
-    name       = "Email"
-    url        = "mailto:somnus0917chen@hotmail.com"
+identifier = "email"
+name = "Email"
+url = "mailto:somnus0917chen@hotmail.com"
 
-    [social.params]
-        icon = "mail"
+[social.params]
+icon = "email"

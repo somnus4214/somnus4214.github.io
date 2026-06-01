@@ -1,9 +1,13 @@
 # Related contents configuration
 includeNewer = true
-threshold    = 60
-toLower      = false
+threshold = 0
+toLower = false
 
 indices = [
     { name = "tags", weight = 100 },
-    { name = "categories", weight = 200 },
+    { name = "categories", weight = 100 },
+    { name = "series", weight = 50 },
+    { name = "authors", weight = 20 },
+    { name = "date", weight = 10 },
+    { name = "fragmentrefs", type = "fragments", weight = 10, applyFilter = false },
 ]
