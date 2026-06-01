@@ -124,12 +124,8 @@ flowchart LR
 A[word]-->B["w,##o,##r,##d"]
 ```
 
-使用联合概率来计算每个pair的得分。设相邻的两个 token 分别为 $a$ 和 $b$：
-$$
-\operatorname{score}(a,b)
-= \frac{\operatorname{freq}(a,b)}
-{\operatorname{freq}(a) \times \operatorname{freq}(b)}
-$$
+使用联合概率来计算每个pair的得分。
+$$pair得分=\frac{pair出现的次数}{token1出现的次数 \times token2出现的次数}$$
 证明这个wordpiece方法他会优先考虑单一token在词表中**并不频繁**的，将其合并起来。
 比如unable的`un`、`##able`和hugging的`hu`、`##gging`，后者会更容易合并起来。
 
@@ -140,9 +136,7 @@ $$
 - 前提：假设每个词的出现都是独立的。
 unigram loss计算公式
 $$
-\displaystyle
-\mathcal{L}_{\text{unigram}}
-= \sum\limits_{w \in V} \mathrm{freq}(w)\bigl(-\log P(w)\bigr)
+Unigramloss=\sum frec(-log(P(word)))
 $$
 其中的frec是这个词出现的频率，P(word)是这个词出现的概率。
 - unigram是通过不断的迭代知道词表缩小到预设值。

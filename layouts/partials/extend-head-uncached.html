@@ -5,30 +5,22 @@
 
 {{- $hasMath := or .Params.math (gt (len (findRE `(?s)(\$\$|\\\(|\\\[|\$[^$\n]+\$)` .RawContent)) 0) -}}
 {{- if $hasMath -}}
-  {{- $alg := .Site.Params.fingerprintAlgorithm | default "sha512" -}}
-  {{- $katexCSS := resources.Get "lib/katex/katex.min.css" | resources.Fingerprint $alg -}}
-  <link rel="stylesheet" href="{{ $katexCSS.RelPermalink }}" integrity="{{ $katexCSS.Data.Integrity }}">
-  {{- $katexLib := resources.Get "lib/katex/katex.min.js" -}}
-  {{- $katexRenderLib := resources.Get "lib/katex/auto-render.min.js" -}}
-  {{- $katexJS := slice $katexLib $katexRenderLib | resources.Concat "js/somnus-katex.bundle.js" | resources.Fingerprint $alg -}}
-  <script
-    defer
-    src="{{ $katexJS.RelPermalink }}"
-    integrity="{{ $katexJS.Data.Integrity }}"
-    id="somnus-katex-render"></script>
   <script>
-    document.getElementById("somnus-katex-render")?.addEventListener("load", () => {
-      renderMathInElement(document.body, {
-        delimiters: [
-          { left: "$$", right: "$$", display: true },
-          { left: "\\[", right: "\\]", display: true },
-          { left: "\\(", right: "\\)", display: false },
-          { left: "$", right: "$", display: false }
-        ],
-        throwOnError: false
-      });
-    });
+    window.MathJax = {
+      tex: {
+        inlineMath: [["$", "$"], ["\\(", "\\)"]],
+        displayMath: [["$$", "$$"], ["\\[", "\\]"]],
+        tags: "ams"
+      },
+      chtml: {
+        scale: 1.04
+      },
+      options: {
+        skipHtmlTags: ["script", "noscript", "style", "textarea", "pre"]
+      }
+    };
   </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="somnus-mathjax-render"></script>
 {{- end -}}
 
 {{- $hasMermaid := or (.Page.HasShortcode "mermaid") (gt (len (findRE "(?m)^\\s*```mermaid" .RawContent)) 0) -}}

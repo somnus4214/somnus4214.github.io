@@ -17,9 +17,6 @@
 :root {
   --somnus-font-sans: "LXGW WenKai", ui-sans-serif, system-ui, sans-serif;
   --somnus-font-mono: "Maple Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-  --somnus-font-math: KaTeX_Main, "STIX Two Math", "Cambria Math", "Times New Roman", serif;
-  --somnus-font-math-italic: KaTeX_Math, "STIX Two Math", "Cambria Math", "Times New Roman", serif;
-  --somnus-font-math-text: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", var(--somnus-font-sans);
   --hb-font-heading: var(--somnus-font-sans);
   --hb-font-body: var(--somnus-font-sans);
   --hb-font-nav: var(--somnus-font-sans);
@@ -111,34 +108,7 @@ samp {
   font-variant-ligatures: contextual;
 }
 
-body .katex {
-  font-family: var(--somnus-font-math);
-  font-size: 1.04em;
-  line-height: 1.28;
-  letter-spacing: 0.01em;
-  text-rendering: optimizeLegibility;
-}
-
-body .katex .mathnormal,
-body .katex .mathit {
-  font-family: var(--somnus-font-math-italic);
-}
-
-body .katex .mathrm,
-body .katex .mainrm,
-body .katex .operatorname {
-  font-family: var(--somnus-font-math);
-}
-
-body .katex .text,
-body .katex .textrm {
-  font-family: var(--somnus-font-math-text);
-  font-size: 0.94em;
-  font-weight: 500;
-  letter-spacing: 0.01em;
-}
-
-.katex-display {
+mjx-container[display="true"] {
   overflow-x: auto;
   overflow-y: hidden;
   margin: 1.35rem 0;
@@ -150,7 +120,7 @@ body .katex .textrm {
   text-align: center;
 }
 
-.katex-display > .katex {
+mjx-container[display="true"] > mjx-math {
   display: inline-block;
   min-width: max-content;
   max-width: none;
@@ -158,50 +128,33 @@ body .katex .textrm {
   line-height: 1.38;
 }
 
-body .katex-display .op-symbol.large-op {
-  font-size: 1.42em;
-  line-height: 0.9;
-}
-
-body .katex-display .mop.op-limits {
-  margin-inline: 0.12em;
-}
-
-.katex-display::-webkit-scrollbar {
+mjx-container[display="true"]::-webkit-scrollbar {
   height: 6px;
 }
 
-.katex-display::-webkit-scrollbar-thumb {
+mjx-container[display="true"]::-webkit-scrollbar-thumb {
   border-radius: 999px;
   background: rgb(148 163 184 / 0.48);
 }
 
-.dark .katex-display {
+.dark mjx-container[display="true"] {
   border-color: rgb(148 163 184 / 0.18);
   background: rgb(15 23 42 / 0.48);
   box-shadow: 0 12px 36px rgb(0 0 0 / 0.18);
 }
 
-.dark .katex-display::-webkit-scrollbar-thumb {
+.dark mjx-container[display="true"]::-webkit-scrollbar-thumb {
   background: rgb(148 163 184 / 0.34);
 }
 
 @media (max-width: 640px) {
-  body .katex {
-    font-size: 1em;
-  }
-
-  .katex-display {
+  mjx-container[display="true"] {
     margin: 1.1rem -0.25rem;
     padding: 0.8rem 0.75rem;
   }
 
-  .katex-display > .katex {
+  mjx-container[display="true"] > mjx-math {
     font-size: 1.16em;
-  }
-
-  body .katex-display .op-symbol.large-op {
-    font-size: 1.34em;
   }
 }
 
