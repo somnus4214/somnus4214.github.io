@@ -2,3 +2,24 @@
 {{- with $style -}}
   <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}">
 {{- end -}}
+<script>
+  (() => {
+    const root = document.documentElement;
+    let frame = 0;
+
+    const updateBackgroundOpacity = () => {
+      frame = 0;
+      const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
+      const opacity = Math.max(0, 1 - scrollY / 520);
+      root.style.setProperty("--somnus-bg-scroll-opacity", opacity.toFixed(3));
+    };
+
+    const requestUpdate = () => {
+      if (!frame) frame = requestAnimationFrame(updateBackgroundOpacity);
+    };
+
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+    updateBackgroundOpacity();
+  })();
+</script>
