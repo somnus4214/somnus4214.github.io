@@ -125,7 +125,11 @@ A[word]-->B["w,##o,##r,##d"]
 ```
 
 使用联合概率来计算每个pair的得分。
-$$pair得分=\frac{pair出现的次数}{token1出现的次数 \times token2出现的次数}$$
+$$
+\text{pair 得分} =
+\frac{\text{pair 出现次数}}
+{\text{token}_1 \text{ 出现次数} \times \text{token}_2 \text{ 出现次数}}
+$$
 证明这个wordpiece方法他会优先考虑单一token在词表中**并不频繁**的，将其合并起来。
 比如unable的`un`、`##able`和hugging的`hu`、`##gging`，后者会更容易合并起来。
 
@@ -136,7 +140,8 @@ $$pair得分=\frac{pair出现的次数}{token1出现的次数 \times token2出�
 - 前提：假设每个词的出现都是独立的。
 unigram loss计算公式
 $$
-Unigramloss=\sum frec(-log(P(word)))
+\mathcal{L}_{\text{unigram}}
+= \sum_{w \in V} \mathrm{freq}(w)\bigl(-\log P(w)\bigr)
 $$
 其中的frec是这个词出现的频率，P(word)是这个词出现的概率。
 - unigram是通过不断的迭代知道词表缩小到预设值。

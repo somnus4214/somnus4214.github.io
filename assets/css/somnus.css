@@ -108,6 +108,69 @@ samp {
   font-variant-ligatures: contextual;
 }
 
+.katex {
+  font-size: 1.04em;
+  text-rendering: optimizeLegibility;
+}
+
+.katex .text,
+.katex .textrm {
+  font-family: var(--somnus-font-sans);
+}
+
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin: 1.35rem 0;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgb(148 163 184 / 0.24);
+  border-radius: 0.75rem;
+  background: rgb(255 255 255 / 0.68);
+  box-shadow: 0 12px 36px rgb(15 23 42 / 0.06);
+  text-align: center;
+}
+
+.katex-display > .katex {
+  display: inline-block;
+  min-width: max-content;
+  max-width: none;
+  font-size: 1.08em;
+}
+
+.katex-display::-webkit-scrollbar {
+  height: 6px;
+}
+
+.katex-display::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgb(148 163 184 / 0.48);
+}
+
+.dark .katex-display {
+  border-color: rgb(148 163 184 / 0.18);
+  background: rgb(15 23 42 / 0.48);
+  box-shadow: 0 12px 36px rgb(0 0 0 / 0.18);
+}
+
+.dark .katex-display::-webkit-scrollbar-thumb {
+  background: rgb(148 163 184 / 0.34);
+}
+
+@media (max-width: 640px) {
+  .katex {
+    font-size: 1em;
+  }
+
+  .katex-display {
+    margin: 1.1rem -0.25rem;
+    padding: 0.8rem 0.75rem;
+  }
+
+  .katex-display > .katex {
+    font-size: 1.02em;
+  }
+}
+
 .encrypted-content {
   position: relative;
   overflow: hidden;
