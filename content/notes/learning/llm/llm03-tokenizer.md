@@ -124,11 +124,11 @@ flowchart LR
 A[word]-->B["w,##o,##r,##d"]
 ```
 
-使用联合概率来计算每个pair的得分。
+使用联合概率来计算每个pair的得分。设相邻的两个 token 分别为 $a$ 和 $b$：
 $$
-\text{pair 得分} =
-\frac{\text{pair 出现次数}}
-{\text{token}_1 \text{ 出现次数} \times \text{token}_2 \text{ 出现次数}}
+\operatorname{score}(a,b)
+= \frac{\operatorname{freq}(a,b)}
+{\operatorname{freq}(a) \times \operatorname{freq}(b)}
 $$
 证明这个wordpiece方法他会优先考虑单一token在词表中**并不频繁**的，将其合并起来。
 比如unable的`un`、`##able`和hugging的`hu`、`##gging`，后者会更容易合并起来。

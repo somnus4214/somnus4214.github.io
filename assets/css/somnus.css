@@ -17,6 +17,9 @@
 :root {
   --somnus-font-sans: "LXGW WenKai", ui-sans-serif, system-ui, sans-serif;
   --somnus-font-mono: "Maple Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --somnus-font-math: KaTeX_Main, "STIX Two Math", "Cambria Math", "Times New Roman", serif;
+  --somnus-font-math-italic: KaTeX_Math, "STIX Two Math", "Cambria Math", "Times New Roman", serif;
+  --somnus-font-math-text: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", var(--somnus-font-sans);
   --hb-font-heading: var(--somnus-font-sans);
   --hb-font-body: var(--somnus-font-sans);
   --hb-font-nav: var(--somnus-font-sans);
@@ -108,14 +111,31 @@ samp {
   font-variant-ligatures: contextual;
 }
 
-.katex {
+body .katex {
+  font-family: var(--somnus-font-math);
   font-size: 1.04em;
+  line-height: 1.28;
+  letter-spacing: 0.01em;
   text-rendering: optimizeLegibility;
 }
 
-.katex .text,
-.katex .textrm {
-  font-family: var(--somnus-font-sans);
+body .katex .mathnormal,
+body .katex .mathit {
+  font-family: var(--somnus-font-math-italic);
+}
+
+body .katex .mathrm,
+body .katex .mainrm,
+body .katex .operatorname {
+  font-family: var(--somnus-font-math);
+}
+
+body .katex .text,
+body .katex .textrm {
+  font-family: var(--somnus-font-math-text);
+  font-size: 0.94em;
+  font-weight: 500;
+  letter-spacing: 0.01em;
 }
 
 .katex-display {
@@ -157,7 +177,7 @@ samp {
 }
 
 @media (max-width: 640px) {
-  .katex {
+  body .katex {
     font-size: 1em;
   }
 
