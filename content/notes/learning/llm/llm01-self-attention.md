@@ -1,10 +1,12 @@
 ---
-title: "LLM01 Self Attention"
+title: 自注意力，万恶之源（不是）
 date: 2026-05-08T18:23:20+08:00
 draft: false
-categories: ["learning"]
-tags: ["llm"]
-image: "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260508-learning-llm-llm01-self-attention-99091a-illustration.png"
+categories:
+  - learning
+tags:
+  - llm
+image: https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260508-learning-llm-llm01-self-attention-99091a-illustration.png
 math: true
 heroAccent: ""
 professionalReport: false

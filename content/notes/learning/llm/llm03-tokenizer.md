@@ -1,5 +1,5 @@
 ---
-title: LLM03 Tokenizer
+title: word2token的奥秘
 date: 2026-05-09T17:02:18+08:00
 draft: false
 categories:

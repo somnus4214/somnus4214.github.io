@@ -1,5 +1,5 @@
 ---
-title: Llm04 Position Encoding
+title: 位置编码完全解读（espeacially RoPE）
 date: 2026-05-15T22:42:47+08:00
 draft: false
 categories:
@@ -51,7 +51,7 @@ $$
 #### XLNET
 #### T5
 #### DeBERTa
-### 旋转位置编码RePE
+### 旋转位置编码RoPE
 RoPE实现了绝对位置编码和相对位置编码的统一，（*通过绝对编码的形式实现了相对编码的效果*）。RoPE最大意义就是在**保留token位置信息**的同时**没有**对token的语义**产生污染**。
 RoPE将输入的序列位置信息通过旋转操作，嵌入到self-attention的计算中。
 [这个视频](https://www.bilibili.com/video/BV1FjrCBdESo?spm_id_from=333.788.videopod.sections&vd_source=5a4bb483003fcc440c31e2dedcbcb744)讲的很清楚，分别讲了为什么要用位置编码和RoPE如何推导。
