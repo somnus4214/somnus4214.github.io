@@ -1,13 +1,11 @@
 ---
 title: '{{ replace .Name "-" " " | title }}'
-date: {{ .Date }}
+date: { { .Date } }
 draft: true
 categories: [""]
 tags: [""]
 image: ""
 math: true
-heroAccent: ""
-professionalReport: false
 hideFromHome: false
 ---
 
