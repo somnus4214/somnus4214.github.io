@@ -15,6 +15,7 @@ professionalReport: false
 hideFromHome: false
 ---
 
+
 ## normalization
 
 即归一化，即把数值缩放到**正态分布**的范围内，通常是为了消除不同特征的量纲差异，使得数据更适合进行后续的分析和处理。
@@ -191,6 +192,8 @@ Q5 这里有个明显要改的点：现代大模型层数其实很深，不是�
 > residual path 更干净，梯度可以更稳定地从深层传回浅层，所以深层 Transformer 更容易训练。
 
 PostNorm 在浅层或原始 Transformer 里可用，但模型加深后更容易训练不稳定。
+标准答案如下：
+>现代大模型常用 PreNorm，因为它让残差路径上的梯度传播更稳定，深层 Transformer 更容易训练。PostNorm 在一些设置下可能有更好的最终效果，但对初始化、学习率、warmup 和结构设计更敏感，直接训练较深模型更困难。因此主流大模型通常优先选择 PreNorm 或 RMSNorm + PreNorm 的组合。
 
 Q6 你说对了“没有去中心化”，但最后一句要改：RMSNorm 不是“只需要计算方差”，而是计算 **均方根 RMS**：
 
