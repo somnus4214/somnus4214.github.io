@@ -1,6 +1,6 @@
 ---
-title: '{{ replace .Name "-" " " | title }}'
-date: {{ .Date }}
+title: "Ripfullpage"
+date: 2026-06-04T14:21:45+08:00
 draft: true
 categories: [""]
 tags: [""]
