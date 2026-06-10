@@ -151,4 +151,17 @@ root 的默认 shell 是 `/bin/bash`，bash 没有损坏，所以 root 登录完
 
 ## 问题3
 实际上问题并没有完全解决，lol，但是感觉确实还是学到很多了，所以最后这个问题暂时没有去解决的，我的clash verge rev出问题了，就是软件显示的画面一直都是空白的，我感觉的话，应该卸载一下重装就好了。
-
+实际上问题复杂很多，我在尝试修这个问题的时候，试了以下指令：
+```zsh
+GDK_BACKEND=x11 clash-verge
+```
+导致我的hp的屏幕直接卡住了，就是开机之后会闪几下clash verge rev的界面（全黑的界面），然后整个页面都变黑了。彻底卡住了，然后一直拍照给claude，然后尝试修复。但是问题一直没办法解决。后来都给我整生气了，因为一直只能通过拍照给claude，然后手写复制他给的解决方案，非常麻烦，但是后来突然脑子活路了，想到这个问题并不是刚才的系统级的内核问题，电脑其他的功能可能是能正常运行的，因为这个问题只是plasma桌面的问题，所以我想到可以通过ssh连接，然后codex连接到这个电脑（记得打开防火墙），让codex帮我分析解决问题。然后就能美美解决了😅，codex真的很强。
+后来他帮我分析问题，问题是在于：
+- 你的桌面不是显卡黑屏，也不是 KWin 没起来；真正崩的是 `/usr/bin/plasmashell`。
+- `coredumpctl` 里有多次连续崩溃：13:50 和 14:03，都是 `plasmashell SIGSEGV`。
+- 崩溃栈落在 `fontconfig` 和 Qt 文本渲染：  
+    `FcCharSetHasChar -> QFontEngineMulti -> QQuickText -> Klipper`
+- 当时 `fc-match sans-serif` / `monospace` 返回过异常结果，匹配到了 `JetBrainsMono-Bold.woff2`，还显示成错乱的 family/style。
+- 重建字体缓存后，`fc-match` 恢复正常，再登录时 `plasmashell` 没有再崩，桌面恢复。
+没想到的竟然是**字体缓存导致的问题**。
+用户目录或系统里的字体缓存坏了，或者某个字体条目/Windows 字体/自定义字体让 fontconfig 生成了异常缓存。Plasma 启动托盘/剪贴板 Klipper 时要渲染文字，Qt 走到 fontconfig 字符集检查，然后 `plasmashell` 段错误，表现出来就是登录后闪几下再黑屏。

@@ -1,7 +1,7 @@
 ---
 title: embedding
 date: 2026-06-05T14:03:18+08:00
-draft: true
+draft: false
 categories:
   - ""
 tags:
