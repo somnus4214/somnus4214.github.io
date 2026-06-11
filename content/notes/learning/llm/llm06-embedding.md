@@ -91,3 +91,31 @@ Bert模型的输入包括三部分：词embedding，位置编码embedding，句�
 BGE，全称BAAI General Embedding，是智源研究院提出的开源通用向量模型，在过去短短一年时间内，在huggingface上总下载量已超数亿次，是目前下载量最多的国产AI系列模型。
 	之前我在跑一个fastgpt的项目的时候，也调用过智源的这个模型，作为数据库的embedding模型，没想到今天就学到了这个模型。真的与时俱进。
 原论文：[C-Pack: Packed Resources For General Chinese Embeddings](https://arxiv.org/abs/2309.07597)
+首先，BGE模型的训练分为三部分，第一部分是在通用文本上预训练，第二部分是在通用文本上进行finetinue（使用未标注数据），第三部分是在特定文本上进行finetinue（使用标注数据）。
+#### 预训练
+在预训练阶段，作者使用的是智源自己的wudao数据集，采用的模型架构是RetroMAE，RetroMAE由两个主要的部分组成，一个12层的类bert的encoder和一个1层one-layer的decoder、这样的encoder-decoder不对称架构。
+首先在encoder阶段，对sentence进行15%到30%的mask，然后在encoder阶段，尝试根据这个句向量恢复出原句。在decoder部分会加大噪声，mask提升到50%～70%。
+encoder是来将原本的句子压缩压缩成[CLS]向量，decoder是用来检测这样的向量是否有足够的信息恢复成原文。
+>为什么decoder要设计的更高的mask：encoder不能设计的过高的mask，不然的话，语义会被过分压缩，decoder需要设计较高的mask，因为更高的mask能让他更依赖encoder得到的向量来推断出句子，避免仅仅靠自己来推断。--》逼 encoder 的 `[CLS]` 表示承载更多全局语义。
+
+#### 通用文本fine-tune
+经过预训练之后，模型只是学会了文本表示的基础，还不能用于相似度检索。
+	[BAAI](https://huggingface.co/BAAI/bge-large-zh?utm_source=chatgpt.com)：预训练的目标只是为了重构文本，需要进一步fine-tune才能用于检索
+**对比学习**
+刚才说了第二部分是对于unlabeled数据进行训练，那么非标注数据怎么进行对比学习呢，实际上这些unlabeled数据是采用的**伪标签**，先收集大量的pair数据，如title-passage，然后用text2vec-chinese计算文本的相似度，再卡阈值(paper中采用0.43作为阈值)，过滤掉置信度比较低的pair；最后形成了100 million pairs这样庞大的数据集。
+目标损失函数：
+$$
+L=-log\frac{\exp(sim(e_p,e_q)/\tau)}{\exp(sim(e_p,e_q)/\tau)+\exp(sim(e_p+e_{q'})/\tau)}
+$$
+其中对于p有正样本q和负样本${q}'$，sim是用来表示样本和p的相似度，通常用点积或者余弦相似度来计算，$\tau$是温度系数，来控制平滑度，$e_p$和$e_q$表示p和q的嵌入向量。
+在对比学习中，负样本采样的质量对模型性能至关重要，特别是**难负样本**的采样非常重要，因为如果所有负样本都很容易区分，那么模型的损失会很小，梯度也会很小，导致模型收敛慢，且在复杂语义场景下，学习到的表示可能无法有效地区分正样本和难负样本。
+#### 特定任务finetune
+一对pair在某个任务上是相似的，而在另一个任务上可能就不相似了。争对这个问题，作者提出了两点解决方案：1. 不同的任务加上不同的指令；2.进行难负例挖掘；最后再在进行改造后的数据集上进行finetune。
+第三阶段是**有监督的微调**。
+```txt
+第二阶段：
+从大量弱标注数据中学通用匹配能力。
+
+第三阶段：
+从高质量监督数据中学真实检索判断能力。
+```
