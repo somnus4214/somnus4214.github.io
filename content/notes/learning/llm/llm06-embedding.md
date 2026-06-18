@@ -119,3 +119,50 @@ $$
 第三阶段：
 从高质量监督数据中学真实检索判断能力。
 ```
+
+## Q&A
+- 为什么 token id 不能直接作为模型输入？
+	因为token id是一个数字没办法表明两个词之间的关系，比如谁和谁意思相近，没办法表征出来。
+- embedding matrix 的形状通常是什么？
+	是一个长向量
+- token embedding 和 position embedding 分别表达什么？
+	token embedding像表征一个token的意思，他的词义，而pe是表达该token处于的位置
+- RAG 里的 embedding 和 LLM 输入层 embedding 是一回事吗？
+	原理很像，都是将离散的文本变成向量表示，但是RAG中是为了生成用于检索的向量，而LLM中的是生成模型内部理解用的向量
+- 为什么 embedding 可以用来做相似度检索？
+	embedding可以通过空间距离来表征token的词义，于是可以用来了进行检索
+-  cosine similarity 在 embedding 检索里表示什么？
+	表示embedding检索的两个token词义有多么相近，越接近1就意思越相近，接近0就是不相关，接近-1就是反义。
+
+这节整体可以过，几个点修准就行。
+
+1. **为什么 token id 不能直接作为输入**  
+    你的答案对。再补一句：token id 只是编号，编号大小没有语义。比如 id `100` 和 id `101` 不代表它们语义更近。
+    
+2. **embedding matrix 的形状**  
+    这里要改。不是“一个长向量”，而是一个矩阵：
+    
+
+```
+vocab_size x hidden_size
+```
+
+比如词表 100000，hidden size 4096：
+
+```
+100000 x 4096
+```
+
+每一行才是某个 token 的 embedding vector。
+
+3. **token embedding vs position embedding**  
+    对。token embedding 表示“这个 token 是什么”，position embedding / RoPE 表示“它在什么位置”。
+    
+4. **RAG embedding vs LLM 输入层 embedding**  
+    你答得很好。再精确一点：RAG 里的 embedding 通常表示的是一句话、一段文本、一个 chunk 的语义；LLM 输入层 embedding 通常是 token 级别的内部表示。
+    
+5. **为什么可以做相似度检索**  
+    对，但注意 RAG 检索通常不是检索单个 token 的词义，而是检索文本片段的语义相似度。
+    
+6. **cosine similarity**  
+    前半句对。小修：接近 `-1` 不一定表示“反义”，更准确是“方向相反”。在真实 embedding 空间里，反义词有时也可能因为上下文相似而靠得近，比如“好”和“坏”都常出现在情感评价语境里。

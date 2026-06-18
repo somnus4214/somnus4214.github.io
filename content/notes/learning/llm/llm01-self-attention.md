@@ -62,7 +62,7 @@ $$
 根据上面计算得到的Q、K、V，让每一个token的Q和其他所有的token的K都计算一遍相似度
 
 $$
-score = Q K^T \sqrt{d_k}
+score = \frac{Q K^T} {\sqrt{d_k}}
 $$
 
 再根据权重值，得到输出：
