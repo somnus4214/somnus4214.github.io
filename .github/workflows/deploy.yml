@@ -89,9 +89,8 @@ jobs:
           hugo \
             --gc \
             --minify \
-            --baseURL "${{ steps.pages.outputs.base_url }}/" \
+            --cleanDestinationDir \
             --cacheDir "${{ runner.temp }}/hugo_cache"
-          pnpm run pagefind
       - name: Cache save
         id: cache-save
         uses: actions/cache/save@v4

@@ -23,3 +23,113 @@
     updateBackgroundOpacity();
   })();
 </script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("search-query");
+    const output = document.getElementById("search-results");
+    if (!input || !output) return;
+
+    const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const makeSnippet = (value, indices) => {
+      const [start, end] = indices[0];
+      const before = value.slice(Math.max(0, start - 60), start).replace(/\s+/g, " ");
+      const match = value.slice(start, end + 1).replace(/\s+/g, " ");
+      const after = value.slice(end + 1, end + 101).replace(/\s+/g, " ");
+      return `${start > 60 ? "…" : ""}${before}${match}${after}${end + 101 < value.length ? "…" : ""}`;
+    };
+
+    const showMatchingSnippet = () => {
+      if (typeof fuse === "undefined") return;
+
+      const term = input.value.trim();
+      if (!term) return;
+
+      const normaliseLink = (value) => {
+        try {
+          return decodeURIComponent(value);
+        } catch {
+          return value;
+        }
+      };
+      const normalisedTerm = term.toLocaleLowerCase();
+      const matchesByLink = new Map(
+        fuse.search(term).map((result) => [normaliseLink(result.item.externalUrl || result.item.permalink), result]),
+      );
+
+      Array.from(output.children).forEach((item) => {
+        const result = matchesByLink.get(normaliseLink(item.querySelector("a")?.getAttribute("href")));
+        const summary = item?.querySelector(".italic");
+        if (!result || !summary) return;
+
+        const content = String(result.item.content || "");
+        const fallback = String(result.item.summary || "");
+        const contentIndex = content.toLocaleLowerCase().indexOf(normalisedTerm);
+        const fallbackIndex = fallback.toLocaleLowerCase().indexOf(normalisedTerm);
+        const source = contentIndex >= 0 ? content : fallback;
+        const start = contentIndex >= 0 ? contentIndex : fallbackIndex;
+
+        if (start < 0) {
+          const searchable = `${result.item.title} ${result.item.section}`.toLocaleLowerCase();
+          if (!searchable.includes(normalisedTerm)) item.remove();
+          return;
+        }
+
+        const signature = `${term}:${start}`;
+        if (summary.dataset.searchSnippet === signature) return;
+
+        summary.textContent = makeSnippet(source, [[start, start + term.length - 1]]);
+        summary.dataset.searchSnippet = signature;
+      });
+    };
+
+    const highlightResults = () => {
+      const term = input.value.trim();
+      if (!term) return;
+
+      const pattern = new RegExp(escapeRegExp(term), "gi");
+      output.querySelectorAll(".text-lg, .italic").forEach((container) => {
+        const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
+        const nodes = [];
+        let node;
+
+        while ((node = walker.nextNode())) {
+          if (!node.parentElement.closest(".search-highlight")) nodes.push(node);
+        }
+
+        nodes.forEach((textNode) => {
+          const text = textNode.nodeValue;
+          pattern.lastIndex = 0;
+          if (!pattern.test(text)) return;
+
+          const fragment = document.createDocumentFragment();
+          let lastIndex = 0;
+          pattern.lastIndex = 0;
+          text.replace(pattern, (match, offset) => {
+            fragment.append(document.createTextNode(text.slice(lastIndex, offset)));
+            const mark = document.createElement("mark");
+            mark.className = "search-highlight";
+            mark.textContent = match;
+            fragment.append(mark);
+            lastIndex = offset + match.length;
+          });
+          fragment.append(document.createTextNode(text.slice(lastIndex)));
+          textNode.parentNode.replaceChild(fragment, textNode);
+        });
+      });
+    };
+
+    let pending = false;
+    const enhanceResults = () => {
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(() => {
+        pending = false;
+        showMatchingSnippet();
+        highlightResults();
+      });
+    };
+
+    new MutationObserver(enhanceResults).observe(output, { childList: true, subtree: true });
+    input.addEventListener("keyup", enhanceResults);
+  });
+</script>

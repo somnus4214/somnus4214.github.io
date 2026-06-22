@@ -1,6 +1,6 @@
 # Somnus Blog
 
-Somnus 的个人博客源码仓库，基于 [Hugo](https://gohugo.io/) 和 [Hugo Blox](https://hugoblox.com/) 构建。当前站点保留了私密文章端到端加密工作流，并额外定制了首页、归档、分类、中文字体、搜索索引和页脚等体验。
+Somnus 的个人博客源码仓库，基于 [Hugo](https://gohugo.io/) 和 [Blowfish](https://blowfish.page/) 构建。当前站点保留了私密文章端到端加密工作流，并额外定制了首页、归档、分类、中文字体、搜索和页脚等体验。
 
 ## 环境要求
 
@@ -33,12 +33,6 @@ Hugo 开发服务器适合快速看页面结构：
 pnpm run dev
 ```
 
-如果要测试搜索功能，请使用静态预览。它会先构建 Hugo，再生成 Pagefind 搜索索引：
-
-```bash
-pnpm run preview
-```
-
 生产构建：
 
 ```bash
@@ -48,14 +42,13 @@ pnpm run build
 `pnpm run build` 会执行：
 
 ```bash
-hugo --gc --minify
-rm -rf public/pagefind && pagefind --site public
+hugo --gc --minify --cleanDestinationDir
 ```
 
 ## 常用目录
 
 - `content/post/`：公开文章
-- `content/page/`：独立页面，比如归档、搜索、友链、私密入口
+- `content/page/`：独立页面，比如归档、友链、私密入口
 - `content/categories/`、`content/tags/`：分类和标签的索引页
 - `.private/`：私密文章明文源文件，不提交到仓库
 - `static/encrypted/`：私密文章加密后的 JSON，会发布到站点
@@ -101,21 +94,7 @@ tags:
 
 ## 搜索
 
-搜索由 Hugo Blox 的搜索 UI 和 [Pagefind](https://pagefind.app/) 索引共同实现。
-
-注意：只运行 `hugo server` 时不会生成 Pagefind 索引，因此搜索可能没有结果。请使用：
-
-```bash
-pnpm run build
-```
-
-或：
-
-```bash
-pnpm run preview
-```
-
-部署到 GitHub Pages 时，`.github/workflows/deploy.yml` 会在 Hugo 构建后运行 `pnpm run pagefind`，确保 `public/pagefind/` 被一起发布。
+搜索由 Blowfish 的标题栏搜索按钮和 Hugo 自动生成的 `/index.json` 提供。生产构建会包含该索引，无需额外生成搜索文件。
 
 ## 私密加密文章
 
