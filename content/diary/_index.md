@@ -1,7 +1,7 @@
 ---
 title: "日记"
-summary: "生活复盘、个人随笔、私密记录和阶段性心情。"
-description: "生活复盘、个人随笔、私密记录和阶段性心情。"
+summary: "生活复盘、个人随笔和阶段性心情。"
+description: "生活复盘、个人随笔和阶段性心情。"
 showSummary: true
 showCards: false
 groupByYear: true
