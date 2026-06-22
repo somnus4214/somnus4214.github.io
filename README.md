@@ -1,6 +1,6 @@
 # Somnus Blog
 
-Somnus 的个人博客源码仓库，基于 [Hugo](https://gohugo.io/) 和 [Blowfish](https://blowfish.page/) 构建。当前站点保留了私密文章端到端加密工作流，并额外定制了首页、归档、分类、中文字体、搜索和页脚等体验。
+Somnus 的个人博客源码仓库，基于 [Hugo](https://gohugo.io/) 和 [Blowfish](https://blowfish.page/) 构建。当前站点保留了私密文章端到端加密工作流，并额外定制了首页、分类、中文字体、搜索和页脚等体验。
 
 ## 环境要求
 
@@ -48,7 +48,7 @@ hugo --gc --minify --cleanDestinationDir
 ## 常用目录
 
 - `content/post/`：公开文章
-- `content/page/`：独立页面，比如归档、友链、私密入口
+- `content/page/`：独立页面，比如友链、私密入口
 - `content/categories/`、`content/tags/`：分类和标签的索引页
 - `.private/`：私密文章明文源文件，不提交到仓库
 - `static/encrypted/`：私密文章加密后的 JSON，会发布到站点
@@ -57,7 +57,6 @@ hugo --gc --minify --cleanDestinationDir
 - `assets/css/somnus.css`：站点自定义样式
 - `layouts/shortcodes/`：加密短代码
 - `layouts/categories/`：分类总览和分类详情模板
-- `layouts/page/archives.html`：归档页模板
 - `layouts/_partials/hbx/blocks/somnus-recent-posts/`：首页最新文章 block，会排除日记分类
 - `scripts/`：加密、解密、同步脚本
 - `config/_default/`：Hugo 和主题配置
@@ -82,15 +81,14 @@ tags:
 
 构建时，`post` 分区会按照 `config/_default/permalinks.toml` 生成 `/p/:slug/` 形式的链接。
 
-## 分类与归档
+## 分类
 
 分类来自文章 front matter 的 `categories` 字段。站点会自动生成：
 
 - `/categories/`：分类总览
 - `/categories/<分类名>/`：某个分类下的文章列表
-- `/archives/`：按年份归档的全部文章列表
 
-首页的“最新文章”使用自定义 Hugo Blox block，会排除 `categories: 日记` 的文章。日记仍会出现在 `/post/`、`/archives/` 和 `/categories/日记/` 中。
+首页的“最新文章”使用自定义 Hugo Blox block，会排除 `categories: 日记` 的文章。日记仍会出现在 `/post/` 和 `/categories/日记/` 中。
 
 ## 搜索
 
