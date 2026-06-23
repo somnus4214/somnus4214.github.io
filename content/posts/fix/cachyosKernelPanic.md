@@ -6,6 +6,7 @@ categories:
   - ""
 tags:
   - ""
+  - linux
 image: ""
 math: true
 hideFromHome: false
