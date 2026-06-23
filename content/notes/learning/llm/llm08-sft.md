@@ -24,9 +24,15 @@ $$
 W=W_0+BA
 $$
 其中$B \in \mathbb{R}^{d\times r}$，$A\in \mathbb{R}^{r\times k}$，可以得到BA的$rank(BA) \leqslant r$ 。通过训练A和B矩阵来对模型进行微调。
+<!-- R2：已上传 01-lora-low-rank-patch.png -->
+![LoRA 在冻结原权重上添加低秩补丁](https://img.somnus.top/file/1782116667201_01-lora-low-rank-patch.png)
+
 ![image.png](https://img.somnus.top/file/1781763468065_image.png)
 ### 为什么需要参数少
 将设W是4096* 4096的矩阵，设定上面的r为8，如果要训练完整的一层，则需要16777216个参数，而通过LoRA来微调，就只需要训练那个添加的低秩矩阵。总参数为$4096\times 9+9\times 4096=65536$个参数。参数直接锐减了很多。
+<!-- R2：已上传 02-fewer-trainable-parameters.png -->
+![LoRA 用更少的可训练参数完成微调](https://img.somnus.top/file/1782116667473_02-fewer-trainable-parameters.png)
+
 完整的公式应该是这样的：
 $$W=W_0+\frac{\alpha}{r}BA$$
 其中r是上面的低秩矩阵的秩，而$\alpha$是超参数，用于控制LoRA对模型的*修改力度*。
@@ -41,6 +47,9 @@ r控制的是LoRA的**表达能力**，r 越大，LoRA 能学的变化越复杂�
 $$
 r=8,\alpha=16
 $$
+<!-- R2：已上传 03-rank-tradeoff.png -->
+![LoRA rank r 的表达力与开销取舍](https://img.somnus.top/file/1782116661992_03-rank-tradeoff.png)
+
 ## AdaLoRA
 [AdaLoRA: Adaptive Budget Allocation for Parameter-Efficient Fine-Tuning](https://arxiv.org/abs/2303.10512)
 即Adaptive LoRA，原本的LoRA的r都是由人手动设置的，但是对于每个层可能需要的r都不一样。有些层相对重要，就应该分配更大的r，有些层则应该分配更小的r。
@@ -73,6 +82,9 @@ $$
 ### 降低rank方法
 就如上面所说，adalora要降低rank，就是将不那么重要的triplet对应的lambda去掉。将某个lambda置0，则反映到$P\Lambda Q$是降低了他的rank（秩）。
 该方法没有直接把P或者Q删除，而是将其对应方向的$\lambda$设置为0，AdaLoRA 只 **mask 掉奇异值**，**保留奇异向量**，这样被误剪掉的方向后面还**有恢复可能**；相比直接剪掉 LoRA 的 doublet，训练会**更稳定**。
+<!-- R2：已上传 04-adalora-reversible-pruning.png -->
+![AdaLoRA 将 lambda 置零但保留奇异向量以便恢复](https://img.somnus.top/file/1782116666854_04-adalora-reversible-pruning.png)
+
 ### 评价方法
 那么我们应该如何评价这样的参数对于原本的权重矩阵有没有影响呢，如何衡量呢。
 最简单的方法就是直接看对应的奇异值大小，如果奇异值越大，则认为该triplet越重要。公式如下：
@@ -136,6 +148,10 @@ AdaLoRA 通常是：
 一开始预算比较大，允许保留更多 triplet；
 中间**逐渐减少预算**，慢慢压缩 rank；
 最后到达目标预算，固定下来继续训练。
+
+<!-- R2：已上传 05-global-budget-scheduler-v2.png -->
+![AdaLoRA 全局预算逐步收紧并保留 Top-b 方向](https://img.somnus.top/file/1782116661964_05-global-budget-scheduler-v2.png)
+
 	为什么要这样设计呢？因为一开如果设置很小的triplet，很容易误删很多后面有用的triplet。
 整个AdaLoRA的流程如下：
 
@@ -193,4 +209,3 @@ flowchart TD
 5. 超参数多
 6. 训练开销更大
 ## QLoRA
-
