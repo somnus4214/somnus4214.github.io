@@ -359,3 +359,33 @@ Paged Optimizer 使用 *NVIDIA Unified Memory*，把一部分不那么急需驻�
 ### 为什么质量还能接近全参数微调？
 1. QLoRA的LoRA本质没有变，还是在原始模型权重的基础上增加一个相对低秩的任务增量。
 2. NF4 带来了量化误差，但这个误差没有大到让原模型能力崩掉。
+
+## 其他LoRA变种
+### X-LoRA
+X-LoRA：采用了MOE的思路，对每个token经过多个expert，额外训练多一个scaling network，通过输出的scaling对每个expert的输出进行加权![general_arch_v5.png](https://img.somnus.top/file/1782292928556_general_arch_v5.png)
+[原论文](https://arxiv.org/abs/2402.07148)
+X-LoRA相当于调用不同的多个LoRA来处理同一个token，普通的LoRA如下：
+$$
+W=W_0+\Delta W
+$$
+而X-LoRA则是这样的：
+$$
+W=W_0+\sum_{i=1}^ns_i(x,l,t)\Delta W_i
+$$
+其中，$s_i(x,l,t)$是指模型针对$x$的输入，第$l$层，第$t$个token动态算出来的权重。
+优点：能让模型有更强的组合能力，不同的LoRA会增强气不同领域的能力。同样的，相对于重新训练模型，X-LoRA还是更节省的方案。
+缺点：毕竟有多个专家LoRA，推理速度自然就比单LoRA慢，显存和带宽压力也会变大。不同 LoRA 若基座、训练方式、目标冲突严重，混用可能互相干扰。
+
+### LoHa
+在LoRA的基础上引入了hadamard product，可以理解为对LoRA的更有创造力的改造。
+LoRA的公式如下：
+$$
+W=W_0+BA
+$$
+其中的BA是两个低秩矩阵相乘。而LoHa则是：
+$$W=W_0+(B_1A_1)\odot(B_2A_2)$$
+其中的$\odot$就是hadamard product，即同一位置的元素相乘。
+原本的LoRA计算的有效秩是$r$，经过哈马达乘积之后的有效秩就是$r^2$。
+很明显，我们可以注意到，经过这样的乘积，微调需要的计算量肯定会变大，而且变大不少，但是相对于原本基础模型仍然不算大。
+> LoHa 仍坚持“冻结大模型、只训练少量参数”的 PEFT 本质；但放弃了 LoRA 最漂亮的性质之一：更新本身低秩、且可用两次小矩阵乘法高效计算。它用**更多训练时计算**，换取更强的**更新表达能力**。
+
