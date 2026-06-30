@@ -274,8 +274,12 @@ h6 {
   box-shadow: var(--shadow);
 }
 
-.post-list .post-card {
+.post-list .post-card.has-image {
   grid-template-columns: minmax(0, 240px) 1fr;
+}
+
+.post-list .post-card.no-image {
+  grid-template-columns: 1fr;
 }
 
 .post-card-image {

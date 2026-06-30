@@ -1,5 +1,5 @@
 {% macro page_card(page) %}
-  <article class="post-card">
+  <article class="post-card{% if page.extra.image %} has-image{% else %} no-image{% endif %}">
     {% if page.extra.image %}
       <a class="post-card-image" href="{{ page.permalink }}" aria-label="{{ page.title }}">
         <img src="{{ page.extra.image }}" alt="">
