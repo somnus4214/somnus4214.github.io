@@ -1,15 +1,17 @@
----
-title: Rust学习01-所有权
-date: 2026-04-04T22:39:47+08:00
-draft: false
-categories:
-  - learning
-tags:
-  - Rust
-image: "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260404-learning-rust-rust-01-00dfa5-illustration.png"
-math: true
----
++++
+title = "Rust学习01-所有权"
+date = 2026-04-04T22:39:47+08:00
+draft = false
+path = "notes/Rust学习01-所有权"
 
+[taxonomies]
+categories = ["learning"]
+tags = ["Rust"]
+
+[extra]
+math = true
+image = "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260404-learning-rust-rust-01-00dfa5-illustration.png"
++++
 ## Trait
 trait（特征）是一种**定义共享行为**的机制，可以理解成其他语言中的接口，相当于是不管你底层是什么数据类型，只要定义了这个trait，就一定要实现这个trait的功能。
 ### 定义和实现

@@ -1,11 +1,15 @@
----
-title: Dify初体验1
-date: 2026-03-23T18:38:32+08:00
-draft: false
-image: "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260323-experiment-dify-1-3c2b29-illustration.png"
-categories: experiment
----
++++
+title = "Dify初体验1"
+date = 2026-03-23T18:38:32+08:00
+draft = false
+path = "p/Dify初体验1"
 
+[taxonomies]
+categories = ["experiment"]
+
+[extra]
+image = "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260323-experiment-dify-1-3c2b29-illustration.png"
++++
 ## 工作流介绍。
 
 ![](<https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/%E6%94%BF%E5%8A%A1%E5%88%86%E6%9E%90-whole-workflow%20(1).png>)

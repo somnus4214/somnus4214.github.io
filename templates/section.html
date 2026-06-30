@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% import "macros.html" as macros %}
+
+{% block title %}{{ section.title }} · {{ config.title }}{% endblock title %}
+{% block description %}{{ section.description | default(value=config.description) }}{% endblock description %}
+
+{% block content %}
+  <section class="section-header">
+    <p class="eyebrow">{{ section.components | last | default(value="section") }}</p>
+    <h1>{{ section.title }}</h1>
+    {% if section.description %}<p>{{ section.description }}</p>{% endif %}
+    {% if section.content %}<div class="section-intro">{{ section.content | safe }}</div>{% endif %}
+  </section>
+
+  <div class="post-list">
+    {% for page in section.pages %}
+      {% if not page.draft %}
+        {{ macros::page_card(page=page) }}
+      {% endif %}
+    {% else %}
+      <p class="empty-state">这里暂时还没有内容。</p>
+    {% endfor %}
+  </div>
+{% endblock content %}

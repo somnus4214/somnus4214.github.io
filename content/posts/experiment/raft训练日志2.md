@@ -1,20 +1,17 @@
----
-title: Raft训练日志2
-description:
-date: 2026-03-28T17:25:09+08:00
-image: "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260328-experiment-raft-2-871cf7-illustration.png"
-math:
-license:
-tag:
-  - Blog
-  - CV
-  - DL
-  - AI
-comments: true
-draft: false
-categories: experiment
----
++++
+title = "Raft训练日志2"
+date = 2026-03-28T17:25:09+08:00
+draft = false
+path = "p/Raft训练日志2"
 
+[taxonomies]
+categories = ["experiment"]
+tags = ["Blog", "CV", "DL", "AI"]
+
+[extra]
+image = "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260328-experiment-raft-2-871cf7-illustration.png"
+comments = true
++++
 ## 前情提要
 
 我上一个训练日志中，尝试对RAFT-Stereo模型进行优化，通过添加refinement层和边缘损失感知，然后训练完的模型的EPE和D1几乎没有产生变化。因为这个层结构对整个模型来说都没什么影响。接着我在改完的这个模型后，对模型进行了partial unfreezement，然后在此基础上对middlebury数据集进行训练。最后得到的结果EPE和D1反而变差了，这个大概率是因为我本地的数据集太小，在此基础上进行训练会很容易导致过拟合的现象。自此，我便将研究重心转移到模型轻量化方面来。

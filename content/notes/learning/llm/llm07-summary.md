@@ -1,17 +1,16 @@
----
-title: 简单总结基础知识
-date: 2026-06-15T17:04:09+08:00
-draft: false
-categories:
-  - ""
-tags:
-  - ""
-  - llm
-  - learning
-image: ""
-math: true
-hideFromHome: false
----
++++
+title = "简单总结基础知识"
+date = 2026-06-15T17:04:09+08:00
+draft = false
+path = "notes/简单总结基础知识"
+
+[taxonomies]
+tags = ["llm", "learning"]
+
+[extra]
+math = true
+hide_from_home = false
++++
 >经过快一个月的学习，我对于大模型已经有了相当初步的了解，从最基础的self-attention到整体的transformer，从预处理的tokenizer到后处理的normalization。温故而知新，今天小结一下所有学到的知识。
 
 ```mermaid

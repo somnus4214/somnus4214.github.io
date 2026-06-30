@@ -1,0 +1,41 @@
+{% macro page_card(page) %}
+  <article class="post-card">
+    {% if page.extra.image %}
+      <a class="post-card-image" href="{{ page.permalink }}" aria-label="{{ page.title }}">
+        <img src="{{ page.extra.image }}" alt="">
+      </a>
+    {% endif %}
+    <div class="post-card-body">
+      <div class="post-meta">
+        {% if page.date %}<time datetime="{{ page.date }}">{{ page.date | date(format="%Y-%m-%d") }}</time>{% endif %}
+        {% if page.reading_time %}<span>{{ page.reading_time }} min</span>{% endif %}
+        {% if page.word_count %}<span>{{ page.word_count }} 字</span>{% endif %}
+      </div>
+      <h2><a href="{{ page.permalink }}">{{ page.title }}</a></h2>
+      {% set excerpt = page.description | default(value=page.summary | default(value=page.content | striptags)) %}
+      {% if excerpt %}
+        <p>{{ excerpt | truncate(length=150) }}</p>
+      {% endif %}
+      <div class="taxonomy-row">
+        {% if page.taxonomies.categories is defined %}
+          {% for term in page.taxonomies.categories %}
+            <a href="{{ get_taxonomy_url(kind='categories', name=term) }}">#{{ term }}</a>
+          {% endfor %}
+        {% endif %}
+        {% if page.taxonomies.tags is defined %}
+          {% for term in page.taxonomies.tags %}
+            <a href="{{ get_taxonomy_url(kind='tags', name=term) }}">#{{ term }}</a>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  </article>
+{% endmacro page_card %}
+
+{% macro article_meta(page) %}
+  <div class="post-meta article-meta">
+    {% if page.date %}<time datetime="{{ page.date }}">{{ page.date | date(format="%Y-%m-%d") }}</time>{% endif %}
+    {% if page.reading_time %}<span>{{ page.reading_time }} min read</span>{% endif %}
+    {% if page.word_count %}<span>{{ page.word_count }} 字</span>{% endif %}
+  </div>
+{% endmacro article_meta %}

@@ -1,21 +1,19 @@
----
-title: word2token的奥秘
-date: 2026-05-09T17:02:18+08:00
-draft: false
-categories:
-  - ""
-  - learning
-tags:
-  - ""
-  - llm
-  - learning
-image: https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260509-learning-llm-llm03-tokenizer-7e04a0-illustration.png
-math: true
-heroAccent: ""
-professionalReport: false
-hideFromHome: false
----
++++
+title = "word2token的奥秘"
+date = 2026-05-09T17:02:18+08:00
+draft = false
+path = "notes/word2token的奥秘"
 
+[taxonomies]
+categories = ["learning"]
+tags = ["llm", "learning"]
+
+[extra]
+math = true
+image = "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260509-learning-llm-llm03-tokenizer-7e04a0-illustration.png"
+professional_report = false
+hide_from_home = false
++++
 ## 为什么要有tokenizer
 tokenizer的作用是把文本序列转换成数字序列，即token编号，作为transformer的输入。
 

@@ -1,13 +1,17 @@
----
-title: 'Cachyos安装'
-date: 2026-04-20T16:47:51+08:00
-draft: false
-categories: ["tutorial"]
-tags: ["linux","cachyos","grub"]
-image: "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260420-tutorial-cachyos-illustration.png"
-math: true
----
++++
+title = "Cachyos安装"
+date = 2026-04-20T16:47:51+08:00
+draft = false
+path = "p/Cachyos安装"
 
+[taxonomies]
+categories = ["tutorial"]
+tags = ["linux", "cachyos", "grub"]
+
+[extra]
+math = true
+image = "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260420-tutorial-cachyos-illustration.png"
++++
 > 前言：
 > 刚刚入职一周左右，我现在也算在玄武**安定下来**了，于是我便让我家里人把我寒假组装的台式机从老家寄过来，然后我还买了一块 **1TB 的固态硬盘** :floppy_disk:，专门用于台式机的 Linux 系统。
 > 最近这段时间，Linux 系统也是经历了*频繁更换* :sweat_smile: -> `ubuntu` -> `archlinux` -> `fedora` -> `cachyos`。最终决定**长期使用**的就是 `CachyOS` :tada:。

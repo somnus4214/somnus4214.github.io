@@ -1,18 +1,19 @@
----
-title: fk transformer
-date: 2026-05-08T18:26:47+08:00
-draft: false
-categories:
-  - learning
-tags:
-  - llm
-image: https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260508-learning-llm-llm02-transformer-2bccb8-illustration.png
-math: true
-heroAccent: ""
-professionalReport: false
-hideFromHome: false
----
++++
+title = "fk transformer"
+date = 2026-05-08T18:26:47+08:00
+draft = false
+path = "notes/fk transformer"
 
+[taxonomies]
+categories = ["learning"]
+tags = ["llm"]
+
+[extra]
+math = true
+image = "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260508-learning-llm-llm02-transformer-2bccb8-illustration.png"
+professional_report = false
+hide_from_home = false
++++
 # transformer
 
 transformer是在这篇[attention is all you need](https://arxiv.org/abs/1706.03762)中提出来的。

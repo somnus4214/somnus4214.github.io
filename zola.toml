@@ -1,0 +1,64 @@
+base_url = "https://blog.somnus.top"
+title = "Somnus的小站"
+description = "Somnus 的个人博客，记录学习、项目、实验和日常。"
+default_language = "en"
+compile_sass = false
+build_search_index = true
+generate_feeds = true
+feed_filenames = ["atom.xml", "rss.xml"]
+author = "Somnus"
+
+taxonomies = [
+  { name = "categories", feed = true },
+  { name = "tags", feed = true },
+  { name = "authors", feed = true },
+  { name = "series", feed = true },
+]
+
+[markdown]
+render_emoji = true
+external_links_target_blank = true
+external_links_no_referrer = true
+smart_punctuation = true
+definition_list = true
+
+[markdown.highlighting]
+theme = "github-light"
+
+[search]
+include_title = true
+include_description = true
+include_content = true
+
+[extra]
+copyright = "© 2026 Somnus"
+author = "Somnus"
+bio = "记录学习、项目、实验和日常。偏爱把折腾过的东西写下来。"
+avatar = "/img/avatar.png"
+github = "https://github.com/somnus0917"
+email = "mailto:somnus0917chen@hotmail.com"
+html_lang = "zh-CN"
+
+[[extra.nav]]
+name = "首页"
+url = "/"
+
+[[extra.nav]]
+name = "技术博客"
+url = "/posts/"
+
+[[extra.nav]]
+name = "知识笔记"
+url = "/notes/"
+
+[[extra.nav]]
+name = "日记"
+url = "/diary/"
+
+[[extra.nav]]
+name = "分类"
+url = "/categories/"
+
+[[extra.nav]]
+name = "搜索"
+url = "/search/"

@@ -1,13 +1,17 @@
----
-title: 'Vaultwarden使用教程'
-date: 2026-03-31T16:13:42+08:00
-draft: false
-categories: ["tutorial"]
-tags: ["Blog","Self-host","Docker","SSL","VPS"]
-image: "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260331-tutorial-vaultwarden-illustration.png"
-math: true
----
++++
+title = "Vaultwarden使用教程"
+date = 2026-03-31T16:13:42+08:00
+draft = false
+path = "p/Vaultwarden使用教程"
 
+[taxonomies]
+categories = ["tutorial"]
+tags = ["Blog", "Self-host", "Docker", "SSL", "VPS"]
+
+[extra]
+math = true
+image = "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260331-tutorial-vaultwarden-illustration.png"
++++
 > 最近正在因为换了浏览器，进行过一次密码迁移，在迁移的过程中总感觉有种隐忧，就是密码泄露或者丢失的风险
 > 其实密码泄露给这些大型的公司比如Microsoft/Google，其实对我没影响，但是如果片丢失了，就影响大了，因为我有很多的网络站点都是使用浏览器生成的强密码，此前很多密码管理工具也出现过数据丢失的问题。
 > 所以我想着自己搭建属于自己的服务来实现，更安全（但不一定更可靠）的密码服务。
@@ -62,7 +66,7 @@ nano Caddyfile
 
 并输入以下内容
 
-```Plaintext
+```text
 pwd.yourdomain.com { #此处替代为自己的域名
     reverse_proxy vaultwarden:80
 }
@@ -80,7 +84,7 @@ nano docker-compose.yaml
 
 并且输入以下内容
 
-```Plaintext
+```text
 version: '3'
 
 services:

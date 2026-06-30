@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}404 · {{ config.title }}{% endblock title %}
+
+{% block content %}
+  <section class="section-header">
+    <p class="eyebrow">404</p>
+    <h1>页面没有找到</h1>
+    <p>这个地址暂时没有内容。可以回到首页，或者试试搜索。</p>
+    <div class="hero-actions">
+      <a class="button primary" href="{{ get_url(path='/') }}">回到首页</a>
+      <a class="button" href="{{ get_url(path='search/') }}">搜索</a>
+    </div>
+  </section>
+{% endblock content %}

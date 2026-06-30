@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}{{ taxonomy.name }} · {{ config.title }}{% endblock title %}
+
+{% block content %}
+  <section class="section-header">
+    <p class="eyebrow">Taxonomy</p>
+    <h1>{% if taxonomy.name == "categories" %}分类{% elif taxonomy.name == "tags" %}标签{% else %}{{ taxonomy.name }}{% endif %}</h1>
+    <p>按主题浏览内容。</p>
+  </section>
+
+  <div class="term-grid">
+    {% for term in terms %}
+      <a class="term-card" href="{{ term.permalink }}">
+        <span>{{ term.name }}</span>
+        <strong>{{ term.pages | length }}</strong>
+      </a>
+    {% endfor %}
+  </div>
+{% endblock content %}

@@ -1,13 +1,15 @@
----
-title: "Privacy Policy for ripfullpage"
-date: 2026-06-12
-slug: "ripfullpage"
-description: "Privacy Policy for the ripfullpage Chrome extension."
-comments: false
-license: false
-toc: false
----
++++
+title = "Privacy Policy for ripfullpage"
+description = "Privacy Policy for the ripfullpage Chrome extension."
+date = 2026-06-12
+slug = "ripfullpage"
+path = "ripfullpage"
 
+[extra]
+comments = false
+license = false
+toc = false
++++
 # Privacy Policy for ripfullpage
 
 Effective Date: June 12, 2026

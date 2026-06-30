@@ -1,20 +1,17 @@
----
-title: ppo vs dpo vs grpo
-date: 2026-06-30T14:30:47+08:00
-draft: false
-categories:
-  - ""
-  - learning
-tags:
-  - ""
-  - llm
-  - learning
-  - rl
-image: ""
-math: true
-hideFromHome: false
----
++++
+title = "ppo vs dpo vs grpo"
+date = 2026-06-30T14:30:47+08:00
+draft = false
+path = "notes/ppo vs dpo vs grpo"
 
+[taxonomies]
+categories = ["learning"]
+tags = ["llm", "learning", "rl"]
+
+[extra]
+math = true
+hide_from_home = false
++++
 >这一节主要讲的就是大模型的强化学习策略，现在主流的方案就包括ppo、dpo、grpo。
 
 ## 背景介绍

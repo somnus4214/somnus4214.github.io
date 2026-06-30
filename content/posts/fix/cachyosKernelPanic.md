@@ -1,16 +1,16 @@
----
-title: archlinux kernel Panic（滚动更新的福报）
-date: 2026-06-05T16:54:26+08:00
-draft: false
-categories:
-  - ""
-tags:
-  - ""
-  - linux
-image: ""
-math: true
-hideFromHome: false
----
++++
+title = "archlinux kernel Panic（滚动更新的福报）"
+date = 2026-06-05T16:54:26+08:00
+draft = false
+path = "p/archlinux kernel Panic（滚动更新的福报）"
+
+[taxonomies]
+tags = ["linux"]
+
+[extra]
+math = true
+hide_from_home = false
++++
 >早有耳闻archlinux系统的滚动更新，可能会有突然崩溃的情况（无违规操作）。自从回学校参加毕业典礼，大概有了三四周没有用我的惠普笔记本，回来之后我对这个笔记本进行了全面的更新，结果突然就蓝屏了，以下是我在克劳德老师的指导下的修复过程
 
 ![蓝屏情况](https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260605165921760.png)

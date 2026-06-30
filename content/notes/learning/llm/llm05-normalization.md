@@ -1,21 +1,17 @@
----
-title: 什么是归一化normalization
-date: 2026-06-02T17:51:00+08:00
-draft: false
-categories:
-  - ""
-tags:
-  - ""
-  - llm
-  - learning
-image: ""
-math: true
-heroAccent: ""
-professionalReport: false
-hideFromHome: false
----
++++
+title = "什么是归一化normalization"
+date = 2026-06-02T17:51:00+08:00
+draft = false
+path = "notes/什么是归一化normalization"
 
+[taxonomies]
+tags = ["llm", "learning"]
 
+[extra]
+math = true
+professional_report = false
+hide_from_home = false
++++
 ## normalization
 
 即归一化，即把数值缩放到**正态分布**的范围内，通常是为了消除不同特征的量纲差异，使得数据更适合进行后续的分析和处理。

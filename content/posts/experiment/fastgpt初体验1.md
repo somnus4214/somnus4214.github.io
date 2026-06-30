@@ -1,13 +1,17 @@
----
-title: 'Fastgpt初体验1'
-date: 2026-04-14T17:18:43+08:00
-draft: false
-categories: ["experiment"]
-tags: ["ai","agent"]
-image: "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260414-experiment-fastgpt-1-d6067d-illustration.png"
-math: true
----
++++
+title = "Fastgpt初体验1"
+date = 2026-04-14T17:18:43+08:00
+draft = false
+path = "p/Fastgpt初体验1"
 
+[taxonomies]
+categories = ["experiment"]
+tags = ["ai", "agent"]
+
+[extra]
+math = true
+image = "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260414-experiment-fastgpt-1-d6067d-illustration.png"
++++
 > 最近刚刚入职了某小厂，作为ai实习生，也是开启了自己的牛马生涯。
 > 公司的第一个任务就是做一个电商客服，我在网络上搜罗了一下可能比较成形的方案，最终决定选择使用fastgpt框架调用qwen api+千牛后台。
 

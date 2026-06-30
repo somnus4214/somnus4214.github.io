@@ -1,10 +1,5 @@
----
-title: Unpublished
-build:
-  render: never
-  list: never
-cascade:
-  build:
-    render: never
-    list: never
----
++++
+title = "Unpublished"
+render = false
+in_search_index = false
++++

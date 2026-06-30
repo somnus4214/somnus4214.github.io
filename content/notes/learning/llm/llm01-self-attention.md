@@ -1,18 +1,19 @@
----
-title: 自注意力，万恶之源（不是）
-date: 2026-05-08T18:23:20+08:00
-draft: false
-categories:
-  - learning
-tags:
-  - llm
-image: https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260508-learning-llm-llm01-self-attention-99091a-illustration.png
-math: true
-heroAccent: ""
-professionalReport: false
-hideFromHome: false
----
++++
+title = "自注意力，万恶之源（不是）"
+date = 2026-05-08T18:23:20+08:00
+draft = false
+path = "notes/自注意力，万恶之源（不是）"
 
+[taxonomies]
+categories = ["learning"]
+tags = ["llm"]
+
+[extra]
+math = true
+image = "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260508-learning-llm-llm01-self-attention-99091a-illustration.png"
+professional_report = false
+hide_from_home = false
++++
 ## attention
 
 注意力机制，最早是在机器翻译论&#x6587;**[Neural Machine Translation by Jointly Learning to Align and Translate](https://arxiv.org/abs/1409.0473)**中提出来的，他的核心是，用一个东西产生的query，去key/value中查询需要的东西。在上述论文中encoder-decoder attention的结构中。

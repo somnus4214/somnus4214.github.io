@@ -1,16 +1,13 @@
----
-title: fk gofullpage（ai时代对于软件的思考）
-date: 2026-06-04T14:21:45+08:00
-draft: false
-categories:
-  - ""
-tags:
-  - ""
-image: ""
-math: true
-hideFromHome: false
----
++++
+title = "fk gofullpage（ai时代对于软件的思考）"
+date = 2026-06-04T14:21:45+08:00
+draft = false
+path = "p/fk gofullpage（ai时代对于软件的思考）"
 
+[extra]
+math = true
+hide_from_home = false
++++
 ![](https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/%E6%88%AA%E5%B1%8F2026-06-04%2010.21.17.png)
 
 > 前情提要：我今天上午原本是在准备做一点公司的活，想办法能不能做一些比如商品价格爬虫之类的方案，然后GPT推荐我商品价格数据获取可以从京东万象数据中获取，然后我就到了京东云的官网，但是京东万象数据好像关闭服务了？？但是我注意到京东云轻量级服务器专区，有点小心动💓，但是不同型号不同标准，也不知道哪个更适合我。我准备截图发给GPT，很明显这个页面超过一页，然后mac上我也不知道怎么缩小chrome页面，然后我想到了我之前安装的gofullpage插件，于是我便使用了，他截图功能是免费的，但是编辑和截取部分页面是付费的，fk🤬于是我当时就想到可以试试自己做一个插件。

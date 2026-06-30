@@ -1,12 +1,7 @@
 public
 output/
-resources
-hugo_stats.json
 node_modules/
-layouts_stack_disabled/
-.hugo_build.lock
 .DS_Store
-assets/jsconfig.json
 .vscode/
 .codex
 .claude

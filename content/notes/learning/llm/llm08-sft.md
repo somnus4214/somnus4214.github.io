@@ -1,18 +1,16 @@
----
-title: 模型微调
-date: 2026-06-18T10:15:31+08:00
-draft: false
-categories:
-  - ""
-tags:
-  - ""
-  - llm
-  - ai
-  - learning
-image: ""
-math: true
-hideFromHome: false
----
++++
+title = "模型微调"
+date = 2026-06-18T10:15:31+08:00
+draft = false
+path = "notes/模型微调"
+
+[taxonomies]
+tags = ["llm", "ai", "learning"]
+
+[extra]
+math = true
+hide_from_home = false
++++
 >模型后处理，对于大模型的应用，对于不同的特定场景，往往会有不同的能力需求，此时后处理（微调）就显得很有必要了。
 
 ## LoRA

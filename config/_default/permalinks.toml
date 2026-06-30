@@ -1,5 +1,0 @@
-# Permalinks format of each content section
-posts = "/p/:slug/"
-notes = "/notes/:slug/"
-diary = "/diary/:slug/"
-page = "/:slug/"

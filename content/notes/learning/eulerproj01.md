@@ -1,16 +1,17 @@
----
-title: Eulerproj01
-date: 2026-03-29T20:25:05+08:00
-draft: false
-categories:
-  - problem-solving
-tags:
-  - learning
-  - Code
-image: "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260329-learning-eulerproj01-999c59-illustration.png"
-math: true
----
++++
+title = "Eulerproj01"
+date = 2026-03-29T20:25:05+08:00
+draft = false
+path = "notes/Eulerproj01"
 
+[taxonomies]
+categories = ["problem-solving"]
+tags = ["learning", "Code"]
+
+[extra]
+math = true
+image = "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260329-learning-eulerproj01-999c59-illustration.png"
++++
 ### p002
 
 #### 题目

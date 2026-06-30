@@ -1,16 +1,17 @@
----
-title: "Ml Launcher开发"
-description:
-date: 2026-03-26T22:58:44+08:00
-image: "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260326-proj-ml-launcher-illustration.png"
-math:
-license:
-comments: true
-draft: false
-categories: "project"
-tags: ["Rust", "Tool", "Readme"]
----
++++
+title = "Ml Launcher开发"
+date = 2026-03-26T22:58:44+08:00
+draft = false
+path = "p/Ml Launcher开发"
 
+[taxonomies]
+categories = ["project"]
+tags = ["Rust", "Tool", "Readme"]
+
+[extra]
+image = "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260326-proj-ml-launcher-illustration.png"
+comments = true
++++
 > 最近做一些模型训练的项目，每次在训练的时候，长长的后续参数都让人很头大（每次都要问a：怎么让这个项目跑起来），于是我想是否可以弄一个项目，方便的设置参数，便有了这个项目。
 
 ## 简单介绍

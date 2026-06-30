@@ -1,26 +1,23 @@
----
-title: 位置编码完全解读（espeacially RoPE）
-date: 2026-05-15T22:42:47+08:00
-draft: false
-categories:
-  - ""
-  - learning
-tags:
-  - ""
-  - llm
-  - ai
-  - learning
-image: https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260515225719369.png
-math: true
-heroAccent: ""
-professionalReport: false
-hideFromHome: false
----
++++
+title = "位置编码完全解读（espeacially RoPE）"
+date = 2026-05-15T22:42:47+08:00
+draft = false
+path = "notes/位置编码完全解读（espeacially RoPE）"
 
+[taxonomies]
+categories = ["learning"]
+tags = ["llm", "ai", "learning"]
+
+[extra]
+math = true
+image = "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260515225719369.png"
+professional_report = false
+hide_from_home = false
++++
 ## 位置编码
 卷积具有局部性，天然地会注意元素之间的相对位置，但是基于自注意力的transformer模型则对位置不敏感，因此必须要把元素的位置信息在embedding阶段传给元素。
 比如：
-```plaintxt
+```text
 我 爱 你
 你 爱 我
 ```

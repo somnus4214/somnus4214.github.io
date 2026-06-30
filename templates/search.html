@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}搜索 · {{ config.title }}{% endblock title %}
+
+{% block content %}
+  <section class="section-header">
+    <p class="eyebrow">Search</p>
+    <h1>搜索</h1>
+    <p>输入关键词，在标题、摘要和正文里查找。</p>
+  </section>
+
+  <section class="search-panel">
+    <input id="search-query" type="search" placeholder="搜索文章、笔记或日记" autocomplete="off" autofocus>
+    <div id="search-results" class="search-results" aria-live="polite"></div>
+  </section>
+{% endblock content %}
+
+{% block scripts %}
+  <script defer src="{{ get_url(path='elasticlunr.min.js') }}"></script>
+  <script defer src="{{ get_url(path='search_index.en.js') }}"></script>
+  <script defer src="{{ get_url(path='js/search.js') }}"></script>
+{% endblock scripts %}

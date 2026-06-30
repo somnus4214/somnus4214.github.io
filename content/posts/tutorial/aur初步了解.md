@@ -1,18 +1,16 @@
----
-title: 第一次打包aur
-date: 2026-06-10T14:48:22+08:00
-draft: false
-categories:
-  - ""
-tags:
-  - ""
-  - linux
-  - Tool
-image: ""
-math: true
-hideFromHome: false
----
++++
+title = "第一次打包aur"
+date = 2026-06-10T14:48:22+08:00
+draft = false
+path = "p/第一次打包aur"
 
+[taxonomies]
+tags = ["linux", "Tool"]
+
+[extra]
+math = true
+hide_from_home = false
++++
 > 最近组里面给了一个图像标注的任务，但是我现在的主力电脑是mac，我在网上搜罗好用的mac上的标注软件，像很出名的开源软件labelimg和labeling都没有对应的mac版本，mac的appstore上的rectlabel，又是付费软件，就是会一直弹广告，虽然在标注的时候忍忍就过来了，但是我还是想做一个免费开源跨平台的标注软件，最好还能基于rust，不过这篇博客不介绍我的superlabel，而是介绍把软件发布到archlinux的aur中的教程。
 
 ## 初步介绍

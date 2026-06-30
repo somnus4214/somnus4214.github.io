@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% import "macros.html" as macros %}
+
+{% block content %}
+  <section class="home-hero">
+    <img class="avatar" src="{{ get_url(path=config.extra.avatar) }}" alt="Somnus">
+    <p class="eyebrow">Somnus</p>
+    <h1>学习、项目、实验和日常。</h1>
+    <p>{{ config.extra.bio }}</p>
+    <div class="hero-actions">
+      <a class="button primary" href="{{ get_url(path='posts/') }}">阅读文章</a>
+      <a class="button" href="{{ config.extra.github }}">GitHub</a>
+      <a class="button" href="{{ config.extra.email }}">Email</a>
+    </div>
+  </section>
+
+  {% set posts = get_section(path="posts/_index.md") %}
+  <section class="content-block">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Recent</p>
+        <h2>最新文章</h2>
+      </div>
+      <a href="{{ get_url(path='posts/') }}">全部文章</a>
+    </div>
+    <div class="post-grid">
+      {% set shown = 0 %}
+      {% for page in posts.pages %}
+        {% if not page.draft and not page.extra.hide_from_home and shown < 9 %}
+          {{ macros::page_card(page=page) }}
+          {% set_global shown = shown + 1 %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
+{% endblock content %}
