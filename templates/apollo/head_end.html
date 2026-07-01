@@ -1,4 +1,5 @@
 <meta name="author" content="{{ config.extra.author | default(value=config.author) }}" />
+<meta name="search-index-lang" content="{{ config.default_language | default(value='en') }}" />
 {% if config.extra.mermaid | default(value=true) %}
   <script defer src="{{ get_url(path='js/mermaid-codeblocks.js') }}"></script>
 {% endif %}
