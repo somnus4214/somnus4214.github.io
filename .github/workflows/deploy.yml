@@ -1,106 +1,63 @@
 name: Build and deploy
+
 on:
   push:
     branches:
       - main
       - master
   workflow_dispatch:
+
 permissions:
   contents: read
   pages: write
   id-token: write
+
 concurrency:
   group: pages
   cancel-in-progress: false
+
 defaults:
   run:
     shell: bash
+
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      DART_SASS_VERSION: 1.97.1
-      GO_VERSION: 1.25.5
-      HUGO_VERSION: 0.158.0
-      NODE_VERSION: 24.12.0
-      TAILWINDCSS_VERSION: 4.1.5
-      TZ: Europe/Oslo
+      ZOLA_VERSION: 0.22.1
     steps:
       - name: Checkout
         uses: actions/checkout@v5
         with:
           submodules: recursive
           fetch-depth: 0
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: ${{ env.GO_VERSION }}
-          cache: false
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
+
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
-      - name: Create directory for user-specific executable files
+
+      - name: Install Zola
         run: |
           mkdir -p "${HOME}/.local/bin"
-      - name: Install Dart Sass
-        run: |
-          curl -sLJO "https://github.com/sass/dart-sass/releases/download/${DART_SASS_VERSION}/dart-sass-${DART_SASS_VERSION}-linux-x64.tar.gz"
-          tar -C "${HOME}/.local" -xf "dart-sass-${DART_SASS_VERSION}-linux-x64.tar.gz"
-          rm "dart-sass-${DART_SASS_VERSION}-linux-x64.tar.gz"
-          echo "${HOME}/.local/dart-sass" >> "${GITHUB_PATH}"
-      - name: Install Tailwind CSS
-        run: |
-          curl -sLO "https://github.com/tailwindlabs/tailwindcss/releases/download/v${TAILWINDCSS_VERSION}/tailwindcss-linux-x64"
-          chmod +x tailwindcss-linux-x64
-          mv tailwindcss-linux-x64 "${HOME}/.local/bin/tailwindcss"
+          curl -sSL \
+            "https://github.com/getzola/zola/releases/download/v${ZOLA_VERSION}/zola-v${ZOLA_VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
+            -o zola.tar.gz
+          tar -xzf zola.tar.gz
+          chmod +x zola
+          mv zola "${HOME}/.local/bin/zola"
           echo "${HOME}/.local/bin" >> "${GITHUB_PATH}"
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v3
-        with:
-          hugo-version: ${{ env.HUGO_VERSION }}
-          extended: true
-      - name: Verify installations
-        run: |
-          echo "Dart Sass: $(sass --version)"
-          echo "Go: $(go version)"
-          echo "Hugo: $(hugo version)"
-          echo "Node.js: $(node --version)"
-          echo "Tailwind CSS: $(tailwindcss --version)"
-      - name: Install Node.js dependencies
-        run: |
-          corepack enable
-          pnpm install --frozen-lockfile
-      - name: Configure Git
-        run: |
-          git config core.quotepath false
-      - name: Cache restore
-        id: cache-restore
-        uses: actions/cache/restore@v4
-        with:
-          path: ${{ runner.temp }}/hugo_cache
-          key: hugo-${{ github.run_id }}
-          restore-keys: hugo-
+
+      - name: Verify Zola
+        run: zola --version
+
       - name: Build the site
-        run: |
-          hugo \
-            --gc \
-            --minify \
-            --cleanDestinationDir \
-            --cacheDir "${{ runner.temp }}/hugo_cache"
-      - name: Cache save
-        id: cache-save
-        uses: actions/cache/save@v4
-        with:
-          path: ${{ runner.temp }}/hugo_cache
-          key: ${{ steps.cache-restore.outputs.cache-primary-key }}
+        run: zola build --force
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./public
+
   deploy:
     environment:
       name: github-pages

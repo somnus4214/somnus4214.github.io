@@ -10,16 +10,19 @@
     {% endif %}
 
     {% set posts = get_section(path="posts/_index.md") %}
-    {% set_global all_posts = posts.pages %}
+    {% set notes = get_section(path="notes/_index.md") %}
+    {% set diary = get_section(path="diary/_index.md") %}
+    {% set all_pages = posts.pages | concat(with=notes.pages) | concat(with=diary.pages) %}
+    {% set sorted_pages = all_pages | sort(attribute="date") | reverse %}
+    {% set_global latest_pages = [] %}
 
-    {% for subsection_path in posts.subsections %}
-        {% set subsection = get_section(path=subsection_path) %}
-        {% set_global all_posts = all_posts | concat(with=subsection.pages) %}
+    {% for page in sorted_pages %}
+        {% if not page.draft and not page.extra.hide_from_home | default(value=false) and latest_pages | length < 8 %}
+            {% set_global latest_pages = latest_pages | concat(with=page) %}
+        {% endif %}
     {% endfor %}
 
-    {% set latest_posts = all_posts | sort(attribute="date") | reverse | slice(end=8) %}
-
     <main class="post-list">
-        {{ post_macros::list_posts(pages=latest_posts) }}
+        {{ post_macros::list_posts(pages=latest_pages) }}
     </main>
 {% endblock main_content %}
