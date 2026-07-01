@@ -134,8 +134,8 @@ def main(year: int, region: str, keywords: str):
 
 $$
 \begin{aligned}
-\text{基准工时单价} &= \frac{\text{软件开发基准人月费率}}{\text{人月折算系数}} \\
-&= \frac{24,000 \text{ 元/人月}}{174 \text{ 人·时/人月}} \\
+\text{基准工时单价} &= \frac{\text{软件开发基准人月费率}}{\text{人月折算系数}} \\\\
+&= \frac{24,000 \text{ 元/人月}}{174 \text{ 人·时/人月}} \\\\
 &\approx 137.931 \text{ 元/人·时}
 \end{aligned}
 $$

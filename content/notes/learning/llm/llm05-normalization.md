@@ -29,10 +29,10 @@ hide_from_home = false
 
 1. 首先计算每个样本的特征值的均值和方差
    $$
-   \begin{align*}
-   \mu&=\frac{1}{d}\sum_{i=1}^dx_i\\
+   \begin{aligned}
+   \mu&=\frac{1}{d}\sum_{i=1}^dx_i\\\\
    \sigma&=\sqrt{\frac{1}{d}\sum_{i=1}^d(x_i-\mu)^2}
-   \end{align*}
+   \end{aligned}
    $$
 2. 使用均值和方差对输入X进行归一化
    $$
@@ -124,22 +124,22 @@ batch normalization是很早提出来的，常用于CV领域，但是在NLP不�
 首先pre norm和post norm的公式分别如下：
 
 $$
-\begin{align}
-pre\_norm: x_{t+1}=x_t+F_t(Norm(x_t))\\
+\begin{aligned}
+pre\_norm: x_{t+1}=x_t+F_t(Norm(x_t))\\\\
 post\_norm: x_{t+1}=Norm(x_t+F_t(x_t))
-\end{align}
+\end{aligned}
 $$
 
 知乎上 [@唐翔昊](https://www.zhihu.com/question/519668254/answer/2371885202) 给出的答案是：**Pre Norm的深度有“水分”**！也就是说，一个L层的Pre Norm模型，其实际等效层数不如L层的Post Norm模型，而层数少了导致效果变差了。
 我们对原始公式进行递归：
 
 $$
-\begin{align*}
-x_{t+1}&=x_t+F_t(Norm(x_t))\\
-&=x_{t-1}+F_{t-1}(Norm(x_{t-1}))+F_t(Norm(x_t))\\
-&=\cdots \\
+\begin{aligned}
+x_{t+1}&=x_t+F_t(Norm(x_t))\\\\
+&=x_{t-1}+F_{t-1}(Norm(x_{t-1}))+F_t(Norm(x_t))\\\\
+&=\cdots \\\\
 &=x_0+F_0(Norm(x_0))+\cdots+F_{t-1}(Norm(x_{t-1}))+F_t(Norm(x_t))
-\end{align*}
+\end{aligned}
 $$
 
 假设每一层的餐叉增量都是同一量级，比如都是$O(1)$，原公式就是：

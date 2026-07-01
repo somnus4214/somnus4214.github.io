@@ -56,10 +56,10 @@ flowchart LR
 自注意力机制是现代大模型的核心，他是将原始的输入$X$向量分别乘上对应的$W_q、W_k、W_v$（这三个都是通过训练得到的权重值）得到对应的$Q、K、V$。
 最终的输出ouput：
 $$
-\begin{align}
-output &= softmax(score)V \\
+\begin{aligned}
+output &= softmax(score)V \\\\
 &=softmax(\frac{Q K^T}{\sqrt{d_k}})
-\end{align}
+\end{aligned}
 $$
 自注意力机制的本质就是**让序列中所有的位置，都会根据自身的内容，动态的从序列中其他位置获取信息。**
 其中的$\sqrt{d_k}$就是为了防止softmax接受到的值过于尖锐。如果没有除这个$\sqrt{d_k}$，很容易出现，softmax接收到要么过大的数字，要么过小的数字，导致有些位置无限接近于1，有些无限接近于0，导致梯度消失，而且自注意力机制更新网络参数就是通过梯度来实现的。
@@ -130,4 +130,3 @@ Q8 记这一版就够用：
 一句话：
 
 > temperature 调整概率分布形状，top-k 固定候选数量，top-p 固定候选累计概率。
-

@@ -77,11 +77,12 @@ $$
 普通的LoRA计算公式是这样的：$W=W_0+BA$，但是AdaLoRA是这样的：
 
 $$
-\begin{align}W=W_0+P\Lambda Q \\
-P \in \mathbb{R}^{d_1\times r} \\
-Q\in \mathbb{R}^{r\times d_1}\\
+\begin{aligned}
+W&=W_0+P\Lambda Q \\\\
+P&\in \mathbb{R}^{d_1\times r} \\\\
+Q&\in \mathbb{R}^{r\times d_1} \\\\
 \Lambda \in \mathbb{R}^{r\times r}
-\end{align}
+\end{aligned}
 $$
 
 其中$\Lambda$是：
@@ -94,16 +95,16 @@ $$
 奇异值分解（Singular Value Decomposition，简称 SVD）是线性代数中**最重要**的矩阵分解方法之一。可以把它理解为“**矩阵的极坐标表示**”——任何矩阵都能被**分解成三个简单矩阵的乘积。**
 
 $$
-\begin{align}
-P\Lambda Q&=\sum_{i=1}^{r}\lambda_i P_{*,i}Q_{i,*}\\
-&=\lambda_1P_{*,1}Q_{1,*}+\lambda_2 P_{*,2}Q_{2,*}+\dots +\lambda_rP_{*,r}Q_{r,*}
-\end{align}
+\begin{aligned}
+P\Lambda Q&=\sum_{i=1}^{r}\lambda_i P_{\ast,i}Q_{i,\ast}\\\\
+&=\lambda_1P_{\ast,1}Q_{1,\ast}+\lambda_2 P_{\ast,2}Q_{2,\ast}+\dots +\lambda_rP_{\ast,r}Q_{r,\ast}
+\end{aligned}
 $$
 
 在原论文中这样的三个变量组合起来，叫做triplet。如下：
 
 $$
-G_i=\{P_{*,i},\lambda_i,Q_{i,*}\}
+G_i=\{P_{\ast,i},\lambda_i,Q_{i,\ast}\}
 $$
 
 就是一个奇异值，左奇异向量，右奇异向量的组合。
@@ -137,10 +138,10 @@ $$
 其中:
 
 $$
-\begin{align}
-S(\omega_{ij})&=\overline{I}(\omega_{ij})U(\omega_{ij})\\
+\begin{aligned}
+S(\omega_{ij})&=\overline{I}(\omega_{ij})U(\omega_{ij})\\\\
 &=|\omega_{ij}\nabla_\omega \mathcal{L}|U(\omega_{ij})
-\end{align}
+\end{aligned}
 $$
 
 逐步解释一下，其中的$\nabla\mathcal{L}$是loss对$\omega$的梯度，表明如果把这个参数删掉，**loss 大概会变化多少**。AdaLoRA 借鉴了剪枝里的思想：  
@@ -293,10 +294,10 @@ $$W=W_0+BA$$
 QLoRA的核心公式就是如下：
 
 $$
-\begin{align}
-W_q={Quant}(W) \\
-\hat{W}=Dequant(W_q)
-\end{align}
+\begin{aligned}
+W_q&={Quant}(W) \\\\
+\hat{W}&=Dequant(W_q)
+\end{aligned}
 $$
 
 在QLoRA中将冻结的原始权重W量化成，压缩得到$W_q$，在真正计算的时候再将其解量化。

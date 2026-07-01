@@ -31,7 +31,7 @@ hide_from_home = false
 
 $$
 \begin{aligned}
-PE_{(pos,2i)}=\sin(\frac{pos}{10000^{\frac{2i}{d_{model}}}}) \\ 
+PE_{(pos,2i)}=\sin(\frac{pos}{10000^{\frac{2i}{d_{model}}}}) \\\\
 PE_{(pos,2i+1)}=\cos(\frac{pos}{10000^{\frac{2i}{d_{model}}}})
 \end{aligned}
 $$
@@ -54,22 +54,25 @@ RoPE将输入的序列位置信息通过旋转操作，嵌入到self-attention�
 [这个视频](https://www.bilibili.com/video/BV1FjrCBdESo?spm_id_from=333.788.videopod.sections&vd_source=5a4bb483003fcc440c31e2dedcbcb744)讲的很清楚，分别讲了为什么要用位置编码和RoPE如何推导。
 #### 旋转矩阵
 $$
-\left\{ \begin{matrix} \cos \alpha & -\sin\alpha\\ \sin\alpha & \cos \alpha \end{matrix}\right\}
+\left\{ \begin{matrix} \cos \alpha & -\sin\alpha\\\\ \sin\alpha & \cos \alpha \end{matrix}\right\}
 $$
-上面这个公式就是一个旋转矩阵，他乘上$\left\{ \begin{matrix} 0 \\ 1\end{matrix} \right\}$，就表明让这个向量在坐标轴沿逆时针旋转$\alpha$的角度。
+上面这个公式就是一个旋转矩阵，他乘上$\left\{ \begin{matrix} 0 \\\\ 1\end{matrix} \right\}$，就表明让这个向量在坐标轴沿逆时针旋转$\alpha$的角度。
 ![](https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/%E6%88%AA%E5%B1%8F2026-06-01%2018.30.08.png)
 如图，图中就是逆时针旋转30度。我们可以观察到表明语义的长度没有变化的同时，添加了表明位置信息的旋转角度$\alpha$。
 为了表明，于是便可以通过对原矩阵乘上一个旋转矩阵来添加其位置信息。如下：
 $$
-\begin{align} q'&=R(m\theta)q \\ k'&=R(n\theta)k \end{align}
+\begin{aligned}
+q'&=R(m\theta)q \\\\
+k'&=R(n\theta)k
+\end{aligned}
 $$
 对于p和q就分别乘上两个旋转矩阵，来表明其位置信息。
 $$
-\begin{align} 
-Score=(q')^T \cdot k'&=(R(m\theta)\cdot q)^T \cdot R(n\theta)\cdot k \\
-&=q^T \cdot R(m\theta)^T\cdot R(n\theta) \cdot k\\
+\begin{aligned}
+Score=(q')^T \cdot k'&=(R(m\theta)\cdot q)^T \cdot R(n\theta)\cdot k \\\\
+&=q^T \cdot R(m\theta)^T\cdot R(n\theta) \cdot k\\\\
 &=q^T\cdot R((n-m)\theta)\cdot k
-\end{align}
+\end{aligned}
 $$
 #### 拓展到普遍情况
 上述是基于两维矩阵举的例子，实际情况中的token都是上千维，对于这种情况，RoPE采用了分治法。对于4096维度的矩阵，就给他拆成2048对。对于每一对都乘上旋转矩阵、添加位置信息。
@@ -88,26 +91,26 @@ $$
 #### 相对正余弦编码
 正余弦编码虽然也包含相对位置信息，如下
 $$
-\begin{align}
-Q &=W_q(X_m+P_m) \\
-K&=W_k(X_n+P_n) \\
+\begin{aligned}
+Q &=W_q(X_m+P_m) \\\\
+K&=W_k(X_n+P_n) \\\\
 Score&=(X_m+P_m) (X_n+P_n)^T
-\end{align}
+\end{aligned}
 $$
 注意力分数计算已经简化了。展开后如下
 $$
-\begin{align}
-Score &=(X_m+P_m)(X_n^T+P_n^T) \\
+\begin{aligned}
+Score &=(X_m+P_m)(X_n^T+P_n^T) \\\\
 &=X_mX_n+P_mX_n^T+X_mP_n^T+P_mP_n^T
-\end{align}
+\end{aligned}
 $$
 其中$X_mX_n$是有效语义信息，而$P_mP_n^T$是有效位置信息，其余都是无效信息（噪声）。RoPE则如下：
 $$
-\begin{align}
-Score&=QK^T\\
-&=(R_mX_m)(R_nX_n)^T\\
+\begin{aligned}
+Score&=QK^T\\\\
+&=(R_mX_m)(R_nX_n)^T\\\\
 &=X_mR_{n-m}X_n^T
-\end{align}
+\end{aligned}
 $$
 很明显全是有效信息。
 信息的有效性直接关系到**模型的质量和训练成本**（噪声大的模型需要更多的训练数据）。

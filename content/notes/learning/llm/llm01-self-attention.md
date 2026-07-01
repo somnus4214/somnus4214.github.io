@@ -49,9 +49,11 @@ decoder 当前正在生成目标语言词，它用自己的 query 去源语言�
 区别于attention，自注意力机制的Q、K、V都是来自于同一个source。
 
 $$
-Q=X W_q \\
-K=X W_k \\
+\begin{aligned}
+Q&=X W_q \\\\
+K&=X W_k \\\\
 V=X W_v
+\end{aligned}
 $$
 
 上面公式中的X就是source，Q、K、V都是从X得到的。
@@ -113,32 +115,32 @@ self-attention虽然考虑了所有的输入变量，但是并没有考虑每个
 比如有8个head：
 
 $$
-head_1: Wq_1, Wk_1, Wv_1\\
-head_2: Wq_2, Wk_2, Wv_2\\
-...\\
-head_8: Wq_8, Wk_8, Wv_8\\
-
-
+\begin{aligned}
+head_1&: Wq_1, Wk_1, Wv_1\\\\
+head_2&: Wq_2, Wk_2, Wv_2\\\\
+\dots\\\\
+head_8&: Wq_8, Wk_8, Wv_8
+\end{aligned}
 $$
 
 对于每个head，都回去计算一遍output：
 
 $$
-Q_i = XWq_i\\
-K_i = XWk_i\\
-V_i = XWv_i\\
-\\
-head_i = softmax(Q_i K_i^T \sqrt{(d_k)})V_i\\
+\begin{aligned}
+Q_i&=XWq_i\\\\
+K_i&=XWk_i\\\\
+V_i&=XWv_i\\\\
+head_i&=softmax(Q_i K_i^T \sqrt{(d_k)})V_i
+\end{aligned}
 $$
 
 再把每个head都concat起来。
 
 $$
-concat = [head_1; head_2; ...; head_h]
-\\
-output = concat * W_o
-
-
+\begin{aligned}
+concat&=[head_1; head_2; \dots; head_h]\\\\
+output&=concat * W_o
+\end{aligned}
 $$
 
 最终的到新的输出。
