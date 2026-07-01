@@ -1,0 +1,76 @@
+<script>
+  (() => {
+    if (window.__somnusMathJaxMarkdownFixInstalled) return;
+    window.__somnusMathJaxMarkdownFixInstalled = true;
+
+    const repairMarkdownEmphasisInMath = () => {
+      document.querySelectorAll(".body").forEach((root) => {
+        let inMath = false;
+        let delimiter = "";
+
+        const updateMathState = (text) => {
+          for (let index = 0; index < text.length; index += 1) {
+            if (text[index] !== "$" || text[index - 1] === "\\") continue;
+            const token = text[index + 1] === "$" ? "$$" : "$";
+            if (!inMath) {
+              inMath = true;
+              delimiter = token;
+            } else if (token === delimiter) {
+              inMath = false;
+              delimiter = "";
+            }
+            if (token === "$$") index += 1;
+          }
+        };
+
+        const visit = (node) => {
+          if (node.nodeType === Node.TEXT_NODE) {
+            updateMathState(node.nodeValue || "");
+            return;
+          }
+
+          if (node.nodeType !== Node.ELEMENT_NODE) return;
+          if (["SCRIPT", "STYLE", "TEXTAREA", "CODE", "PRE"].includes(node.tagName)) return;
+
+          if (inMath && node.tagName === "EM") {
+            node.replaceWith(document.createTextNode(`_${node.textContent}_`));
+            return;
+          }
+
+          if (inMath && node.tagName === "STRONG") {
+            node.replaceWith(document.createTextNode(`__${node.textContent}__`));
+            return;
+          }
+
+          Array.from(node.childNodes).forEach(visit);
+        };
+
+        Array.from(root.childNodes).forEach(visit);
+      });
+    };
+
+    let mathJaxConfig;
+    Object.defineProperty(window, "MathJax", {
+      configurable: true,
+      get() {
+        return mathJaxConfig;
+      },
+      set(config) {
+        if (config && typeof config === "object") {
+          const startup = config.startup || {};
+          const previousPageReady = startup.pageReady;
+          config.startup = {
+            ...startup,
+            pageReady() {
+              repairMarkdownEmphasisInMath();
+              return typeof previousPageReady === "function"
+                ? previousPageReady.call(this)
+                : MathJax.startup.defaultPageReady();
+            },
+          };
+        }
+        mathJaxConfig = config;
+      },
+    });
+  })();
+</script>
