@@ -1,0 +1,30 @@
+:root {
+  --text-font: "LXGW WenKai", "ZedTextFtl", system-ui, sans-serif;
+  --header-font: "LXGW WenKai", "ZedDisplayFtl", "Space Grotesk", system-ui, sans-serif;
+  --code-font: "Maple Mono NF CN", "Jetbrains Mono", ui-monospace, monospace;
+  --mono-text-font: "Maple Mono NF CN", "Jetbrains Mono", ui-monospace, monospace;
+}
+
+@font-face {
+  font-family: "LXGW WenKai";
+  src: url("/fonts/LXGWWenKai-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Maple Mono NF CN";
+  src: url("/fonts/MapleMono-NF-CN-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.page-header {
+  line-height: 1.25;
+}
+
+.body :is(p, li) {
+  overflow-wrap: anywhere;
+}

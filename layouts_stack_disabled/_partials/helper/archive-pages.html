@@ -1,0 +1,5 @@
+{{- $pages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections -}}
+{{- $pages = where $pages "Params.professionalReport" "ne" true -}}
+{{- $pages = partial "helper/pages-sort.html" (dict "Pages" $pages "Context" .) -}}
+
+{{- return $pages -}}

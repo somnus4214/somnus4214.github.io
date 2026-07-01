@@ -1,0 +1,4 @@
+<meta name="author" content="{{ config.extra.author | default(value=config.author) }}" />
+{% if config.extra.mermaid | default(value=true) %}
+  <script defer src="{{ get_url(path='js/mermaid-codeblocks.js') }}"></script>
+{% endif %}

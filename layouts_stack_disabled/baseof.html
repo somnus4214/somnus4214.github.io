@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode }}" dir="{{ default `ltr` .Language.LanguageDirection }}">
+    <head>
+        {{- partial "head/head.html" . -}}
+        {{- block "head" . -}}{{ end }}
+    </head>
+    <body class="{{ block `body-class` . }}{{ end }}">
+        {{- if .Params.professionalReport -}}
+            <script>
+                (function() {
+                    document.documentElement.dataset.scheme = 'light';
+                })();
+            </script>
+        {{- else -}}
+            {{- partial "head/colorScheme" . -}}
+            <script>
+                (function () {
+                    var terminalStyleKey = 'SomnusTerminalStyle';
+                    var terminalStyleValue = localStorage.getItem(terminalStyleKey);
+
+                    if (terminalStyleValue === null) {
+                        localStorage.setItem(terminalStyleKey, 'on');
+                        terminalStyleValue = 'on';
+                    }
+
+                    if (terminalStyleValue === 'on') {
+                        document.documentElement.dataset.terminalStyle = 'on';
+                    }
+                })();
+            </script>
+            <script>
+                window.addEventListener('load', function () {
+                    var toggle = document.getElementById('dark-mode-toggle');
+
+                    if (toggle) {
+                        toggle.addEventListener('click', function (event) {
+                            event.preventDefault();
+                            event.stopImmediatePropagation();
+
+                            var nextScheme =
+                                document.documentElement.dataset.scheme === 'dark' ? 'light' : 'dark';
+
+                            document.documentElement.dataset.scheme = nextScheme;
+                            localStorage.setItem('StackColorScheme', nextScheme);
+
+                            requestAnimationFrame(function () {
+                                window.dispatchEvent(
+                                    new CustomEvent('onColorSchemeChange', {
+                                        detail: nextScheme
+                                    })
+                                );
+                            });
+                        }, true);
+                    }
+
+                    var terminalStyleToggle = document.getElementById('terminal-style-toggle');
+                    if (!terminalStyleToggle) return;
+
+                    var terminalStyleKey = 'SomnusTerminalStyle';
+                    var terminalBootTimer = null;
+                    var terminalBootLines = [
+                        'tty1 - /var/log/somnus',
+                        '> probing content/post ... [OK]',
+                        '> mounting archives, search, links ... [OK]',
+                        '> loading sidebar profile ... [OK]',
+                        '> applying crt shader ... [OK]',
+                        '> system ready. welcome back.'
+                    ];
+
+                    function getTerminalBoot() {
+                        var main = document.querySelector('main.main');
+                        if (!main) return null;
+
+                        var boot = main.querySelector(':scope > .terminal-boot');
+                        if (!boot) {
+                            boot = document.createElement('div');
+                            boot.className = 'terminal-boot';
+                            boot.setAttribute('aria-live', 'polite');
+                            main.insertBefore(boot, main.firstChild);
+                        }
+
+                        return boot;
+                    }
+
+                    function removeTerminalBoot() {
+                        if (terminalBootTimer) {
+                            clearTimeout(terminalBootTimer);
+                            terminalBootTimer = null;
+                        }
+
+                        var boot = document.querySelector('main.main > .terminal-boot');
+                        if (boot) boot.remove();
+                    }
+
+                    function getTerminalBootText() {
+                        return terminalBootLines.join('\n');
+                    }
+
+                    function shouldAnimateTerminalBoot() {
+                        var navigation = performance.getEntriesByType &&
+                            performance.getEntriesByType('navigation')[0];
+                        var isReload = navigation && navigation.type === 'reload';
+
+                        if (isReload) return true;
+                        if (!document.referrer) return true;
+
+                        try {
+                            return new URL(document.referrer).origin !== window.location.origin;
+                        } catch (error) {
+                            return true;
+                        }
+                    }
+
+                    function showTerminalBoot() {
+                        var boot = getTerminalBoot();
+                        if (!boot) return;
+
+                        if (terminalBootTimer) {
+                            clearTimeout(terminalBootTimer);
+                            terminalBootTimer = null;
+                        }
+
+                        boot.textContent = getTerminalBootText();
+                    }
+
+                    function playTerminalBoot() {
+                        var boot = getTerminalBoot();
+                        if (!boot) return;
+
+                        if (terminalBootTimer) {
+                            clearTimeout(terminalBootTimer);
+                            terminalBootTimer = null;
+                        }
+
+                        var text = getTerminalBootText();
+                        var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+                        boot.textContent = '';
+                        boot.classList.add('is-typing');
+
+                        if (reducedMotion) {
+                            boot.textContent = text;
+                            return;
+                        }
+
+                        var index = 0;
+
+                        function typeNextCharacter() {
+                            boot.textContent = text.slice(0, index);
+
+                            if (index <= text.length) {
+                                index++;
+                                terminalBootTimer = setTimeout(typeNextCharacter, 14 + Math.random() * 20);
+                            } else {
+                                terminalBootTimer = null;
+                            }
+                        }
+
+                        terminalBootTimer = setTimeout(typeNextCharacter, 180);
+                    }
+
+                    function syncTerminalToggle(forceAnimation) {
+                        var enabled = document.documentElement.dataset.terminalStyle === 'on';
+                        terminalStyleToggle.setAttribute('aria-pressed', enabled ? 'true' : 'false');
+
+                        if (enabled) {
+                            if (forceAnimation || shouldAnimateTerminalBoot()) {
+                                playTerminalBoot();
+                            } else {
+                                showTerminalBoot();
+                            }
+                        } else {
+                            removeTerminalBoot();
+                        }
+                    }
+
+                    function toggleTerminalStyle(event) {
+                        if (event) {
+                            event.preventDefault();
+                            event.stopImmediatePropagation();
+                        }
+
+                        var enabled = document.documentElement.dataset.terminalStyle === 'on';
+
+                        if (enabled) {
+                            delete document.documentElement.dataset.terminalStyle;
+                            localStorage.setItem(terminalStyleKey, 'off');
+                        } else {
+                            document.documentElement.dataset.terminalStyle = 'on';
+                            localStorage.setItem(terminalStyleKey, 'on');
+                            syncTerminalToggle(true);
+                            return;
+                        }
+
+                        syncTerminalToggle();
+                    }
+
+                    terminalStyleToggle.addEventListener('click', toggleTerminalStyle, true);
+                    terminalStyleToggle.addEventListener('keydown', function (event) {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                            toggleTerminalStyle(event);
+                        }
+                    });
+                    syncTerminalToggle();
+                });
+            </script>
+        {{- end -}}
+
+        {{/* The container is wider when there's any activated widget */}}
+        {{- $hasWidget := false -}}
+        {{- range .Site.Params.widgets -}}
+            {{- if gt (len .) 0 -}}
+                {{- $hasWidget = true -}}
+            {{- end -}}
+        {{- end -}}
+        <div class="container main-container flex on-phone--column {{ if $hasWidget }}extended{{ else }}compact{{ end }}">
+            {{- block "left-sidebar" . -}}
+                {{ partial "sidebar/left.html" . }}
+            {{- end -}}
+            {{- block "right-sidebar" . -}}{{ end }}
+            <main class="main full-width">
+                {{- block "main" . }}{{- end }}
+            </main>
+        </div>
+        {{ partial "footer/include.html" . }}
+    </body>
+</html>

@@ -1,6 +1,6 @@
 # Somnus Blog
 
-Somnus 的个人博客源码仓库，基于 [Zola](https://www.getzola.org/) 构建。站点保留了原先接近 Blowfish 的轻量博客体验，并内置中文字体、明暗主题、分类标签、RSS/Atom、全文搜索、代码复制、Mermaid 和 MathJax 渲染。
+Somnus 的个人博客源码仓库，基于 [Zola](https://www.getzola.org/) 和 [Apollo](https://github.com/not-matthias/apollo) 主题构建。站点保留中文字体、明暗主题切换、分类标签、RSS/Atom、全文搜索、代码复制、Mermaid 和 MathJax 渲染。
 
 ## 环境要求
 
@@ -53,10 +53,11 @@ zola build --force
 - `content/notes/`：知识笔记
 - `content/diary/`：日记
 - `content/page/`：独立页面，比如友链
+- `themes/apollo/`：Apollo 主题子模块
 - `static/fonts/`：自定义字体
-- `static/css/somnus-zola.css`：站点样式
-- `static/js/`：主题切换、代码复制、Mermaid 和搜索脚本
-- `templates/`：Zola/Tera 模板
+- `static/css/apollo-overrides.css`：Apollo 的轻量本地样式覆盖
+- `templates/`：少量 Apollo 覆盖模板
+- `templates_somnus_disabled/`：切换 Apollo 前的旧本地模板备份
 - `zola.toml`：站点配置
 
 ## 写公开文章
@@ -94,7 +95,7 @@ math = true
 
 ## 搜索
 
-搜索由 Zola 生成的 `search_index.en.js` 和 `elasticlunr` 提供。生产构建会自动包含索引，无需额外生成搜索文件。
+搜索由 Zola 生成的 `search_index.en.json` 和 Apollo 内置的 `elasticlunr` 搜索弹窗提供。生产构建会自动包含索引，无需额外生成搜索文件。
 
 说明：Zola 的内置搜索语言不支持 `zh`，所以索引语言配置为 `en`，HTML 仍标记为 `zh-CN`。中文内容可以搜索，但不是中文分词搜索。
 
@@ -114,7 +115,7 @@ date = 2026-05-11T20:00:00+08:00
 
 ## Markdown 增强
 
-- Mermaid：使用普通代码块 ```` ```mermaid ````，前端脚本会自动渲染。
+- Mermaid：使用 Apollo 的 shortcode：`{% mermaid() %}...{% end %}`。
 - MathJax：支持 `$...$`、`$$...$$`、`\(...\)`、`\[...\]`。
 - Emoji：Zola 已开启 `render_emoji`，常见 `:rocket:` 语法会在构建时转成 emoji。
 

@@ -1,12 +1,14 @@
 base_url = "https://blog.somnus.top"
-title = "Somnus的小站"
+title = "Somnus的博客"
 description = "Somnus 的个人博客，记录学习、项目、实验和日常。"
+theme = "apollo"
 default_language = "en"
-compile_sass = false
+compile_sass = true
 build_search_index = true
 generate_feeds = true
 feed_filenames = ["atom.xml", "rss.xml"]
 author = "Somnus"
+minify_html = true
 
 taxonomies = [
   { name = "categories", feed = true },
@@ -28,7 +30,9 @@ theme = "github-light"
 [search]
 include_title = true
 include_description = true
+include_path = true
 include_content = true
+index_format = "elasticlunr_json"
 
 [extra]
 copyright = "© 2026 Somnus"
@@ -36,29 +40,50 @@ author = "Somnus"
 bio = "记录学习、项目、实验和日常。偏爱把折腾过的东西写下来。"
 avatar = "/img/avatar.png"
 github = "https://github.com/somnus0917"
-email = "mailto:somnus0917chen@hotmail.com"
+email = "mailto:mailmeblog@somnus.wiki"
 html_lang = "zh-CN"
+toc = true
+use_cdn = false
+favicon = "/img/favicon.png"
+theme = "toggle-auto"
+fancy_code = true
+dynamic_note = true
+mermaid = true
+mathjax = true
+word_count = false
+stylesheets = ["css/apollo-overrides.css"]
 
-[[extra.nav]]
-name = "首页"
-url = "/"
+menu = [
+  { name = "文章", url = "/posts", weight = 1 },
+  { name = "笔记", url = "/notes", weight = 2 },
+  { name = "日记", url = "/diary", weight = 3 },
+  { name = "分类", url = "/categories", weight = 4 },
+  { name = "标签", url = "/tags", weight = 5 },
+]
 
-[[extra.nav]]
-name = "技术博客"
-url = "/posts/"
+socials = [
+  { name = "GitHub", url = "https://github.com/somnus0917", icon = "github" },
+  { name = "Email", url = "mailto:mailmeblog@somnus.wiki", icon = "email" },
+  { name = "RSS", url = "/rss.xml", icon = "rss" },
+]
 
-[[extra.nav]]
-name = "知识笔记"
-url = "/notes/"
+fediverse = false
+fediverse_creator = ""
 
-[[extra.nav]]
-name = "日记"
-url = "/diary/"
+[extra.taxonomies]
+sort_by = "page_count"
+reverse = true
 
-[[extra.nav]]
-name = "分类"
-url = "/categories/"
+[extra.analytics]
+enabled = false
 
-[[extra.nav]]
-name = "搜索"
-url = "/search/"
+[extra.analytics.goatcounter]
+user = ""
+host = "goatcounter.com"
+
+[extra.analytics.umami]
+website_id = ""
+host_url = "https://api-gateway.umami.dev/"
+
+[extra.analytics.google]
+tracking_id = ""

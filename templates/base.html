@@ -1,64 +1,42 @@
-<!doctype html>
-<html lang="{{ config.extra.html_lang | default(value='zh-CN') }}">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="color-scheme" content="light dark">
-    <title>{% block title %}{{ config.title }}{% endblock title %}</title>
-    <meta name="description" content="{% block description %}{{ config.description }}{% endblock description %}">
-    <link rel="icon" href="{{ get_url(path='img/favicon.png') }}">
-    <link rel="alternate" type="application/atom+xml" title="{{ config.title }} Atom" href="{{ get_url(path='atom.xml', trailing_slash=false) }}">
-    <link rel="alternate" type="application/rss+xml" title="{{ config.title }} RSS" href="{{ get_url(path='rss.xml', trailing_slash=false) }}">
-    <link rel="stylesheet" href="{{ get_url(path='css/somnus-zola.css') }}">
-    <script>
-      (() => {
-        const stored = localStorage.getItem("somnus-theme");
-        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        document.documentElement.dataset.theme = stored || (prefersDark ? "dark" : "light");
-      })();
-    </script>
-    <script>
-      window.MathJax = {
-        tex: {
-          inlineMath: [["$", "$"], ["\\(", "\\)"]],
-          displayMath: [["$$", "$$"], ["\\[", "\\]"]],
-          tags: "ams"
-        },
-        options: {
-          skipHtmlTags: ["script", "noscript", "style", "textarea", "pre"]
-        }
-      };
-    </script>
-    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
-    {% block head %}{% endblock head %}
-  </head>
-  <body>
-    <header class="site-header">
-      <a class="brand" href="{{ get_url(path='/') }}">
-        <img src="{{ get_url(path='img/SSicon.png') }}" alt="" width="32" height="32">
-        <span>{{ config.title }}</span>
-      </a>
-      <nav class="site-nav" aria-label="主导航">
-        {% for item in config.extra.nav %}
-          <a href="{{ item.url }}">{{ item.name }}</a>
-        {% endfor %}
-      </nav>
-      <button class="theme-toggle" type="button" aria-label="切换明暗主题">☾</button>
-    </header>
+{% import "macros/macros.html" as post_macros %}
 
-    <main class="site-main">
-      {% block content %}{% endblock content %}
-    </main>
+<!DOCTYPE html>
+<html lang="{{ config.extra.html_lang | default(value='zh-CN') }}" class="dark light">
 
-    <footer class="site-footer">
-      <span>{{ config.extra.copyright }}</span>
-      <span><a href="{{ config.extra.github }}">GitHub</a></span>
-      <span><a href="{{ config.extra.email }}">Email</a></span>
-    </footer>
+    {% include "partials/header.html" %}
 
-    <button class="scroll-top" type="button" aria-label="回到顶部">↑</button>
-    <script defer src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-    <script defer src="{{ get_url(path='js/somnus-zola.js') }}"></script>
-    {% block scripts %}{% endblock scripts %}
-  </body>
+    <body>
+        {% include "apollo/body_start.html" ignore missing %}
+        <div class="left-content">
+            {% block left_content %}
+            {% endblock left_content %}
+        </div>
+
+        <div class="content">
+            {% include "partials/nav.html" %}
+
+            {% block main_content %}
+                Nothing here?!
+            {% endblock main_content %}
+
+            {% if page.extra.comment is defined %}
+                {% set show_comment = page.extra.comment %}
+            {% else %}
+                {% set show_comment = false %}
+            {% endif %}
+
+            {% if show_comment %}
+                <div class="giscus">
+                </div>
+                {% include "_giscus_script.html" %}
+            {% endif %}
+        </div>
+
+        <div class="right-content">
+            {% block right_content %}
+            {% endblock right_content %}
+        </div>
+        {% include "apollo/body_end.html" ignore missing %}
+    </body>
+
 </html>
