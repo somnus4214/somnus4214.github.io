@@ -1,0 +1,52 @@
+<section class="latex-previewer" aria-label="LaTeX 在线预览器">
+  <div class="latex-previewer__toolbar">
+    <strong>在线预览</strong>
+    <span>输入文字/LaTeX，右侧即时渲染</span>
+  </div>
+  <div class="latex-previewer__grid">
+    <textarea data-latex-input spellcheck="false">当 $a \ne 0$ 时：
+
+$$
+x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}
+$$</textarea>
+    <div class="latex-previewer__output" data-latex-preview></div>
+  </div>
+</section>
+
+<script>
+  (() => {
+    const root = document.currentScript.previousElementSibling;
+    const input = root.querySelector("[data-latex-input]");
+    const preview = root.querySelector("[data-latex-preview]");
+    let timer;
+
+    const typeset = () => {
+      if (window.MathJax && MathJax.typesetClear) {
+        MathJax.typesetClear([preview]);
+      }
+      preview.textContent = input.value;
+      if (!window.MathJax || !MathJax.typesetPromise) return;
+      MathJax.typesetPromise([preview]).catch((error) => {
+        preview.textContent = error.message || String(error);
+      });
+    };
+
+    const schedule = () => {
+      clearTimeout(timer);
+      timer = setTimeout(typeset, 120);
+    };
+
+    input.addEventListener("input", schedule);
+    typeset();
+
+    let attempts = 0;
+    const waitForMathJax = () => {
+      if (window.MathJax && MathJax.typesetPromise) {
+        typeset();
+      } else if (attempts++ < 40) {
+        setTimeout(waitForMathJax, 100);
+      }
+    };
+    waitForMathJax();
+  })();
+</script>

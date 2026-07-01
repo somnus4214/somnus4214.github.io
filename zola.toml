@@ -56,9 +56,10 @@ stylesheets = ["css/apollo-overrides.css"]
 menu = [
   { name = "文章", url = "/posts", weight = 1 },
   { name = "笔记", url = "/notes", weight = 2 },
-  { name = "日记", url = "/diary", weight = 3 },
-  { name = "分类", url = "/categories", weight = 4 },
-  { name = "标签", url = "/tags", weight = 5 },
+  { name = "公式", url = "/latex", weight = 3 },
+  { name = "日记", url = "/diary", weight = 4 },
+  { name = "分类", url = "/categories", weight = 5 },
+  { name = "标签", url = "/tags", weight = 6 },
 ]
 
 socials = [
