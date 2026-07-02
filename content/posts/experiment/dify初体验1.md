@@ -9,6 +9,7 @@ categories = ["experiment"]
 
 [extra]
 image = "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260323-experiment-dify-1-3c2b29-illustration.png"
+math = true
 +++
 ## 工作流介绍。
 

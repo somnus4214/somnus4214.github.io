@@ -29,6 +29,70 @@
   overflow-wrap: anywhere;
 }
 
+.body strong {
+  color: var(--primary-color);
+  font-weight: 800;
+}
+
+.body em {
+  display: inline-block;
+  font-style: normal;
+  color: var(--primary-color);
+  background: color-mix(in srgb, var(--primary-color) 12%, transparent);
+  border-radius: 0.18em;
+  padding: 0 0.12em;
+  transform: skewX(-8deg);
+  transform-origin: center;
+}
+
+.body .somnus-image-frame {
+  display: block;
+  max-width: 100%;
+  margin: 1rem auto;
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+
+.body .somnus-image-frame.is-loading {
+  min-height: min(56vw, 18rem);
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--text-2) 8%, transparent),
+    color-mix(in srgb, var(--primary-color) 16%, transparent),
+    color-mix(in srgb, var(--text-2) 8%, transparent)
+  );
+  background-size: 240% 100%;
+  animation: somnus-image-loading 1.15s ease-in-out infinite;
+}
+
+.body .somnus-image-frame img {
+  display: block;
+  max-width: 100%;
+  margin: 0 auto;
+  opacity: 0;
+  transition: opacity 0.22s ease;
+}
+
+.body .somnus-image-frame.is-loaded {
+  min-height: 0;
+  background: transparent;
+  animation: none;
+}
+
+.body .somnus-image-frame.is-loaded img {
+  opacity: 1;
+}
+
+@keyframes somnus-image-loading {
+  from {
+    background-position: 100% 0;
+  }
+
+  to {
+    background-position: -100% 0;
+  }
+}
+
 .latex-previewer {
   margin: 1rem 0 1.4rem;
   border: 1px solid var(--border-color, rgba(127, 127, 127, 0.24));
@@ -141,5 +205,15 @@
   .latex-previewer textarea {
     border-right: 0;
     border-bottom: 1px solid var(--border-color, rgba(127, 127, 127, 0.18));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .body .somnus-image-frame.is-loading {
+    animation: none;
+  }
+
+  .body .somnus-image-frame img {
+    transition: none;
   }
 }

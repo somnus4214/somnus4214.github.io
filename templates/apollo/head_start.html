@@ -1,3 +1,112 @@
+<link rel="preload"
+      href="{{ get_url(path='fonts/LXGWWenKai-Regular.woff2') }}"
+      as="font"
+      type="font/woff2"
+      crossorigin />
+
+<style>
+  html.font-loading body::before {
+    content: "";
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #ef5350, transparent);
+    animation: somnus-font-loading 1s ease-in-out infinite;
+  }
+
+  html.font-loading .content {
+    opacity: 0;
+  }
+
+  html.font-ready .content {
+    animation: somnus-font-ready 0.18s ease-out;
+  }
+
+  @keyframes somnus-font-loading {
+    from {
+      transform: translateX(-100%);
+    }
+
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes somnus-font-ready {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html.font-loading body::before,
+    html.font-ready .content {
+      animation: none;
+    }
+  }
+</style>
+<script>
+  (() => {
+    const root = document.documentElement;
+    const readyKey = "somnus-lxgw-font-ready";
+
+    if (!("fonts" in document)) return;
+
+    try {
+      if (sessionStorage.getItem(readyKey) === "1") {
+        root.classList.add("font-ready");
+        return;
+      }
+    } catch {
+      // Ignore storage failures and fall back to normal font loading.
+    }
+
+    root.classList.add("font-loading");
+
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      root.classList.remove("font-loading");
+      root.classList.add("font-ready");
+      try {
+        sessionStorage.setItem(readyKey, "1");
+      } catch {
+        // Ignore storage failures.
+      }
+    };
+
+    const timeout = window.setTimeout(finish, 1200);
+    const waitForFont = () => {
+      document.fonts
+        .load('1em "LXGW WenKai"')
+        .then(() => document.fonts.ready)
+        .then(() => {
+          window.clearTimeout(timeout);
+          finish();
+        })
+        .catch(() => {
+          window.clearTimeout(timeout);
+          finish();
+        });
+    };
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", waitForFont, { once: true });
+    } else {
+      waitForFont();
+    }
+  })();
+</script>
+
+{% if config.extra.mathjax | default(value=false) or page.extra.mathjax | default(value=false) or page.extra.math | default(value=false) %}
 <script>
   (() => {
     if (window.__somnusMathJaxMarkdownFixInstalled) return;
@@ -74,3 +183,4 @@
     });
   })();
 </script>
+{% endif %}

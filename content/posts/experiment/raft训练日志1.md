@@ -10,6 +10,7 @@ tags = ["Blog", "CV", "DL", "AI"]
 
 [extra]
 image = "https://somnusblog.oss-cn-shanghai.aliyuncs.com/images/20260322-experiment-raft-1-c17009-illustration.png"
+math = true
 +++
 ## 前情提要
 
