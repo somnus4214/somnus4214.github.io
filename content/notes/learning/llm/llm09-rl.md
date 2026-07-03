@@ -1,6 +1,7 @@
 +++
 title = "ppo vs dpo vs grpo"
 date = 2026-06-30T14:30:47+08:00
+updated = 2026-07-03T10:30:00+08:00
 draft = false
 path = "notes/ppo vs dpo vs grpo"
 
@@ -132,4 +133,109 @@ $\min$是取最小值，也是整个公式*最精妙*的地方。
 
 ---
 ## DPO
-脑力今日已过载，明天再看。
+### PPO的问题
+前提提要中提到的，rlhf中为了让大模型的回答符合人类喜好，都会走过三个部分，sft、rm、rl。其中ppo就是rl部分使用的算法。
+在rl（PPO）部分需要同时读取四个模型：要训练的原模型、计算KL散度需要的旧模型、评价模型、奖励模型，问题很明显，就是模型太多。稍微大一点的模型，即使使用了显存优化技术，单卡也根本没办法跑。
+### 数学推导
+即direct preference optimization。无论是PPO还是DPO，想要完成的目标都是一模一样的，就是让模型$\pi$尽可能得到更高的奖励$r(x,y)$，同时又不能离原始参考模型$\pi_{ref}$太远（不能让KL散度太大）。
+数学表达如下：
+$$
+\underset{\pi}\max \bigg\{\mathbb{E}_{x\sim\mathcal{D},y\sim\pi}[r(x,y)]-\beta\mathbb{D}_{KL}(\pi(y|x)\|\pi_{ref}(y|x))\bigg\}
+$$
+其中$\beta$是KL散度的惩罚系数，为了控制模型不能偏离老模型太远。
+对于上面的公式，进行展开KL散度。得到：
+$$
+\underset{\pi}\max\mathbb{E}_{x\sim\mathcal{D}}\mathbb{E}_{y\sim\pi(y|x)}\bigg[r(x,y)-\beta\log \frac{\pi(y|x)}{\pi_{ref}(y|x)} \bigg]
+$$
+这一步的推导是值得仔细说一下的。对于前一项即奖励项$\mathbb{E}_{x\sim\mathcal{D},y\sim\pi}[r(x,y)]$。
+>根据概率论的全期望公式（或者联合概率分布拆解$P(x,y)=P(x)P(y|x)$）。
+
+这一项就完全等于两层嵌套的期望即$\mathbb{E}_{x\sim\mathcal{D}}\mathbb{E}_{y\sim\pi(y|x)}r(x,y)$.
+对于后一项即惩罚项$\beta\mathbb{D}_{KL}(\pi(y|x)\|\pi_{ref}(y|x)$
+>KL散度的计算基本公式是这样的：$\mathbb{D}_{KL}(P\|Q)=\mathbb{E}_{x\sim P}\big[\log\frac{P(x)}{Q(x)}\big]$
+
+直接使用上面KL散度的公式带入，得到：$\beta\mathbb{E}_{y\sim\pi(y|x)}[\log\frac{\pi(y|x)}{\pi_{ref}(y|x)}]$ 
+>此处为什么是对y求期望呢，是因为KL散度关注的就是对于生成的结果y在不同策略下概率分布的差异，我们的策略P就是正在训练的新策略$\pi(y|x)$，而策略Q就是原始的参考模型$\pi_{ref}(y|x)$。
+>此时值得注意的是，我们在训练大模型的时候，不可能不基于输入x和数据$\mathcal{D}$训练，而我们这个公式中就没有对x求期望，所以这里是原论文中一个不严谨的地方（或者说原论文为了公式简洁），此处省略掉了对于x的期望
+
+我们把省略的期望加上去，得到：$\beta\mathbb{E}_{x\sim\mathcal{D}}\mathbb{E}_{y\sim\pi(y|x)}[\log\frac{\pi(y|x)}{\pi_{ref}(y|x)}]$
+然后把左右两项都都替换，然后合并同类项得到：
+$$
+\begin{aligned}
+原式&=
+\underset{\pi}\max\mathbb{E}_{x\sim\mathcal{D}}\mathbb{E}_{y\sim\pi(y|x)}r(x,y)-\underset{\pi}\max\mathbb{E}_{x\sim\mathcal{D}}\mathbb{E}_{y\sim\pi(y|x)}\beta\log \frac{\pi(y|x)}{\pi_{ref}(y|x)}
+\\
+&=\underset{\pi}\max\mathbb{E}_{x\sim\mathcal{D}}\mathbb{E}_{y\sim\pi(y|x)}\bigg[r(x,y)-\beta\log \frac{\pi(y|x)}{\pi_{ref}(y|x)} \bigg] 
+\end{aligned}
+$$
+对于这个公式我们再把中括号中的两项调换一下顺序，并除以一个$\beta$。
+>我们想求的是能让这个式子得到最大对应的$\pi$，于是除以$\beta$是没有影响的，调换顺序，就从原本的求max变成求min
+
+$$
+\underset{\pi}\min\mathbb{E}_{x\sim\mathcal{D}}\mathbb{E}_{y\sim\pi(y|x)}\bigg[\log\frac{\pi(y|x)}{\pi_{ref}(y|x)}-\frac{r(x,y)}{\beta} \bigg]
+$$
+此时来到**最关键的一步**，我们把后面的$\frac{r(x,y)}{\beta}$也放到log中，根据高中知识可以得到：
+$$
+\begin{aligned}
+\underset{\pi}\min\mathbb{E}_{x\sim\mathcal{D}}\mathbb{E}_{y\sim\pi(y|x)}\bigg[\log\frac{\pi(y|x)}{\pi_{ref}(y|x)}-\log \exp(\frac{r(x,y)}{\beta}) \bigg] \\
+=\underset{\pi}\min\mathbb{E}_{x\sim\mathcal{D}}\mathbb{E}_{y\sim\pi(y|x)}\bigg[\log\frac{\pi(y|x)}{\pi_{ref}(y|x)\exp(\frac{r(x,y)}{\beta})}\bigg] 
+\end{aligned}
+$$
+看到这个式子我们能想到，如果能把log后面的的式子凑成满足KL散度的格式就好了，
+>满足KL散度有两个硬性的要求，即P和Q分别要满足合法的概率分布，即两者所有可能的y加起来要等于1！！$\sum_y P(y)=1$ 
+
+我们可以观察到，分子是能满足的，但是分母是绝对不满足的，于是我们便可以想办法凑出他，假设分母的概率分布总和为Z，要让他满足KL散度，就可以直接除掉Z。此时Z的计算公式如下：$Z(x) = \sum_{y'} \pi_{\text{ref}}(y'|x) \exp\left(\frac{r(x,y')}{\beta}\right)$，带入得到：
+$$
+\begin{aligned}
+原式
+&=\underset{\pi}\min\mathbb{E}_{x\sim\mathcal{D}}\mathbb{E}_{y\sim\pi(y|x)}\bigg[\log\frac{\pi(y|x)}{\frac{1}{\displaystyle Z(x)}\pi_{ref}(y|x)\exp(\frac{r(x,y)}{\beta}) \displaystyle Z(x)}\bigg] \\
+&=\underset{\pi}\min\mathbb{E}_{x\sim\mathcal{D}}\mathbb{E}_{y\sim\pi(y|x)}\bigg[\log\frac{\pi(y|x)}{\frac{1}{\displaystyle Z(x)}\pi_{ref}(y|x)\exp(\frac{r(x,y)}{\beta})}-\log \displaystyle Z(x)\bigg] \\
+\end{aligned}
+
+$$
+设：
+$$\pi^*(y|x) = \frac{1}{Z(x)} \pi_{\text{ref}}(y|x) \exp\left( \frac{r(x,y)}{\beta}  \right)$$
+带入得到：
+$$= \min_\pi \mathbb{E}_{x \sim \mathcal{D}} \bigg[ \mathbb{D}_{\text{KL}} \Big( \pi(y|x) || \pi^*(y|x) \Big) - \log Z(x) \bigg]$$
+>此处的$\mathbb{E}_{y \sim \pi(y|x)} \left[ \log Z(x) \right]$，由于$Z(x)$上面的定义，所有的$y'$都被遍历并加起来了，于是这个变量就和y一点关系也没有了，对于“对y求期望”这一项就相当于常数，然后常数的期望就等于常数本身，于是直接就等于$\log Z(x)$ 
+
+此时我们的问题关键就到了，找到一个策略，让上面这个式子最小化！！根据*吉布斯不等式*，两个概略分布的KL散度永远大于等于0，只有当两个分布完全一模一样的时候，散度才能等于0，为了让上面的式子最小，我们就得到：
+$$
+\pi(y|x)=\pi^*(y|x)=\frac{1}{Z(x)}\pi_{ref}(y|x)\exp(\frac{r(x|y)}{\beta})
+$$
+至此，传统的PPO方法推导就会结束，传统的方法就是：既然我知道了最优解长这个样子，那我就去训练一个奖励模型 $r(x,y)$，然后用强化学习逼近这个 $\pi^*$。
+但是DPO不一样。🥹
+### 神来之笔
+DPO作者提出我们既然已经知道最优策略$\pi^*$长这个样子了，那么我们为什么还要花功夫去把$r(x,y)$求出来呢，我们为什么不直接**把 $r(x,y)$ 用 $\pi^*$ 表达出来**？。
+两边同除$\pi_{ref}(y|x)$：
+$$\frac{\pi^*(y|x)}{\pi_{\text{ref}}(y|x)} = \frac{1}{Z(x)} \exp\left( \frac{1}{\beta} r(x,y) \right)$$
+两边同时取自然对数 $\log$：
+$$\log \frac{\pi^*(y|x)}{\pi_{\text{ref}}(y|x)} = \log \left( \frac{1}{Z(x)} \exp\left( \frac{1}{\beta} r(x,y) \right) \right)$$
+$$\log \frac{\pi^*(y|x)}{\pi_{\text{ref}}(y|x)} = -\log Z(x) + \frac{1}{\beta} r(x,y)$$
+表示$r(x,y)$:
+$$r(x,y) = \beta \log \frac{\pi^*(y|x)}{\pi_{\text{ref}}(y|x)} + \beta \log Z(x)$$
+新的问题又出现了，这里的$Z(x)$是所有可能回答的积分，计算会非常复杂，怎么办？
+此时DPO又回归数据的本质了，我们不需要关注一个回答的绝对分数是多少多少，我们**只需要关注偏好**即（*preference*，DPO里面的P），换句话说就是，我们只关注哪个回答更好，哪个更坏。
+根据Bradley-Terry 模型，人类觉得 $y_w$ 比 $y_l$ 好的概率，取决于它们的**分数差**：
+$$r(x, y_w) - r(x, y_l)$$
+$$
+\begin{aligned}
+r(x, y_w) - r(x, y_l) &= \left[ \beta \log \frac{\pi^*(y_w|x)}{\pi_{\text{ref}}(y_w|x)} + \color{red}{\beta \log Z(x)} \right] - \left[ \beta \log \frac{\pi^*(y_l|x)}{\pi_{\text{ref}}(y_l|x)} + \color{red}{\beta \log Z(x)} \right]\\
+&= \beta \log \frac{\pi^*(y_w|x)}{\pi_{\text{ref}}(y_w|x)} - \beta \log \frac{\pi^*(y_l|x)}{\pi_{\text{ref}}(y_l|x)}
+\end{aligned}
+$$
+
+>按照 Bradley-Terry 模型，$y_w$ 战胜 $y_l$ 的概率是 :
+$$P(y_w \succ y_l) = \sigma(r_w - r_l)$$
+
+我们在深度学习里，想要最大化这个获胜概率，也就是要**最小化它的负对数似然 (Negative Log-Likelihood)**。最后，我们把理论上的最优解 $\pi^*$，替换成我们正在用 PyTorch 训练的神经网络参数 $\pi_\theta$。
+这就自然而然地得到了在文档里看到的、大名鼎鼎的 **DPO 损失函数**：
+$$\mathcal{L}_{DPO} = - \mathbb{E}_{x, y_w, y_l} \left[ \log \sigma \left( \beta \log \frac{\pi_\theta(y_w|x)}{\pi_{\text{ref}}(y_w|x)} - \beta \log \frac{\pi_\theta(y_l|x)}{\pi_{\text{ref}}(y_l|x)} \right) \right]$$
+>至于最后为什么要用**负对数似然**呢，这里纯粹是**工程实践**的问题。我们实际情况肯定不是一条数据，如果有很多数据，概率都是0到1之间，直接乘会导致计算机出现浮点数下溢出（underflow），于是便增加了一个求对数，把乘积转变成累加。
+>为什么是负呢，纯粹是因为目前深度学习框架的几乎所有的优化器（adam，sgd）在设计的时候都默认用来寻找“山谷”的最低点，我们最大化一个东西，就直接取负就行了。
+>而最后套的这个求期望，就是表达深度学习中最基础的一个动作：**“在整个训练数据集上求平均 Loss”**。
+
+至此DPO的核心公式就推导完了！！
+### 个人小结
+DPO的最大创新就是我上面提到的那个神来之笔，即**无须显式的拟合奖励模型**的情况下，高效的学习出与人类偏好一致的最优策略。
+“DPO 是把 RM 和 RL 揉在了一起，用一步分类 Loss 直接干完了两步的活”。
