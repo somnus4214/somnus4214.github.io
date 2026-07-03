@@ -45,6 +45,41 @@
   transform-origin: center;
 }
 
+.site-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
+  border-bottom: 0;
+  font-family: var(--header-font);
+  line-height: 1;
+}
+
+.site-brand img {
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 7px;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--text-2) 18%, transparent);
+}
+
+.site-brand:hover {
+  background-color: transparent;
+  color: var(--primary-color);
+}
+
+.post-header .post-dates {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  font-family: var(--mono-text-font);
+}
+
+.post-header .updated-date {
+  color: var(--text-2);
+  font-size: 0.78rem;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
 .body .somnus-image-frame {
   display: block;
   max-width: 100%;

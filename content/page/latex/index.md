@@ -3,6 +3,7 @@ title = "LaTeX 数学公式速查表"
 description = "Markdown/MathJax/KaTeX 常用数学公式、符号、结构与排版写法速查。"
 path = "latex"
 date = 2026-07-01T00:00:00+08:00
+updated = 2026-07-02T00:00:00+08:00
 
 [taxonomies]
 categories = ["速查表"]
