@@ -28,6 +28,7 @@ comments = false
 | 独立公式 | `` `$$...$$` `` | 单独占一行，适合较长公式 |
 | 独立公式 | `` `\[...\]` `` | MathJax 推荐写法之一 |
 | 多行公式 | `aligned` | 用 `\\` 换行，用 `&` 对齐 |
+| 复杂块公式 | <code>&#123;% math() %&#125;...&#123;% end %&#125;</code> | 本站专用：绕开 Markdown，直接交给 MathJax |
 
 ```markdown
 当 $a \ne 0$ 时，方程 $ax^2+bx+c=0$ 的解为
@@ -44,6 +45,15 @@ $$
 $$
 x = \frac{-b \pm \sqrt{b^2-4ac}}{2a}.
 $$
+
+本站写长公式时，推荐用 `math` shortcode 包住原生 MathJax/TeX 内容，避免 Markdown 先把 `_`、`*`、`\{`、`\\` 等符号解析掉：
+
+<pre><code>&#123;% math() %&#125;
+\begin{aligned}
+\pi^*(y|x) &= \frac{1}{Z(x)} \pi_{\text{ref}}(y|x) \\
+\mathbb{D}_{KL}(P\|Q) &= \mathbb{E}_{x\sim P}\left[\log\frac{P(x)}{Q(x)}\right]
+\end{aligned}
+&#123;% end %&#125;</code></pre>
 
 ## 二、上下标与正下方
 
@@ -575,6 +585,21 @@ $$
 | 中文或普通文字在公式中显示异常 | 用 `\text{...}` |
 | Markdown 表格里写公式被竖线拆开 | 避免裸竖线，改用 `\mid`、`\lvert`、`\rvert` |
 | 平台不支持某命令 | 优先使用 MathJax/KaTeX 常见核心命令，少用增强扩展 |
+
+### 本站 Markdown + MathJax 特别注意
+
+本站页面的公式流程是：Markdown 先被 Zola 渲染成 HTML，浏览器里 MathJax 再渲染公式。因此某些 TeX 写法本身没错，但可能在 MathJax 看到之前已经被 Markdown 改坏。复杂公式优先用 <code>&#123;% math() %&#125;...&#123;% end %&#125;</code>。
+
+| 容易踩坑的写法 | 稳定写法 | 原因 |
+| :--- | :--- | :--- |
+| `\bigg\{...\bigg\}` | `\bigg\lbrace...\bigg\rbrace` | `\{` 可能被 Markdown 当作转义处理 |
+| `\pi^*` | `\pi^{\ast}` | `*` 可能触发 Markdown 斜体 |
+| <code>P&#92;&#124;Q</code> 或 <code>P&#124;&#124;Q</code> | `P\Vert Q` | 竖线容易被 Markdown 或表格语法干扰 |
+| <code>&#92;&#124;\Delta\theta&#92;&#124;</code> | `\lVert\Delta\theta\rVert` | 范数语义更清楚，也更稳 |
+| 行尾 `\\` | 行尾 `\\\\`，或使用 `math` shortcode 后写正常 `\\` | Markdown 行尾反斜杠可能被当作硬换行 |
+| `_` 多的长公式 | 用 `math` shortcode | 下标里的 `_` 可能和 Markdown 强调语法打架 |
+
+如果写在 `math` shortcode 里，上面这些可以按更接近原生 MathJax 的习惯写；如果直接写在普通 Markdown 里，就优先使用右侧稳定写法。
 
 ## 二十一、快速索引
 

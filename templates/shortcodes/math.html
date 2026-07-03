@@ -1,0 +1,10 @@
+{% set display = display | default(value=true) %}
+{% if display %}
+<div class="mathjax-display">
+\[
+{{ body | safe }}
+\]
+</div>
+{% else %}
+<span class="mathjax-inline">\({{ body | safe }}\)</span>
+{% endif %}
