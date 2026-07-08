@@ -322,3 +322,54 @@ $$\mathcal{L}_{DPO} = - \mathbb{E}_{x, y_w, y_l} \left[ \log \sigma \left( \beta
 
 DPO的最大创新就是我上面提到的那个神来之笔，即**无须显式的拟合奖励模型**的情况下，高效的学习出与人类偏好一致的最优策略。
 “DPO 是把 RM 和 RL 揉在了一起，用一步分类 Loss 直接干完了两步的活”。
+## GRPO
+如果说DPO是通过数学魔法逃避了强化学习，而GRPO就是正面硬刚，真正把强化学习做到了极致的轻量化。
+### 背景介绍
+GRPO是在2024年由deepseek团队提出来，即group relative policy optimization。在deepseek-math和deepseek-r1中使用。
+传统ppo采用的还是actor-critic（演员-评论家）架构。
+- actor模型：负责生成回答（70B参数）。
+- critic模型：负责给actor生成的答案打分。（通常会和actor模型一样大70B参数）
+于是为了更新一个70B的模型，gpu显存中必须常驻着两个同样大的模型。
+### 底层原理
+![image.png](https://img.somnus.wiki/file/1783484297460_image.png)
+从[论文](https://arxiv.org/pdf/2402.03300)中的可以得到这个图片，可以直观的看出来ppo和grpo的区别。
+grpo是对ppo的一次架构重构，他的核心是，**采用组内采样的统计量作为baseline代替原本的crtical（value model）预测baseline**。
+第一步：群体采样
+>对于每次训练迭代，我们从训练集中取出一个关键词q，使用当前的训练策略（policy model）生成一组G个输出$\{o_1,o_2\dots o_G\}$ ，在deepseek的实践中，这个G常常设置为4~8 个。
+
+第二步：计算绝对奖励
+>将这 $G$ 个输出 $\{o_1, o_2, \dots, o_G\}$ 分别送入奖励函数中进行评估。
+这个奖励函数可以是一个训练好的奖励模型（Reward Model），也可以是一个基于代码运行结果、数学验证器的**确定性规则（Rule-based Reward）**。评估后，我们得到一组标量分数：$\{r_1, r_2, \dots, r_G\}$。
+
+3.第三步：计算相对优势 (Advantage Estimation)：
+通过 Z-Score 归一化消除方差，取代 Critic 网络。
+这是 GRPO 的核心。PPO 使用 Critic 模型来预测一个状态的期望价值 $V(s)$ 作为基线。而 GRPO 直接在刚刚生成的这组数据内部计算统计量：
+1. 计算这 $G$ 个分数的均值 $\mu = \frac{1}{G} \sum_{i=1}^G r_i$
+2. 计算标准差 $\sigma = \sqrt{\frac{1}{G} \sum_{i=1}^G (r_i - \mu)^2}$
+然后，对每一个输出 $o_i$ 的得分进行标准化，得到**优势函数（Advantage）**：
+
+$$A_i = \frac{r_i - \mu}{\sigma}$$
+
+**数学意义：** $A_i > 0$ 表示该回答在当前策略的生成空间中好于平均水平；$A_i < 0$ 表示低于平均水平。通过除以标准差 $\sigma$，使得奖励信号的分布始终保持稳定，极大降低了训练过程中的梯度方差。
+4.第四步：计算目标函数并更新参数 (Policy Optimization)：结合 PPO 的 Clipping 和 KL 散度正则化。
+最后，GRPO 要最大化它的目标函数（Objective Function）。这个公式包含了两个核心部分：**收益最大化项** 和 **KL 散度惩罚项**。
+
+$$J_{GRPO}(\theta) = \mathbb{E}_{q, \{o_i\}_{i=1}^G} \left[ \frac{1}{G} \sum_{i=1}^G \left( \mathcal{L}_{clip}^{(i)} - \beta \mathbb{D}_{KL}(\pi_\theta || \pi_{ref}) \right) \right]$$
+
+我们将括号里的两项拆开看：
+**1. 裁剪损失（Clip Loss, 继承自 PPO）:**
+$$\mathcal{L}_{clip}^{(i)} = \min \left( \frac{\pi_\theta(o_i|q)}{\pi_{\theta_{old}}(o_i|q)} A_i, \text{clip}\left(\frac{\pi_\theta(o_i|q)}{\pi_{\theta_{old}}(o_i|q)}, 1-\epsilon, 1+\epsilon\right) A_i \right)$$
+
+这里 $\frac{\pi_\theta}{\pi_{\theta_{old}}}$ 是新旧策略的概率比值。Clip 函数将其限制在 $[1-\epsilon, 1+\epsilon]$（通常 $\epsilon = 0.2$）之间。**原理在于：** 即使 $A_i$ 非常大（某个回答特别好），也不允许模型一次性把这个回答的生成概率调得过高，防止策略更新步子迈得太大导致“破坏性遗忘”。
+**2. KL 散度惩罚（KL Penalty）:**
+$$\beta \mathbb{D}_{KL}(\pi_\theta || \pi_{ref}) = \beta \frac{\pi_{ref}(o_i|q)}{\pi_\theta(o_i|q)} - \log \frac{\pi_{ref}(o_i|q)}{\pi_\theta(o_i|q)} - 1$$
+
+_注：这是 DeepSeek 论文中使用的精确 KL 估计器，比传统的 $\log$ 差值更无偏。_
+这一项强制正在训练的模型 $\pi_\theta$ 不能偏离初始的参考模型 $\pi_{ref}$ 太远。如果模型为了迎合高奖励而输出了乱码或极端重复的文本，KL 散度会迅速飙升并将其扣分扣回来。
+### 为什么这种“粗暴”的数学替换有效？
+从算法工程的角度看，GRPO 解决了一个核心的资源死锁问题：
+
+1. **同策略（On-Policy）的必要性：** RLHF 必须是 On-policy 的（模型必须对自己刚刚生成的文本进行评估和更新），以防止策略漂移。
+2. **Actor-Critic 的显存灾难：** 为了实现 On-policy 的基线预测，PPO 必须保留一个同等参数规模的 Critic。70B 的 Actor 就需要 70B 的 Critic。
+3. **GRPO 的无偏估计：** 数学上已经证明，在相同状态 $q$ 下生成多条轨迹，其组内均值是一个针对该状态的**无偏基线估计（Unbiased Baseline Estimator）**。只要组大小 $G$ 不极度小，它的作用与 Critic 完全等价。
+通过将复杂的神经网络推断（Critic 前向传播）替换为极简的标量数学运算（求均值和方差），GRPO 在理论严密性不受损的前提下，将强化学习的显存开销直接砍掉了将近一半。
