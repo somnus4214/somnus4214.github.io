@@ -13,9 +13,15 @@ Examples:
   ./scripts/new-content.sh post tutorial "Zola 使用笔记" "zola,blog"
   ./scripts/new-content.sh post proj "我的新项目" "project,rust"
   ./scripts/new-content.sh note llm "注意力机制复习" "llm,ai,learning"
+  ./scripts/new-content.sh note learning/rust/ratatui "Ratatui 组件笔记" "rust,ratatui,learning"
+  ./scripts/new-content.sh note rust/ratatui "Ratatui 组件笔记" "rust,ratatui,learning"
+  ./scripts/new-content.sh note . "当前目录笔记" "rust,ratatui,learning"
   ./scripts/new-content.sh diary 2026-07-08 "life,thinking"
 USAGE
 }
+
+SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+ROOT_DIR="$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)"
 
 ask() {
   prompt="$1"
@@ -40,6 +46,45 @@ iso_now() {
 
 slugify() {
   printf "%s" "$1" | sed 's/[\/:]/-/g; s/[[:space:]]\+/-/g; s/^-//; s/-$//'
+}
+
+current_note_section() {
+  current_dir="$(pwd -P)"
+  notes_dir="$ROOT_DIR/content/notes"
+  case "$current_dir" in
+    "$notes_dir")
+      printf "learning"
+      ;;
+    "$notes_dir"/*)
+      printf "%s" "${current_dir#"$notes_dir"/}"
+      ;;
+    *)
+      printf ""
+      ;;
+  esac
+}
+
+note_dir() {
+  section="$(printf "%s" "$1" | sed 's#^content/notes/##; s#^notes/##; s#^/##; s#/$##')"
+  if [ "$section" = "." ]; then
+    section="$(current_note_section)"
+    [ -z "$section" ] && section="learning"
+  fi
+
+  case "$section" in
+    llm|rust)
+      printf "content/notes/learning/%s" "$section"
+      ;;
+    llm/*|rust/*)
+      printf "content/notes/learning/%s" "$section"
+      ;;
+    learning|learning/*)
+      printf "content/notes/%s" "$section"
+      ;;
+    *)
+      printf "content/notes/%s" "$section"
+      ;;
+  esac
 }
 
 toml_array() {
@@ -70,14 +115,15 @@ toml_array() {
 write_file() {
   file="$1"
   body="$2"
+  full_file="$ROOT_DIR/$file"
 
-  if [ -e "$file" ]; then
+  if [ -e "$full_file" ]; then
     printf "Refusing to overwrite existing file: %s\n" "$file" >&2
     exit 1
   fi
 
-  mkdir -p "$(dirname "$file")"
-  printf "%s\n" "$body" > "$file"
+  mkdir -p "$(dirname "$full_file")"
+  printf "%s\n" "$body" > "$full_file"
   printf "Created %s\n" "$file"
 }
 
@@ -134,17 +180,15 @@ hide_from_home = false
     section="${2:-}"
     title="${3:-}"
     tags="${4:-}"
+    default_section="$(current_note_section)"
+    [ -z "$default_section" ] && default_section="learning"
 
-    [ -z "$section" ] && section="$(ask "Note section: learning, llm, rust" "learning")"
+    [ -z "$section" ] && section="$(ask "Note section: ., learning, llm, rust, rust/ratatui" "$default_section")"
     [ -z "$title" ] && title="$(ask "Title")"
     [ -z "$tags" ] && tags="$(ask "Tags, comma-separated" "learning")"
 
     filename="$(slugify "$title")"
-    if [ "$section" = "llm" ] || [ "$section" = "rust" ]; then
-      file="content/notes/learning/$section/$filename.md"
-    else
-      file="content/notes/learning/$filename.md"
-    fi
+    file="$(note_dir "$section")/$filename.md"
     date_value="$(iso_now)"
     tag_array="$(toml_array "$tags")"
 

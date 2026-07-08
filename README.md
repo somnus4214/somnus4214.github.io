@@ -75,8 +75,11 @@ zola build --force
 ./scripts/new-content.sh post tutorial "Zola 使用笔记" "zola,blog"
 ./scripts/new-content.sh post proj "我的新项目" "project,rust"
 ./scripts/new-content.sh note llm "注意力机制复习" "llm,ai,learning"
+./scripts/new-content.sh note rust/ratatui "Ratatui 组件笔记" "rust,ratatui,learning"
 ./scripts/new-content.sh diary 2026-07-08 "life,thinking"
 ```
+
+笔记的 section 可以写 `learning/rust/ratatui` 这种完整路径，也可以写 `rust/ratatui`，脚本会自动放到 `content/notes/learning/rust/ratatui/`。如果当前就在某个 `content/notes/...` 目录里，可以用 `note . "标题"` 直接生成到当前目录。
 
 脚本会自动写入 `title`、`date`、`draft`、`path`、`taxonomies` 和 `[extra]`，并拒绝覆盖已有同名文件。
 
