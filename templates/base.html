@@ -5,41 +5,43 @@
 
     {% include "partials/header.html" %}
 
-    <body>
+    <body class="site-body">
         {% include "apollo/body_start.html" ignore missing %}
-        <div class="left-content">
-            {% block left_content %}
-            {% endblock left_content %}
+        <div class="site-layout">
+            <div class="left-content">
+                {% block left_content %}
+                {% endblock left_content %}
+            </div>
+
+            <div class="content">
+                {% include "partials/nav.html" %}
+
+                {% block main_content %}
+                    Nothing here?!
+                {% endblock main_content %}
+
+                {% if page.extra.comment is defined %}
+                    {% set show_comment = page.extra.comment %}
+                {% else %}
+                    {% set show_comment = false %}
+                {% endif %}
+
+                {% if show_comment %}
+                    <div class="giscus">
+                    </div>
+                    {% include "_giscus_script.html" %}
+                {% endif %}
+            </div>
+
+            <div class="right-content">
+                {% block right_content %}
+                {% endblock right_content %}
+            </div>
         </div>
 
-        <div class="content">
-            {% include "partials/nav.html" %}
-
-            {% block main_content %}
-                Nothing here?!
-            {% endblock main_content %}
-
-            {% if page.extra.comment is defined %}
-                {% set show_comment = page.extra.comment %}
-            {% else %}
-                {% set show_comment = false %}
-            {% endif %}
-
-            {% if show_comment %}
-                <div class="giscus">
-                </div>
-                {% include "_giscus_script.html" %}
-            {% endif %}
-
-            <footer class="site-footer">
-                <a href="https://beian.miit.gov.cn/" target="_blank">苏ICP备2026018543号</a>
-            </footer>
-        </div>
-
-        <div class="right-content">
-            {% block right_content %}
-            {% endblock right_content %}
-        </div>
+        <footer class="site-footer">
+            <a href="https://beian.miit.gov.cn/" target="_blank">苏ICP备2026018543号</a>
+        </footer>
         {% include "apollo/body_end.html" ignore missing %}
     </body>
 
