@@ -51,7 +51,7 @@ dynamic_note = true
 mermaid = true
 mathjax = false
 word_count = false
-stylesheets = ["css/apollo-overrides.css"]
+stylesheets = ["css/apollo-overrides.css?v=20260714"]
 
 menu = [
   { name = "文章", url = "/posts", weight = 1 },
