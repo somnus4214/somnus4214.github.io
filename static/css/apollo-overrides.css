@@ -66,6 +66,22 @@
   color: var(--primary-color);
 }
 
+.site-footer {
+  margin: 2.5rem 0 1.5rem;
+  color: var(--text-2);
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.site-footer a {
+  border-bottom: 0;
+  color: inherit;
+}
+
+.site-footer a:hover {
+  color: var(--primary-color);
+}
+
 .post-header .post-dates {
   display: flex;
   flex-direction: column;
