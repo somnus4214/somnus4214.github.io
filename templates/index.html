@@ -11,8 +11,9 @@
 
     {% set posts = get_section(path="posts/_index.md") %}
     {% set notes = get_section(path="notes/_index.md") %}
+    {% set essays = get_section(path="essays/_index.md") %}
     {% set diary = get_section(path="diary/_index.md") %}
-    {% set all_pages = posts.pages | concat(with=notes.pages) | concat(with=diary.pages) %}
+    {% set all_pages = posts.pages | concat(with=notes.pages) | concat(with=essays.pages) | concat(with=diary.pages) %}
     {% set sorted_pages = all_pages | sort(attribute="date") | reverse %}
     {% set_global latest_pages = [] %}
 

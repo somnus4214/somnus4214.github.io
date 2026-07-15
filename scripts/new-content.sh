@@ -7,6 +7,7 @@ Usage:
   ./scripts/new-content.sh
   ./scripts/new-content.sh post <section> <title> [tags]
   ./scripts/new-content.sh note <section> <title> [tags]
+  ./scripts/new-content.sh essay <title> [tags]
   ./scripts/new-content.sh diary [date] [tags]
 
 Examples:
@@ -16,6 +17,7 @@ Examples:
   ./scripts/new-content.sh note learning/rust/ratatui "Ratatui 组件笔记" "rust,ratatui,learning"
   ./scripts/new-content.sh note rust/ratatui "Ratatui 组件笔记" "rust,ratatui,learning"
   ./scripts/new-content.sh note . "当前目录笔记" "rust,ratatui,learning"
+  ./scripts/new-content.sh essay "夏夜散步" "life,thinking"
   ./scripts/new-content.sh diary 2026-07-08 "life,thinking"
 USAGE
 }
@@ -135,7 +137,7 @@ if [ "$kind" = "-h" ] || [ "$kind" = "--help" ]; then
 fi
 
 if [ -z "$kind" ]; then
-  kind="$(ask "Type: post, note, diary" "post")"
+  kind="$(ask "Type: post, note, essay, diary" "post")"
 fi
 
 case "$kind" in
@@ -211,6 +213,38 @@ hide_from_home = false
 ## 核心概念
 
 ## 细节
+"
+    ;;
+
+  essay)
+    title="${2:-}"
+    tags="${3:-}"
+
+    [ -z "$title" ] && title="$(ask "Title")"
+    [ -z "$tags" ] && tags="$(ask "Tags, comma-separated" "life,thinking")"
+
+    filename="$(slugify "$title")"
+    file="content/essays/$filename.md"
+    date_value="$(iso_now)"
+    tag_array="$(toml_array "$tags")"
+
+    write_file "$file" "+++
+title = \"$title\"
+date = $date_value
+draft = false
+path = \"essays/$title\"
+
+[taxonomies]
+tags = $tag_array
+
+[extra]
+math = false
+hide_from_home = false
++++
+
+> 随笔摘要写在这里。
+
+## 正文
 "
     ;;
 

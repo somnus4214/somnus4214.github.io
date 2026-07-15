@@ -51,10 +51,11 @@ zola build --force
 
 - `content/posts/`：技术博客
 - `content/notes/`：知识笔记
+- `content/essays/`：随笔
 - `content/diary/`：日记
 - `content/page/`：独立页面，比如友链
 - `themes/apollo/`：Apollo 主题子模块
-- `scripts/new-content.sh`：一键生成文章、笔记、日记模板
+- `scripts/new-content.sh`：一键生成文章、笔记、随笔、日记模板
 - `static/fonts/`：自定义字体
 - `static/css/apollo-overrides.css`：Apollo 的轻量本地样式覆盖
 - `templates/`：少量 Apollo 覆盖模板
@@ -63,7 +64,7 @@ zola build --force
 
 ## 一键生成内容模板
 
-使用脚本按提示创建文章、笔记或日记：
+使用脚本按提示创建文章、笔记、随笔或日记：
 
 ```bash
 ./scripts/new-content.sh
@@ -76,6 +77,7 @@ zola build --force
 ./scripts/new-content.sh post proj "我的新项目" "project,rust"
 ./scripts/new-content.sh note llm "注意力机制复习" "llm,ai,learning"
 ./scripts/new-content.sh note rust/ratatui "Ratatui 组件笔记" "rust,ratatui,learning"
+./scripts/new-content.sh essay "夏夜散步" "life,thinking"
 ./scripts/new-content.sh diary 2026-07-08 "life,thinking"
 ```
 
