@@ -114,6 +114,17 @@
   flex-direction: column;
   gap: 0.1rem;
   font-family: var(--mono-text-font);
+  padding-top: 0.18rem;
+}
+
+.post-header {
+  align-items: start;
+}
+
+@media (min-width: 640px) {
+  .post-list .post-header {
+    grid-template-columns: 10rem minmax(0, 1fr);
+  }
 }
 
 .post-header .updated-date {
