@@ -106,7 +106,9 @@
 }
 
 .site-footer a:hover {
-  color: var(--primary-color);
+    background-color: color-mix(in srgb, var(--primary-color) 15%, transparent);
+    color: var(--primary-color);
+    border-radius: 3px;
 }
 
 .post-header .post-dates {
